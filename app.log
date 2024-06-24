@@ -23,3 +23,21 @@
 {"level":"info","msg":"Starting server on :0","time":"2024-06-24T13:37:13+08:00"}
 {"level":"info","msg":"Starting server on :8080","time":"2024-06-24T13:37:22+08:00"}
 {"Name":"fengfeng","level":"info","msg":"用户成功注册","time":"2024-06-24T13:38:04+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-24T22:28:33+08:00"}
+{"Name":"fengfeng","level":"info","msg":"用户成功注册","time":"2024-06-24T22:29:22+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T00:29:24+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T01:40:14+08:00"}
+{"Name":"fengfeng","level":"info","msg":"用户成功注册","time":"2024-06-25T01:42:37+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T01:50:44+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T01:53:31+08:00"}
+{"error":"Key: 'UserInput.Name' Error:Field validation for 'Name' failed on the 'sign' tag","level":"error","msg":"验证失败","time":"2024-06-25T01:53:59+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T02:02:30+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T02:02:38+08:00"}
+{"error":"Key: 'UserInput.Name' Error:Field validation for 'Name' failed on the 'sign' tag","level":"error","msg":"验证失败","time":"2024-06-25T02:03:01+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T02:03:28+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T02:42:41+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T02:50:22+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T03:03:11+08:00"}
+{"Name":"mika","level":"info","msg":"用户成功注册","time":"2024-06-25T03:04:30+08:00"}
+{"error":"Key: 'UserInput.Name' Error:Field validation for 'Name' failed on the 'sign' tag","level":"error","msg":"验证失败","time":"2024-06-25T03:06:19+08:00"}
+{"Name":"mimi23","level":"info","msg":"用户成功注册","time":"2024-06-25T03:12:13+08:00"}

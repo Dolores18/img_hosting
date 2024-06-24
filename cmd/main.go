@@ -8,6 +8,7 @@ import (
 	"img_hosting/config"
 	_ "img_hosting/config"
 	_ "img_hosting/middleware"
+	"img_hosting/models"
 	"img_hosting/pkg/logger"
 	_ "img_hosting/pkg/logger"
 	"img_hosting/routes"
@@ -16,7 +17,10 @@ import (
 )
 
 func main() {
+	// 初始化数据库
+	models.GetDB()
 
+	//日志初始化
 	logger.Init()
 	log := logger.GetLogger()
 	router := gin.Default()

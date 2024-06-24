@@ -1,0 +1,28 @@
+package models
+
+import (
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"log"
+	"sync"
+)
+
+var (
+	db   *gorm.DB
+	once sync.Once
+)
+
+// GetDB 返回一个单例的数据库连接对象
+func GetDB() *gorm.DB {
+	once.Do(func() {
+		var err error
+		db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+		if err != nil {
+			log.Fatalf("failed to connect database: %v", err)
+		}
+
+		// 自动迁移
+		db.AutoMigrate(&UserInfo{})
+	})
+	return db
+}

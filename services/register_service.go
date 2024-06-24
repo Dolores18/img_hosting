@@ -2,17 +2,25 @@ package services
 
 import (
 	"fmt"
+	_ "github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"
+	"img_hosting/dao"
+	"img_hosting/models"
 	"img_hosting/pkg/logger"
+	_ "net/http"
 	"regexp"
 )
 
-// 自定义验证器函数
+// 自定义验证器函数,不能包含特殊符号
 func signValid(fl validator.FieldLevel) bool {
 	name := fl.Field().Interface().(string)
-	return name == "fengfeng"
+	if regexp.MustCompile(`[\W_]`).MatchString(name) {
+		return false
+	}
+
+	return true
 }
 func PasswordValid(fl validator.FieldLevel) bool {
 	password := fl.Field().Interface().(string)
@@ -30,6 +38,7 @@ func PasswordValid(fl validator.FieldLevel) bool {
 func InitValidator() {
 	log := logger.GetLogger()
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+
 		err := v.RegisterValidation("sign", signValid)
 		if err != nil {
 			log.Info("自定义用户名注册失败")
@@ -69,10 +78,25 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
+func IsUserEmpty(name string) (bool, error) {
+	db := models.GetDB()
+
+	user, err := dao.FindUserByName(db, name)
+	if err != nil {
+		return false, err
+	}
+
+	if user == nil {
+		return true, nil
+	}
+
+	return false, nil
+}
+
 /*
 // RegisterUser 保存用户到数据库
 func RegisterUser(user *models.User) error {
 	// 实现用户保存的逻辑，例如调用 DAO 层的方法保存用户到数据库
 	return dao.SaveUser(user)
-}
+
 */
