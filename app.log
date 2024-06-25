@@ -41,3 +41,44 @@
 {"Name":"mika","level":"info","msg":"用户成功注册","time":"2024-06-25T03:04:30+08:00"}
 {"error":"Key: 'UserInput.Name' Error:Field validation for 'Name' failed on the 'sign' tag","level":"error","msg":"验证失败","time":"2024-06-25T03:06:19+08:00"}
 {"Name":"mimi23","level":"info","msg":"用户成功注册","time":"2024-06-25T03:12:13+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T04:57:46+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:00:53+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:04:04+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:08:47+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:14:49+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:19:39+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:21:13+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:25:14+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:26:37+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:28:24+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:38:39+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T05:40:54+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T06:10:18+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T06:23:17+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T06:26:11+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T06:27:15+08:00"}
+{"level":"info","msg":"User authenticated with JWT","time":"2024-06-25T06:31:03+08:00","username":"mimi23"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T06:42:43+08:00"}
+{"level":"info","msg":"User authenticated with JWT","time":"2024-06-25T06:42:52+08:00","username":"mimi23"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T06:44:25+08:00"}
+{"level":"info","msg":"User authenticated with JWT","time":"2024-06-25T06:44:36+08:00","username":"mimi23"}
+{"level":"info","msg":"User authenticated with JWT","time":"2024-06-25T06:45:11+08:00","username":"mimi23"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T07:12:26+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T07:14:42+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T07:15:42+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T07:20:03+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T07:24:03+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T07:30:11+08:00"}
+{"Name":"zerotest","level":"info","msg":"用户成功注册","time":"2024-06-25T07:30:45+08:00"}
+{"Name":"zerotes","level":"info","msg":"用户成功注册","time":"2024-06-25T07:36:43+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:24:38+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:33:45+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:35:34+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:36:51+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:37:54+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:39:07+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:40:37+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T08:45:36+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T09:00:12+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-25T09:53:19+08:00"}
+{"Name":"mimi3","level":"info","msg":"用户成功注册","time":"2024-06-25T09:55:36+08:00"}

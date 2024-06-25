@@ -7,7 +7,7 @@ import (
 
 type UserInput struct {
 	Name string `json:"name" binding:"required,sign"`
-	Age  int    `json:"age" binding:"required,gte=18"`
+	Age  int    `json:"age"`
 	Psd  string `json:"psd" binding:"required,password"`
 }
 type UserInfo struct {

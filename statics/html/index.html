@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register and Login</title>
+    <link rel="stylesheet" href="/statics/css/style.css">
+    <script>
+        function toggleForm(formType) {
+            document.getElementById("register-form").style.display = formType === 'register' ? 'block' : 'none';
+            document.getElementById("login-form").style.display = formType === 'login' ? 'block' : 'none';
+        }
+
+        function registerUser() {
+            var name = document.getElementById("register-name").value;
+            var age = parseInt(document.getElementById("register-age").value, 10);
+            var psd = document.getElementById("register-psd").value;
+
+            var data = JSON.stringify({ name: name, age: age, psd: psd });
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:8080/register", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    console.log(json);
+                }
+            };
+            xhr.send(data);
+        }
+
+        function loginUser() {
+            var name = document.getElementById("login-name").value;
+            var psd = document.getElementById("login-psd").value;
+
+            var data = JSON.stringify({ name: name, psd: psd });
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:8080/sigin", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    console.log(json);
+                }
+            };
+            xhr.send(data);
+        }
+
+        window.onload = function () {
+            toggleForm('register');
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <header>云上图库</header>
+    <div id="register-form">
+        <form onsubmit="event.preventDefault(); registerUser();">
+            <label for="register-name">Name:</label>
+            <input type="text" id="register-name" name="name" required><br>
+
+            <label for="register-age">Age:</label>
+            <input type="number" id="register-age" name="age" required><br>
+
+            <label for="register-psd">Password:</label>
+            <input type="password" id="register-psd" name="psd" required><br>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    <div id="login-form">
+        <form onsubmit="event.preventDefault(); loginUser();">
+            <label for="login-name">Name:</label>
+            <input type="text" id="login-name" name="name" required><br>
+
+            <label for="login-psd">Password:</label>
+            <input type="password" id="login-psd" name="psd" required><br>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div class="button-container">
+        <button class="toggle-button" onclick="toggleForm('register')">Register</button>
+        <button class="toggle-button" onclick="toggleForm('login')">Login</button>
+    </div>
+</div>
+</body>
+</html>
