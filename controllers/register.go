@@ -57,9 +57,9 @@ func RegisterUser(c *gin.Context) {
 
 /*
 curl -X POST ^
-http://127.0.0.1:8080/register ^
+http://127.0.0.1:8080/imguploads ^
 -H "Content-Type: application/json" ^
--d "{\"name\": \"mim3\", \"psd\": \"5d65466678@\"}"
+-d "{\"name\": \"mim23\", \"age\": 20, \"psd\": \"5d65466678@\"}"
 
 */
 //-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbWkyMyIsImV4cCI6MTcxOTM1MzQ5OX0.A7IfGzfhJCBxt-2mfo1d8BqrJwK4FQUCi2LJVHl0o_w" ^

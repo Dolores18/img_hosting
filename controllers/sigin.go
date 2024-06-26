@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "gorm.io/gorm"
 	"img_hosting/dao"
+	"img_hosting/middleware"
 	"img_hosting/models"
 	"img_hosting/pkg/logger"
 	"img_hosting/services"
@@ -62,7 +63,7 @@ func Sigin(c *gin.Context) {
 	}
 
 	// 生成 JWT 令牌
-	token, err := services.GenerateJWT(user.Name)
+	token, err := middleware.GenerateJWT(user.Name)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "生成令牌失败"})
 		return
@@ -71,6 +72,7 @@ func Sigin(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "用户认证成功",
 		"token":   token,
+		"name":    user.Name,
 	})
 }
 
@@ -78,7 +80,7 @@ func Sigin(c *gin.Context) {
 curl -X POST ^
 http://127.0.0.1:8080/sigin ^
 -H "Content-Type: application/json" ^
--d "{\"name\": \"mim23\", \"age\": 20, \"psd\": \"5d65466678@\"}"
+-d "{\"name\": \"m3\", \"age\":25\"psd\": \"5d65466678@\"}"
 
 */
 //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbWkyMyIsImV4cCI6MTcxOTM1NTU1NX0.oesiJ5wkaSKQtjAuP3vJzK-EYUMdfbKEFL0hWK6HOSg"

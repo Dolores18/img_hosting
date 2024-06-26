@@ -21,7 +21,9 @@ func main() {
 	logger.Init()
 	log := logger.GetLogger()
 	router := gin.Default()
+	//router.POST("/upload", controllers.Uploads)
 	router.Use(middleware.AuthMiddleware())
+
 	services.InitValidator()
 	//router.Use(middleware.RequestID())
 	// 设置静态文件目录
@@ -33,6 +35,7 @@ func main() {
 		c.Redirect(301, "/statics/html/index.html")
 	})
 	// CORS middleware configuration
+
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:8080"}, // 允许的域名
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},

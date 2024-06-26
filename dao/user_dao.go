@@ -31,3 +31,29 @@ func FindUserByName(db *gorm.DB, name string) (*models.UserInfo, error) {
 	}
 	return &user, nil
 }
+
+// 更新用户数据
+func UpdateUser(db *gorm.DB, name string, updates map[string]interface{}) error {
+	//执行更新
+	if err := db.Model(&models.UserInfo{}).Where("name = ?", name).Updates(updates).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+/*
+updates = map[string]interface{}{
+"name": ”jane"
+"email“ ：”123“
+
+更简单的方法
+    // 解析 JSON 字符串
+    err = json.Unmarshal([]byte(jsonString), &updates)
+    if err != nil {
+        fmt.Println("Error parsing JSON:", err)
+        return
+    }
+
+    // 打印解析后的数据
+    fmt.Println("Parsed JSON:", updates)
+*/

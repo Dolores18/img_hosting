@@ -22,7 +22,7 @@ func GetDB() *gorm.DB {
 		}
 
 		// 自动迁移
-		db.AutoMigrate(&UserInfo{})
+		db.AutoMigrate(&UserInfo{}, &Image{})
 	})
 	return db
 }

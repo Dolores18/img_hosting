@@ -9,4 +9,5 @@ import (
 func RegisterRoutes(router *gin.Engine) {
 	router.POST("/register", controllers.RegisterUser)
 	router.POST("/sigin", controllers.Sigin)
+	router.POST("/imgupload", controllers.Uploads)
 }
