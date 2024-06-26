@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register and Login</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        function toggleForm(formType) {
+            document.getElementById("register-form").style.display = formType === 'register' ? 'block' : 'none';
+            document.getElementById("login-form").style.display = formType === 'login' ? 'block' : 'none';
+        }
+
+        async function registerUser() {
+            const name = document.getElementById("register-name").value;
+            const age = parseInt(document.getElementById("register-age").value, 10);
+            const psd = document.getElementById("register-psd").value;
+
+            const data = JSON.stringify({ name, age, psd });
+
+            try {
+                const response = await fetch("http://127.0.0.1:8080/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: data
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+                    console.log(json);
+                    // 提示成功信息
+                } else {
+                    // 处理错误
+                    console.error('注册失败');
+                }
+            } catch (error) {
+                console.error('请求失败', error);
+            }
+        }
+
+        async function loginUser() {
+            const name = document.getElementById("login-name").value;
+            const psd = document.getElementById("login-psd").value;
+
+            const data = JSON.stringify({ name, psd });
+
+            try {
+                const response = await fetch("http://127.0.0.1:8080/sigin", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: data
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+                    console.log(json);
+
+                    // 将token保存到localStorage中
+                    localStorage.setItem('token', json.token);
+
+                    // 登录成功后跳转到上传图片页面
+                    window.location.href = "imgupload.html";
+                } else {
+                    // 处理登录失败情况
+                    console.error('登录失败');
+                }
+            } catch (error) {
+                console.error('请求失败', error);
+            }
+        }
+
+        window.onload = function () {
+            toggleForm('register');
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <header>云上图库</header>
+    <div id="register-form" style="display: none;">
+        <form onsubmit="event.preventDefault(); registerUser();">
+            <label for="register-name">Name:</label>
+            <input type="text" id="register-name" name="name" placeholder="Enter your name" required><br>
+
+            <label for="register-age">Age:</label>
+            <input type="number" id="register-age" name="age" placeholder="Enter your age" required><br>
+
+            <label for="register-psd">Password:</label>
+            <input type="password" id="register-psd" name="psd" placeholder="Enter your password" required><br>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    <div id="login-form" style="display: none;">
+        <form onsubmit="event.preventDefault(); loginUser();">
+            <label for="login-name">Name:</label>
+            <input type="text" id="login-name" name="name" placeholder="Enter your name" required><br>
+
+            <label for="login-psd">Password:</label>
+            <input type="password" id="login-psd" name="psd" placeholder="Enter your password" required><br>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div class="button-container">
+        <button class="toggle-button" onclick="toggleForm('register')">Register</button>
+        <button class="toggle-button" onclick="toggleForm('login')">Login</button>
+    </div>
+</div>
+</body>
+</html>
