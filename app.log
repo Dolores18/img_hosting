@@ -149,3 +149,22 @@
 {"level":"info","msg":"Starting server on :8080","time":"2024-06-26T13:43:53+08:00"}
 {"level":"info","msg":"Starting server on :8080","time":"2024-06-26T13:54:31+08:00"}
 {"Name":"mim23","level":"info","msg":"用户上传图片成功","time":"2024-06-26T13:55:51+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-26T14:41:37+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-06-26T14:42:29+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-06-26T14:43:07+08:00"}
+{"Name":"mim23","level":"info","msg":"用户上传图片成功","time":"2024-06-26T14:43:44+08:00"}
+{"Name":"ghdf","level":"info","msg":"用户成功注册","time":"2024-06-26T14:45:00+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-26T15:04:04+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-06-26T15:05:08+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-06-26T15:05:26+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-26T15:14:57+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-06-26T15:15:48+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-06-26T15:15:52+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-26T15:18:28+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-28T05:10:57+08:00"}
+{"Name":"mika24","level":"info","msg":"用户成功注册","time":"2024-06-28T05:13:53+08:00"}
+{"Name":"mika25","level":"info","msg":"用户成功注册","time":"2024-06-28T05:16:15+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-28T05:28:55+08:00"}
+{"Name":"mika26","level":"info","msg":"用户成功注册","time":"2024-06-28T05:31:08+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-28T05:36:59+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-06-28T05:53:43+08:00"}
