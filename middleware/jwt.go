@@ -52,6 +52,8 @@ var ExcludedPaths = map[string]bool{
 	"/statics/css/style.css":     true,
 	"/statics/imgs/example.jpg ": true,
 	"/imgupload":                 true,
+	"/statics/html/index.html":   true,
+	"/favicon.ico":               true,
 }
 
 // AuthMiddleware is a middleware for JWT authentication

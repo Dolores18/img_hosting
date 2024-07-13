@@ -5,7 +5,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"img_hosting/config"
-	"img_hosting/middleware"
 	"img_hosting/models"
 	"img_hosting/pkg/logger"
 	"img_hosting/routes"
@@ -21,8 +20,16 @@ func main() {
 	logger.Init()
 	log := logger.GetLogger()
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://*.3049589.xyz", "https://*.3049589.xyz", "http://*.3049589.xyz:*", "https://*.3049589.xyz:*", "http://107.174.218.153:8080", "http://localhost:*", "http://127.0.0.1:*"}, // 允许的域名
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 	//router.POST("/upload", controllers.Uploads)
-	router.Use(middleware.AuthMiddleware())
+	//router.Use(middleware.AuthMiddleware())
 
 	services.InitValidator()
 	//router.Use(middleware.RequestID())
@@ -36,14 +43,6 @@ func main() {
 	})
 	// CORS middleware configuration
 
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8080"}, // 允许的域名
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
 	config.LoadConfig() //加载配置
 	addr := fmt.Sprintf(":%d", config.AppConfigInstance.App.Port)
 

@@ -1,10 +1,11 @@
 package models
 
 import (
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"log"
 	"sync"
+
+	"github.com/glebarez/sqlite"
+	"gorm.io/gorm"
 )
 
 var (

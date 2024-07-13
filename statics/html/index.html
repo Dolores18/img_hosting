@@ -19,7 +19,7 @@
             const data = JSON.stringify({ name, age, psd });
 
             try {
-                const response = await fetch("http://127.0.0.1:8080/register", {
+                const response = await fetch("http://107.174.218.153:8080/register", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -47,7 +47,7 @@
             const data = JSON.stringify({ name, psd });
 
             try {
-                const response = await fetch("http://127.0.0.1:8080/sigin", {
+                const response = await fetch("http://107.174.218.153:8080/signin", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
