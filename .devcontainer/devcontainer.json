@@ -1,11 +1,8 @@
 {
-  "name": "Debian Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/base:debian",
-  "hostRequirements": {
-    "cpus": 1
-  },
-  // 可以添加其他 Debian 特定的配置
-  "features": {
-    // 可以添加额外的工具或特性
-  }
+"hostRequirements": {
+   "cpus": 8,
+   "memory": "8gb",
+   "storage": "32gb"
+}
+
 }
