@@ -6,8 +6,6 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"
-	"img_hosting/dao"
-	"img_hosting/models"
 	"img_hosting/pkg/logger"
 	_ "net/http"
 	"regexp"
@@ -66,6 +64,8 @@ func FormatValidationError(errs validator.ValidationErrors) map[string]string {
 			errors[fieldName] = fmt.Sprintf("The %s field must be greater than or equal to %s.", fieldName, err.Param())
 		case "password":
 			errors[fieldName] = fmt.Sprintf("The %s field must be 8-20 characters long and contain letters, numbers, and special characters.", fieldName)
+		case "email":
+			errors[fieldName] = fmt.Sprintf("The %s field must be vaild email.", fieldName)
 		default:
 			errors[fieldName] = fmt.Sprintf("Validation error for %s: %s.", fieldName, err.Tag())
 		}
@@ -76,21 +76,6 @@ func FormatValidationError(errs validator.ValidationErrors) map[string]string {
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
-}
-
-func IsUserEmpty(name string) (bool, error) {
-	db := models.GetDB()
-
-	user, err := dao.FindUserByName(db, name)
-	if err != nil {
-		return false, err
-	}
-
-	if user == nil {
-		return true, nil
-	}
-
-	return false, nil
 }
 
 /*

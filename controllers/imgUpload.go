@@ -9,6 +9,7 @@ import (
 	"img_hosting/models"
 	"img_hosting/pkg/logger"
 	"img_hosting/services"
+	"io"
 	"net/http"
 )
 
@@ -19,19 +20,19 @@ func Uploads(c *gin.Context) {
 	//获取用户信息
 	claims, err := middleware.ParseAndValidateToken(c)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	username := claims.Username
+	userid := claims.UserID
 	// Multipart form 。获取一张或者多张图片
 	form, err := c.MultipartForm()
 	if err != nil {
-		c.JSON(404, gin.H{"msg": "图片上传失败，请重新上传"})
+		c.JSON(400, gin.H{"error": "图片上传失败，请重新上传"})
 		return
 	}
 	if form == nil {
-		c.JSON(404, gin.H{"msg": "图片上传失败，请重新上传"})
+		c.JSON(400, gin.H{"error": "图片上传失败，请重新上传"})
 		return
 	}
 	files := form.File["upload[]"]
@@ -41,33 +42,52 @@ func Uploads(c *gin.Context) {
 		println(file.Filename)
 		//这里加一些对文件格式以及文件大小的检查
 		valid, message, img_extension, imgsize := services.CheckImg(file.Filename, file.Size)
-		println(imgsize)
+		println("文件名为：%s", file.Filename)
 		if !valid {
-			c.JSON(200, gin.H{"msg": message})
+			c.JSON(400, gin.H{"error": message})
 
 			return
 		}
 		// 确保文件名安全
-		sanitizedFileName, err := services.SanitizeFileName(file.Filename)
+		name, extension, err := services.SanitizeFileName(file.Filename)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-
-		if c.SaveUploadedFile(file, "./statics/uploads/"+file.Filename) != nil {
-			c.JSON(400, gin.H{"err": "文件保存失败"})
+		image_name := name
+		img_extension = extension
+		// 读取文件内容
+		fileContent, err := file.Open()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		imageUrl := "/statics/uploads/" + file.Filename
+		defer fileContent.Close()
+
+		// 将文件内容读取为字节切片
+		fileBytes, err := io.ReadAll(fileContent)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		hash_img := services.HashFileName(fileBytes)
+
+		if c.SaveUploadedFile(file, "./statics/uploads/"+file.Filename) != nil {
+			c.JSON(400, gin.H{"error": "文件保存失败"})
+			return
+		}
+
+		imageUrl := "/statics/uploads/" + hash_img + img_extension
 		fmt.Println(imageUrl)
+		//对文件进行哈希处理，文件名改成哈希文件名
 
 		//保存文件到数据库
-		dao.CreateImg(db, username, imageUrl, sanitizedFileName, imgsize, img_extension)
+		dao.CreateImg(db, userid, imageUrl, image_name, img_extension, hash_img, imgsize, img_extension)
 
 	}
 
 	c.JSON(200, gin.H{"msg": "图片成功上传"})
-	log.WithFields(logrus.Fields{"Name": username}).Info("用户上传图片成功")
+	log.WithFields(logrus.Fields{"Name": userid}).Info("用户上传图片成功")
 
 }
 

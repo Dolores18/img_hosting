@@ -11,7 +11,8 @@ import (
 func RegisterRoutes(router *gin.Engine) {
 	// 公开路由
 	router.POST("/register", controllers.RegisterUser)
-	router.POST("/signin", controllers.Sigin) // 注意：这里我假设 "sigin" 是有意为之的拼写
+	router.POST("/signin", controllers.Sinngin)
+	router.POST("/searchimg", controllers.SearchImage) // 注意：这里我假设 "sigin" 是有意为之的拼写
 
 	// 需要认证的路由组
 	authorized := router.Group("/")

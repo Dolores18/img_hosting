@@ -186,3 +186,588 @@
 {"Name":"lily","level":"info","msg":"用户成功注册","time":"2024-07-13T10:42:42+08:00"}
 {"Name":"lily","level":"info","msg":"用户上传图片成功","time":"2024-07-13T10:43:33+08:00"}
 {"level":"info","msg":"Starting server on :8080","time":"2024-07-13T12:07:46+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T12:14:26+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T13:09:11+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T13:36:06+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'required' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:39:24+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'required' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:41:16+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'required' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:41:17+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'required' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:41:18+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'required' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:41:18+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'required' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:41:19+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'required' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:45:58+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:54:54+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-07-14T13:55:36+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-07-14T14:06:57+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-07-14T14:10:29+08:00"}
+{"Name":"mika","level":"info","msg":"用户成功注册","time":"2024-07-14T14:17:43+08:00"}
+{"level":"info","msg":"解析 JSON 失败","time":"2024-07-14T14:18:51+08:00"}
+{"level":"info","msg":"解析 JSON 失败","time":"2024-07-14T14:18:59+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T19:06:29+08:00"}
+{"Name":"mimi","level":"info","msg":"用户成功注册","time":"2024-07-14T19:17:22+08:00"}
+{"Name":"zerotest","level":"info","msg":"用户成功注册","time":"2024-07-14T19:19:09+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:20:28+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:20:31+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:24:48+08:00"}
+{"Name":"zerotest12","level":"info","msg":"用户成功注册","time":"2024-07-14T19:25:56+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T19:34:08+08:00"}
+{"Name":"mim236","level":"info","msg":"用户成功注册","time":"2024-07-14T19:34:35+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:34:44+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:35:40+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:35:41+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:35:41+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:35:42+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:35:42+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:35:43+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:35:43+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:38:55+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:zzz psd:Mtjbydd23#]","time":"2024-07-14T19:40:25+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T19:44:47+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:45:07+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T19:47:49+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:48:01+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T19:53:25+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23#]","time":"2024-07-14T19:56:20+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T19:56:20+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T19:56:20+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-14T19:56:20+08:00"}
+{"Name":"mika","level":"info","msg":"用户上传图片成功","time":"2024-07-14T19:56:41+08:00"}
+{"Name":"mika","level":"info","msg":"用户上传图片成功","time":"2024-07-14T19:57:51+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T19:58:19+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd23]","time":"2024-07-14T19:58:32+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T19:58:32+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T19:58:32+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-14T19:58:32+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T20:05:15+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd2]","time":"2024-07-14T20:05:50+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:05:50+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:05:50+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-14T20:05:50+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:1212 psd:Mtjbydd2]","time":"2024-07-14T20:07:23+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:07:23+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:07:23+08:00"}
+{"level":"info","msg":"1212","time":"2024-07-14T20:07:23+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T20:07:23+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:1212 psd:Mtjbydd2]","time":"2024-07-14T20:07:29+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:07:29+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:07:29+08:00"}
+{"level":"info","msg":"1212","time":"2024-07-14T20:07:29+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T20:07:29+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:1212 psd:Mtjbydd2]","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"1212","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:1212 psd:Mtjbydd2]","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"1212","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T20:07:30+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao  psd:Mtjbydd2]","time":"2024-07-14T20:07:58+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:07:58+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:07:58+08:00"}
+{"level":"info","msg":"nihao ","time":"2024-07-14T20:07:58+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T20:07:58+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao  psd:Mtjbydd2]","time":"2024-07-14T20:08:03+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:08:03+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:08:03+08:00"}
+{"level":"info","msg":"nihao ","time":"2024-07-14T20:08:03+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T20:08:03+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T20:10:58+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:mika psd:Mtjbydd2]","time":"2024-07-14T20:15:24+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T20:15:24+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T20:15:24+08:00"}
+{"level":"info","msg":"mika","time":"2024-07-14T20:15:24+08:00"}
+{"Name":"nihao","level":"info","msg":"用户成功注册","time":"2024-07-14T21:37:07+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao psd:Mtjbydd24#]","time":"2024-07-14T21:37:38+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:37:38+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:37:38+08:00"}
+{"level":"info","msg":"nihao","time":"2024-07-14T21:37:38+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao psd:Mtjbydd24#]","time":"2024-07-14T21:37:57+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:37:57+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:37:57+08:00"}
+{"level":"info","msg":"nihao","time":"2024-07-14T21:37:57+08:00"}
+{"Name":"nihao12","level":"info","msg":"用户成功注册","time":"2024-07-14T21:39:40+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao12 psd:Mtjbydd24#]","time":"2024-07-14T21:39:52+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:39:52+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:39:52+08:00"}
+{"level":"info","msg":"nihao12","time":"2024-07-14T21:39:52+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-14T21:42:09+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:42:09+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:42:09+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-14T21:42:09+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao12 psd:Mtjbydd24@]","time":"2024-07-14T21:42:24+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:42:24+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:42:24+08:00"}
+{"level":"info","msg":"nihao12","time":"2024-07-14T21:42:24+08:00"}
+{"Name":"nihao24","level":"info","msg":"用户成功注册","time":"2024-07-14T21:42:53+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao24 psd:Mtjbydd24@]","time":"2024-07-14T21:43:05+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:43:05+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:43:05+08:00"}
+{"level":"info","msg":"nihao24","time":"2024-07-14T21:43:05+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao24 psd:Mtjbydd24@]","time":"2024-07-14T21:47:23+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:47:23+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:47:23+08:00"}
+{"level":"info","msg":"nihao24","time":"2024-07-14T21:47:23+08:00"}
+{"Name":"nihao29","level":"info","msg":"用户成功注册","time":"2024-07-14T21:48:39+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao24 psd:Mtjbydd24@]","time":"2024-07-14T21:48:57+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:48:57+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:48:57+08:00"}
+{"level":"info","msg":"nihao24","time":"2024-07-14T21:48:57+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:nihao25 psd:Mtjbydd24@]","time":"2024-07-14T21:50:44+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:50:44+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:50:44+08:00"}
+{"level":"info","msg":"nihao25","time":"2024-07-14T21:50:44+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T21:50:44+08:00"}
+{"Name":"mike26","level":"info","msg":"用户成功注册","time":"2024-07-14T21:52:12+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:mike26 psd:Mtjbydd24@]","time":"2024-07-14T21:52:34+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T21:52:34+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T21:52:34+08:00"}
+{"level":"info","msg":"mike26","time":"2024-07-14T21:52:34+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T21:56:28+08:00"}
+{"Name":"test","level":"info","msg":"用户成功注册","time":"2024-07-14T21:59:54+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:test psd:asdfqwer1@]","time":"2024-07-14T22:00:23+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:00:23+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:00:23+08:00"}
+{"level":"info","msg":"test","time":"2024-07-14T22:00:23+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-14T22:02:18+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:02:18+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:02:18+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-14T22:02:18+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:test psd:asdfqwer1@]","time":"2024-07-14T22:02:51+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:02:51+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:02:51+08:00"}
+{"level":"info","msg":"test","time":"2024-07-14T22:02:51+08:00"}
+{"Name":"gta","level":"info","msg":"用户成功注册","time":"2024-07-14T22:16:37+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:16:50+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:16:50+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:16:50+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:16:50+08:00"}
+{"Name":"gta","level":"info","msg":"用户上传图片成功","time":"2024-07-14T22:17:17+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:17:26+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:17:26+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:17:26+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:17:26+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:17:33+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:17:33+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:17:33+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:17:33+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:17:43+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:17:43+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:17:43+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:17:43+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:18:32+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:18:32+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:18:32+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:18:32+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:18:41+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:18:41+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:18:41+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:18:41+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:19:16+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:19:16+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:19:16+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:19:16+08:00"}
+{"Name":"gta24","level":"info","msg":"用户成功注册","time":"2024-07-14T22:24:05+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta24 psd:Mtjbydd24@]","time":"2024-07-14T22:24:13+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:24:13+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:24:13+08:00"}
+{"level":"info","msg":"gta24","time":"2024-07-14T22:24:13+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta24 psd:Mtjbydd24@]","time":"2024-07-14T22:25:29+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:25:29+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:25:29+08:00"}
+{"level":"info","msg":"gta24","time":"2024-07-14T22:25:29+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta24 psd:Mtjbydd24@]","time":"2024-07-14T22:25:51+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:25:51+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:25:51+08:00"}
+{"level":"info","msg":"gta24","time":"2024-07-14T22:25:51+08:00"}
+{"Name":"gta248","level":"info","msg":"用户成功注册","time":"2024-07-14T22:26:03+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta24 psd:Mtjbydd24@]","time":"2024-07-14T22:26:09+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:26:09+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:26:09+08:00"}
+{"level":"info","msg":"gta24","time":"2024-07-14T22:26:09+08:00"}
+{"Name":"gta2","level":"info","msg":"用户成功注册","time":"2024-07-14T22:26:54+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta2 psd:Mtjbydd24@]","time":"2024-07-14T22:27:02+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:27:02+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:27:02+08:00"}
+{"level":"info","msg":"gta2","time":"2024-07-14T22:27:02+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gt psd:Mtjbydd24@]","time":"2024-07-14T22:40:26+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:40:26+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:40:26+08:00"}
+{"level":"info","msg":"gt","time":"2024-07-14T22:40:26+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T22:40:26+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gt psd:Mtjbydd24@]","time":"2024-07-14T22:40:44+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:40:44+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:40:44+08:00"}
+{"level":"info","msg":"gt","time":"2024-07-14T22:40:44+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T22:40:44+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gt psd:Mtjbydd24@]","time":"2024-07-14T22:40:45+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:40:45+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:40:45+08:00"}
+{"level":"info","msg":"gt","time":"2024-07-14T22:40:45+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T22:40:45+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta2 psd:Mtjbydd24]","time":"2024-07-14T22:44:26+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:44:26+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:44:26+08:00"}
+{"level":"info","msg":"gta2","time":"2024-07-14T22:44:26+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:g psd:Mtjbydd24@]","time":"2024-07-14T22:46:19+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:46:19+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:46:19+08:00"}
+{"level":"info","msg":"g","time":"2024-07-14T22:46:19+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T22:46:19+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:giu psd:Mtjbydd24@]","time":"2024-07-14T22:46:42+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:46:42+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:46:42+08:00"}
+{"level":"info","msg":"giu","time":"2024-07-14T22:46:42+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T22:46:42+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T22:47:02+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:47:02+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:47:02+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T22:47:02+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:g psd:Mtjbydd24@]","time":"2024-07-14T22:47:12+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T22:47:12+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T22:47:12+08:00"}
+{"level":"info","msg":"g","time":"2024-07-14T22:47:12+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T22:47:12+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-14T23:01:00+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:g psd:Mtjbydd24@]","time":"2024-07-14T23:01:20+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:01:20+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:01:20+08:00"}
+{"level":"info","msg":"g","time":"2024-07-14T23:01:20+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T23:01:20+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:g psd:Mtjbydd24@]","time":"2024-07-14T23:01:24+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:01:24+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:01:24+08:00"}
+{"level":"info","msg":"g","time":"2024-07-14T23:01:24+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-14T23:01:24+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24]","time":"2024-07-14T23:01:32+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:01:32+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:01:32+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:01:32+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24]","time":"2024-07-14T23:01:39+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:01:39+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:01:39+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:01:39+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24]","time":"2024-07-14T23:01:45+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:01:45+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:01:45+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:01:45+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T23:02:01+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:02:01+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:02:01+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:02:01+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T23:03:38+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:03:38+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:03:38+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:03:38+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T23:03:56+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:03:56+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:03:56+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:03:56+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T23:04:14+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:04:14+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:04:14+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:04:14+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-14T23:07:45+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-14T23:07:45+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-14T23:07:45+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-14T23:07:45+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-15T13:39:24+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-15T13:51:57+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-15T13:52:07+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-16T20:25:30+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-16T20:42:30+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-16T20:49:38+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-16T21:47:03+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T01:39:22+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T01:55:54+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T01:56:03+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'email' tag","level":"error","msg":"验证失败","time":"2024-07-17T01:56:32+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'email' tag","level":"error","msg":"验证失败","time":"2024-07-17T01:56:43+08:00"}
+{"error":"Key: 'UserInput.Email' Error:Field validation for 'Email' failed on the 'email' tag","level":"error","msg":"验证失败","time":"2024-07-17T01:56:48+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T02:06:02+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T02:10:10+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T02:11:26+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T02:13:24+08:00"}
+{"Name":"gta","level":"info","msg":"用户成功注册","time":"2024-07-17T02:14:19+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-17T02:14:23+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-17T02:14:23+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T02:14:23+08:00"}
+{"level":"info","msg":"map[name:gakki8073@gmail.com]","time":"2024-07-17T02:14:23+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-17T02:14:23+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-17T02:15:17+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-17T02:15:17+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T02:15:17+08:00"}
+{"level":"info","msg":"map[name:gta]","time":"2024-07-17T02:15:17+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-17T02:28:38+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-17T02:28:38+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T02:28:38+08:00"}
+{"level":"info","msg":"map[name:gta]","time":"2024-07-17T02:28:38+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-17T02:28:55+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-17T02:28:55+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T02:28:55+08:00"}
+{"level":"info","msg":"map[name:gakki8073@gmail.com]","time":"2024-07-17T02:28:55+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-17T02:28:55+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-17T02:29:12+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-17T02:29:12+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T02:29:12+08:00"}
+{"level":"info","msg":"map[name:gta]","time":"2024-07-17T02:29:12+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-17T02:29:31+08:00"}
+{"level":"info","msg":"用户名存在","time":"2024-07-17T02:29:31+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T02:29:31+08:00"}
+{"level":"info","msg":"map[name:gakki8073@gmail.com]","time":"2024-07-17T02:29:31+08:00"}
+{"level":"info","msg":"用户不存在","time":"2024-07-17T02:29:31+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T02:35:43+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-17T02:47:58+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-17T02:48:02+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-17T02:48:08+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T02:58:08+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-17T02:58:27+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-17T02:58:36+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-17T02:59:29+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T03:00:25+08:00"}
+{"level":"info","msg":"接收到的json数据: map[name:gta psd:Mtjbydd24@]","time":"2024-07-17T03:00:34+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T03:10:18+08:00"}
+{"level":"info","msg":"接收到的json数据: \u0026map[identifier:map[identifier:gta] psd:Mtjbydd24@]","time":"2024-07-17T03:10:34+08:00"}
+{"level":"info","msg":"接收到的json数据: \u0026map[identifier:gta psd:Mtjbydd24@]","time":"2024-07-17T03:32:30+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gta","time":"2024-07-17T03:32:30+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:32:30+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-17T03:32:30+08:00"}
+{"level":"info","msg":"没有找到密码","time":"2024-07-17T03:32:31+08:00"}
+{"level":"info","msg":"接收到的json数据: \u0026map[identifier:gta psd:Mtjbydd24@]","time":"2024-07-17T03:32:35+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gta","time":"2024-07-17T03:32:35+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:32:35+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-17T03:32:35+08:00"}
+{"level":"info","msg":"没有找到密码","time":"2024-07-17T03:32:35+08:00"}
+{"level":"info","msg":"接收到的json数据: \u0026map[identifier:gakki8073@gmail.com psd:Mtjbydd24@]","time":"2024-07-17T03:33:40+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:33:40+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:33:40+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:33:40+08:00"}
+{"level":"info","msg":"没有找到密码","time":"2024-07-17T03:33:40+08:00"}
+{"Name":"nihao","level":"info","msg":"用户成功注册","time":"2024-07-17T03:34:50+08:00"}
+{"level":"info","msg":"接收到的json数据: \u0026map[identifier:gakki8073@gmail.com psd:Xrnsxzbjzt24#]","time":"2024-07-17T03:35:02+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:35:02+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:35:02+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:35:02+08:00"}
+{"level":"info","msg":"没有找到密码","time":"2024-07-17T03:35:02+08:00"}
+{"level":"info","msg":"接收到的json数据: \u0026map[identifier:nihao psd:Xrnsxzbjzt24#]","time":"2024-07-17T03:35:12+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：nihao","time":"2024-07-17T03:35:12+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:35:12+08:00"}
+{"level":"info","msg":"nihao","time":"2024-07-17T03:35:12+08:00"}
+{"level":"info","msg":"没有找到密码","time":"2024-07-17T03:35:12+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T03:46:04+08:00"}
+{"level":"error","msg":"解析JSON失败: json: cannot unmarshal string into Go struct field .identifier of type struct { Identifier string \"json:\\\"identifier\\\"\" }","time":"2024-07-17T03:46:18+08:00"}
+{"level":"error","msg":"解析JSON失败: json: cannot unmarshal string into Go struct field .identifier of type struct { Identifier string \"json:\\\"identifier\\\"\" }","time":"2024-07-17T03:46:22+08:00"}
+{"level":"error","msg":"解析JSON失败: json: cannot unmarshal string into Go struct field .identifier of type struct { Identifier string \"json:\\\"identifier\\\"\" }","time":"2024-07-17T03:46:26+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T03:48:25+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:48:25+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:48:25+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:48:25+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-07-17T03:49:40+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-07-17T03:49:49+08:00"}
+{"error":"Key: 'UserInput.Psd' Error:Field validation for 'Psd' failed on the 'password' tag","level":"error","msg":"验证失败","time":"2024-07-17T03:50:26+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T03:51:43+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:51:43+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:51:43+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:51:43+08:00"}
+{"Name":"gta69","level":"info","msg":"用户成功注册","time":"2024-07-17T03:54:37+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T03:55:08+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:55:08+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:55:08+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:55:08+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T03:55:24+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:55:24+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:55:24+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:55:24+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T03:55:40+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:55:40+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:55:40+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:55:40+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T03:58:59+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T03:59:07+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T03:59:07+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T03:59:07+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T03:59:07+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T04:02:08+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T04:02:15+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T04:02:15+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:02:15+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T04:02:15+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T04:05:21+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T04:05:37+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T04:05:37+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:05:37+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T04:05:37+08:00"}
+{"level":"info","msg":"查询参数: map[email:gakki8073@gmail.com]","time":"2024-07-17T04:05:37+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T04:06:44+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T04:06:44+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:06:44+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T04:06:44+08:00"}
+{"level":"info","msg":"查询参数: map[email:gakki8073@gmail.com]","time":"2024-07-17T04:06:44+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T04:10:42+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T04:10:50+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T04:10:50+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:10:50+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T04:10:50+08:00"}
+{"level":"info","msg":"查询参数: map[email:gakki8073@gmail.com]","time":"2024-07-17T04:10:50+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gta} Xrnsxzbjzt24#}","time":"2024-07-17T04:11:46+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gta","time":"2024-07-17T04:11:46+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:11:46+08:00"}
+{"level":"info","msg":"gta","time":"2024-07-17T04:11:46+08:00"}
+{"level":"info","msg":"查询参数: map[name:gta]","time":"2024-07-17T04:11:46+08:00"}
+{"Name":"qw","level":"info","msg":"用户成功注册","time":"2024-07-17T04:13:20+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{qw} Xrnsxzbjzt24#}","time":"2024-07-17T04:13:59+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：qw","time":"2024-07-17T04:13:59+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:13:59+08:00"}
+{"level":"info","msg":"qw","time":"2024-07-17T04:13:59+08:00"}
+{"level":"info","msg":"查询参数: map[name:qw]","time":"2024-07-17T04:13:59+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T04:14:19+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki@gmail.com","time":"2024-07-17T04:14:19+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:14:19+08:00"}
+{"level":"info","msg":"gakki@gmail.com","time":"2024-07-17T04:14:19+08:00"}
+{"level":"info","msg":"查询参数: map[email:gakki@gmail.com]","time":"2024-07-17T04:14:19+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T04:14:42+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki@gmail.com","time":"2024-07-17T04:14:42+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:14:42+08:00"}
+{"level":"info","msg":"gakki@gmail.com","time":"2024-07-17T04:14:42+08:00"}
+{"level":"info","msg":"查询参数: map[email:gakki@gmail.com]","time":"2024-07-17T04:14:42+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{qw} Xrnsxzbjzt24#}","time":"2024-07-17T04:14:53+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：qw","time":"2024-07-17T04:14:53+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:14:53+08:00"}
+{"level":"info","msg":"qw","time":"2024-07-17T04:14:53+08:00"}
+{"level":"info","msg":"查询参数: map[name:qw]","time":"2024-07-17T04:14:53+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{qw} Xrnsxzbjzt24#}","time":"2024-07-17T04:56:35+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：qw","time":"2024-07-17T04:56:35+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T04:56:35+08:00"}
+{"level":"info","msg":"qw","time":"2024-07-17T04:56:35+08:00"}
+{"level":"info","msg":"查询参数: map[name:qw]","time":"2024-07-17T04:56:35+08:00"}
+{"Name":"qw12","level":"info","msg":"用户成功注册","time":"2024-07-17T05:08:46+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki8073@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T05:08:50+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki8073@gmail.com","time":"2024-07-17T05:08:50+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T05:08:50+08:00"}
+{"level":"info","msg":"gakki8073@gmail.com","time":"2024-07-17T05:08:50+08:00"}
+{"level":"info","msg":"查询参数: map[email:gakki8073@gmail.com]","time":"2024-07-17T05:08:50+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{qw12} Xrnsxzbjzt24#}","time":"2024-07-17T05:09:09+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：qw12","time":"2024-07-17T05:09:09+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T05:09:09+08:00"}
+{"level":"info","msg":"qw12","time":"2024-07-17T05:09:09+08:00"}
+{"level":"info","msg":"查询参数: map[name:qw12]","time":"2024-07-17T05:09:09+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T05:29:46+08:00"}
+{"Name":"gta","level":"info","msg":"用户成功注册","time":"2024-07-17T05:31:14+08:00"}
+{"Name":"gta12","level":"info","msg":"用户成功注册","time":"2024-07-17T05:31:46+08:00"}
+{"level":"info","msg":"接收到的登录请求: {{gakki@gmail.com} Xrnsxzbjzt24#}","time":"2024-07-17T05:31:51+08:00"}
+{"level":"info","msg":"用户登录尝试，标识符：gakki@gmail.com","time":"2024-07-17T05:31:51+08:00"}
+{"level":"info","msg":"输入格式正确","time":"2024-07-17T05:31:51+08:00"}
+{"level":"info","msg":"gakki@gmail.com","time":"2024-07-17T05:31:51+08:00"}
+{"level":"info","msg":"查询参数: map[email:gakki@gmail.com]","time":"2024-07-17T05:31:51+08:00"}
+{"Name":2,"level":"info","msg":"用户上传图片成功","time":"2024-07-17T05:35:27+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-17T05:48:53+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-17T05:48:55+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-17T05:48:56+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-17T05:48:57+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-17T05:49:25+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-17T05:57:04+08:00"}
+{"level":"info","msg":"没有找到claims","time":"2024-07-17T05:57:05+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sgta","time":"2024-07-17T06:01:37+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sgta","time":"2024-07-17T06:01:40+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:04:17+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:09:05+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:09:10+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:10:11+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:10:30+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:19:43+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:20:13+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:22:11+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:22:18+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:22:21+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:23:28+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:23:32+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:24:05+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:24:05+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:25:40+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:25:45+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:25:46+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:25:47+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:25:47+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:25:47+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:25:48+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:25:48+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:27:24+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:27:40+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:27:41+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:27:42+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:27:42+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:27:42+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:29:11+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:31+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:33+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:33+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:34+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:34+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:34+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:34+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:35+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:35+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:35+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:35+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:36+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:36+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:36+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:36+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:37+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:29:37+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:31:32+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:31:34+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:31:38+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:31:39+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:31:40+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:31:41+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:31:41+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:33:14+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:33:43+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:33:44+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:33:45+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:33:45+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:33:46+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:39:07+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:39:14+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:39:20+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:39:20+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:39:20+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:39:20+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:39:21+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sa","time":"2024-07-17T06:53:21+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:53:39+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:53:42+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:53:42+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:53:43+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:53:43+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:53:43+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:53:47+08:00"}
+{"level":"info","msg":"Starting server on :8080","time":"2024-07-17T06:55:35+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:55:40+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:55:50+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:55:51+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:55:52+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:55:52+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:00+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:00+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:32+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:33+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:34+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:34+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:36+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T06:56:45+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:00:19+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:12+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:12+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:14+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:26+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:27+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:29+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:40+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %sp1833280","time":"2024-07-17T07:01:42+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %s你好","time":"2024-07-17T07:01:49+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %s你好","time":"2024-07-17T07:01:49+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %s你好","time":"2024-07-17T07:01:50+08:00"}
+{"level":"info","msg":"用户请求的图片名称是: %s你好","time":"2024-07-17T07:01:52+08:00"}

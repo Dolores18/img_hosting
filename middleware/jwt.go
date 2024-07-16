@@ -17,15 +17,16 @@ var jwtKey = []byte("my_secret_key")
 // Claims defines the structure for JWT claims
 type Claims struct {
 	Username string `json:"username"`
+	UserID   uint
 	jwt.StandardClaims
 }
 
 // GenerateJWT generates a JWT token for a given username
-func GenerateJWT(username string) (string, error) {
+func GenerateJWT(userid uint) (string, error) {
 	// Set expiration time for the token
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
-		Username: username,
+		UserID: userid,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

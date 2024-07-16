@@ -14,12 +14,13 @@
         async function registerUser() {
             const name = document.getElementById("register-name").value;
             const age = parseInt(document.getElementById("register-age").value, 10);
+            const email = document.getElementById("register-email").value;
             const psd = document.getElementById("register-psd").value;
 
-            const data = JSON.stringify({ name, age, psd });
+            const data = JSON.stringify({ name, age, email,psd });
 
             try {
-                const response = await fetch("http://107.174.218.153:8080/register", {
+                const response = await fetch("http://127.0.0.1:8080/register", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -28,11 +29,15 @@
                 });
 
                 if (response.ok) {
+
                     const json = await response.json();
                     console.log(json);
                     // 提示成功信息
                 } else {
                     // 处理错误
+                    const json = await response.json();
+                    alert(json.error)
+                    alert('注册失败')
                     console.error('注册失败');
                 }
             } catch (error) {
@@ -41,13 +46,27 @@
         }
 
         async function loginUser() {
-            const name = document.getElementById("login-name").value;
-            const psd = document.getElementById("login-psd").value;
+            const identifierElement = document.getElementById("login-identifier");
+            const psdElement = document.getElementById("login-psd");
 
-            const data = JSON.stringify({ name, psd });
+            if (!identifierElement || !psdElement) {
+                console.error("无法找到登录表单元素");
+                alert("登录表单加载出错，请刷新页面重试");
+                return;
+            }
+
+            const identifier = identifierElement.value.trim();
+            const psd = psdElement.value.trim();
+
+            if (!identifier || !psd) {
+                alert("请输入用户名/邮箱和密码");
+                return;
+            }
+
+            const data = JSON.stringify({ identifier: { identifier }, psd });
 
             try {
-                const response = await fetch("http://107.174.218.153:8080/signin", {
+                const response = await fetch("http://127.0.0.1:8080/signin", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -55,21 +74,19 @@
                     body: data
                 });
 
+                const json = await response.json();
+
                 if (response.ok) {
-                    const json = await response.json();
-                    console.log(json);
-
-                    // 将token保存到localStorage中
+                    console.log("登录成功:", json);
                     localStorage.setItem('token', json.token);
-
-                    // 登录成功后跳转到上传图片页面
                     window.location.href = "imgupload.html";
                 } else {
-                    // 处理登录失败情况
-                    console.error('登录失败');
+                    console.error('登录失败:', json.error);
+                    alert(json.error || '登录失败，请检查您的用户名/邮箱和密码');
                 }
             } catch (error) {
-                console.error('请求失败', error);
+                console.error('请求失败:', error);
+                alert('登录请求失败，请检查网络连接');
             }
         }
 
@@ -88,7 +105,8 @@
 
             <label for="register-age">Age:</label>
             <input type="number" id="register-age" name="age" placeholder="Enter your age" required><br>
-
+            <label for="register-email">Email:</label>
+            <input type="text" id="register-email" name="age" placeholder="Enter your age" required><br>
             <label for="register-psd">Password:</label>
             <input type="password" id="register-psd" name="psd" placeholder="Enter your password" required><br>
 
@@ -97,8 +115,8 @@
     </div>
     <div id="login-form" style="display: none;">
         <form onsubmit="event.preventDefault(); loginUser();">
-            <label for="login-name">Name:</label>
-            <input type="text" id="login-name" name="name" placeholder="Enter your name" required><br>
+            <label for="login-identifier">用户名或邮箱:</label>
+            <input type="text" id="login-identifier" name="identifier" placeholder="Enter your name or email" required><br>
 
             <label for="login-psd">Password:</label>
             <input type="password" id="login-psd" name="psd" placeholder="Enter your password" required><br>

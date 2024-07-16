@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片搜索</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        #searchForm {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #resultArea {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>图片搜索</h1>
+    <form id="searchForm">
+        <input type="text" id="imageName" placeholder="输入图片名称" required>
+        <button type="submit">搜索</button>
+    </form>
+    <div id="resultArea"></div>
+</div>
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const imageName = document.getElementById('imageName').value;
+        const resultArea = document.getElementById('resultArea');
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await fetch('http://127.0.0.1:8080/searchimg', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ name: imageName })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+
+            if (responseData.data && Array.isArray(responseData.data) && responseData.data.length > 0) {
+                const tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>图片ID</th>
+                            <th>用户ID</th>
+                            <th>图片URL</th>
+                            <th>图片名称</th>
+                            <th>扩展名</th>
+                            <th>哈希</th>
+                            <th>大小</th>
+                            <th>类型</th>
+                            <th>上传时间</th>
+                            <th>描述</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${responseData.data.map(image => `
+                            <tr>
+                                <td>${image.ImageID || ''}</td>
+                                <td>${image.UserID || ''}</td>
+                                <td>${image.ImageURL || ''}</td>
+                                <td>${image.ImageName || ''}</td>
+                                <td>${image.Imageextenion || ''}</td>
+                                <td>${image.HashImage || ''}</td>
+                                <td>${image.ImageSize || ''}</td>
+                                <td>${image.ImageType || ''}</td>
+                                <td>${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
+                                <td>${image.Description || ''}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+                resultArea.innerHTML = tableHTML;
+            } else {
+                resultArea.textContent = '没有找到匹配的图片。';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            resultArea.textContent = '搜索过程中发生错误，请稍后再试。';
+        }
+    });
+</script>
+</body>
+</html>

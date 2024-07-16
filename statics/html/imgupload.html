@@ -35,7 +35,7 @@
                 }
 
                 try {
-                    const response = await fetch('http://107.174.218.153:8080/imgupload', {
+                    const response = await fetch('http://127.0.0.1:8080/imgupload', {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${token}` // 将 token 添加到请求头
@@ -44,16 +44,19 @@
                     });
 
                     if (response.ok) {
+                        const json = await response.json();
                         console.log('Files uploaded successfully');
-                        alert('文件成功上传');
+                        alert(json.msg);
                         clearFiles();
                     } else {
+                        const json = await response.json();
                         console.error('Failed to upload files');
-                        alert('文件上传失败');
+                        alert(json.error);
                     }
                 } catch (error) {
+                    const json = await response.json();
                     console.error('Error:', error);
-                    alert('文件上传失败');
+                    alert(json.error);
                 }
             } else {
                 console.error('No files selected or token missing');
@@ -79,6 +82,7 @@
             <button type="submit">上传</button>
         </div>
     </form>
+    <a href="search-img.html" class="nav-button">搜索图片</a>
 </div>
 </body>
 </html>
