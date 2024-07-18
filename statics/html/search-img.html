@@ -60,43 +60,32 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        .button-group {
+            margin-bottom: 20px;
+        }
+        .button-group button {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>图片搜索</h1>
     <form id="searchForm">
-        <input type="text" id="imageName" placeholder="输入图片名称" required>
-        <button type="submit">搜索</button>
+        <input type="text" id="imageName" placeholder="输入图片名称">
+        <div class="button-group">
+            <button type="submit" id="searchButton">搜索</button>
+            <button type="button" id="allImagesButton">获取所有图片</button>
+        </div>
     </form>
     <div id="resultArea"></div>
 </div>
 
 <script>
-    document.getElementById('searchForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const imageName = document.getElementById('imageName').value;
+    function displayResults(responseData) {
         const resultArea = document.getElementById('resultArea');
-        const token = localStorage.getItem('token');
-
-        try {
-            const response = await fetch('http://127.0.0.1:8080/searchimg', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ name: imageName })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const responseData = await response.json();
-
-            if (responseData.data && Array.isArray(responseData.data) && responseData.data.length > 0) {
-                const tableHTML = `
+        if (responseData.data && Array.isArray(responseData.data) && responseData.data.length > 0) {
+            const tableHTML = `
                 <table>
                     <thead>
                         <tr>
@@ -130,14 +119,46 @@
                     </tbody>
                 </table>
             `;
-                resultArea.innerHTML = tableHTML;
-            } else {
-                resultArea.textContent = '没有找到匹配的图片。';
+            resultArea.innerHTML = tableHTML;
+        } else {
+            resultArea.textContent = '没有找到匹配的图片。';
+        }
+    }
+
+    async function fetchImages(isAllImages) {
+        const token = localStorage.getItem('token');
+        const url = isAllImages ? 'http://127.0.0.1:8080/searchAllimg' : 'http://127.0.0.1:8080/searchimg';
+        const payload = isAllImages ? { allimg: true } : { name: document.getElementById('imageName').value };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            const responseData = await response.json();
+            displayResults(responseData);
         } catch (error) {
             console.error('Error:', error);
-            resultArea.textContent = '搜索过程中发生错误，请稍后再试。';
+            document.getElementById('resultArea').textContent = '搜索过程中发生错误，请稍后再试。';
         }
+    }
+
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        fetchImages(false);
+    });
+
+    document.getElementById('allImagesButton').addEventListener('click', function() {
+        fetchImages(true);
     });
 </script>
 </body>

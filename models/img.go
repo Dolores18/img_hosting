@@ -17,3 +17,7 @@ type Image struct {
 	UploadTime    time.Time `gorm:"autoCreateTime"`          // 上传时间
 	Description   string    `json:"description"`             // 图片描述（可选）
 }
+type ImageResult struct {
+	Images []Image `json:"images"`
+	Total  int     `json:"total"`
+}

@@ -13,6 +13,7 @@ func RegisterRoutes(router *gin.Engine) {
 	router.POST("/register", controllers.RegisterUser)
 	router.POST("/signin", controllers.Sinngin)
 	router.POST("/searchimg", controllers.SearchImage) // 注意：这里我假设 "sigin" 是有意为之的拼写
+	router.POST("/searchAllimg", controllers.GetAllimage)
 
 	// 需要认证的路由组
 	authorized := router.Group("/")

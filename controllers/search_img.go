@@ -59,3 +59,48 @@ func SearchImage(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"data": imgdetail})
 }
+
+// 获取上传图片的全部信息
+func GetAllimage(c *gin.Context) {
+	log := logger.GetLogger() //必须实例化
+	//获取用户信息
+	claims, err := middleware.ParseAndValidateToken(c)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		log.Info("没有找到claims")
+
+		return
+	}
+	//请求得到json数据
+
+	var jsonData map[string]interface{}
+
+	if err := c.ShouldBindJSON(&jsonData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "无法解析 JSON 数据"})
+		log.Info("无法解析数据")
+		return
+	}
+	//获取是否查询全部的bool
+
+	allimg, exists := jsonData["allimg"]
+	if !exists {
+		c.JSON(400, gin.H{"error": "json中缺少allimg字段"})
+	}
+	allimgbool, ok := allimg.(bool)
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "allimg字段不是bool类型"})
+		return
+	}
+	IsAllimg := allimgbool
+	if IsAllimg != true {
+		return
+	}
+	user_id := claims.UserID
+	imgdetails, err := services.GetAllimage(user_id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "没有找到图片"})
+		return
+	}
+	c.JSON(200, gin.H{"data": imgdetails})
+}
