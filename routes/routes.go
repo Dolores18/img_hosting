@@ -18,6 +18,8 @@ func RegisterRoutes(router *gin.Engine) {
 	// 需要认证的路由组
 	authorized := router.Group("/")
 	authorized.Use(middleware.AuthMiddleware())
+	authorized.Use(middleware.PermissionMiddleware())
+
 	{
 		authorized.POST("/imgupload", controllers.Uploads)
 		// 在这里添加其他需要认证的路由

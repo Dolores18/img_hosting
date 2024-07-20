@@ -17,7 +17,7 @@ var jwtKey = []byte("my_secret_key")
 // Claims defines the structure for JWT claims
 type Claims struct {
 	Username string `json:"username"`
-	UserID   uint
+	UserID   uint   `json:"user_id"`
 	jwt.StandardClaims
 }
 
@@ -61,16 +61,16 @@ var ExcludedPaths = map[string]bool{
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		log := logger.GetLogger()
+		/*
+				// 获取请求的 IP 地址
+				clientIP := c.ClientIP()
 
-		// 获取请求的 IP 地址
-		clientIP := c.ClientIP()
-
-		// 检查请求路径是否在排除的路径中，或者请求来自本地 IP
-		if _, ok := ExcludedPaths[c.Request.URL.Path]; ok || clientIP == "127.0.0.1" || clientIP == "::1" {
-			c.Next()
-			return
-		}
-
+				// 检查请求路径是否在排除的路径中，或者请求来自本地 IP
+			if _, ok := ExcludedPaths[c.Request.URL.Path]; ok || clientIP == "127.0.0.1" || clientIP == "::1" {
+					c.Next()
+					return
+				}
+		*/
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
@@ -88,11 +88,28 @@ func AuthMiddleware() gin.HandlerFunc {
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok || !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
+
+			c.Abort()
+			return
+		}
+		//提取user_id
+		// 从 token 中提取用户 ID
+		userIDFloat, ok := claims["user_id"].(float64)
+
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found in token or invalid type"})
 			c.Abort()
 			return
 		}
 
-		log.WithField("username", claims["username"]).Info("User authenticated with JWT")
+		// 将 float64 转换为 uint
+		userID := uint(userIDFloat)
+		fmt.Printf("用户id为:%d\n", userID)
+
+		// 将用户 ID 存储在 Gin 上下文中
+		c.Set("user_id", userID)
+
+		log.WithField("username", claims["username"]).WithField("user_id", userID).Info("User authenticated with JWT")
 		c.Next()
 	}
 }
