@@ -1,10 +1,18 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    /* 移除默认外边距 */
+    padding: 0;
+    /* 移除默认内边距 */
 }
 
 .container {
-    max-width: 600px;
+    max-width: 1000px;
+    /* 最大宽度可以扩大 */
+    width: 90%;
+    /* 宽度为90% */
     margin: 0 auto;
+    /* 居中对齐 */
     padding: 20px;
     text-align: center;
     border: 1px solid #ddd;
@@ -53,12 +61,43 @@ button:hover {
     display: flex;
     justify-content: space-between;
 }
-.nav-button {
-    display: inline-block;
-    padding: 10px 20px;
+
+/* 表格样式 */
+table {
+    width: 100%;
+    /* 表格宽度占满容器 */
+    max-width: 100%;
+    /* 最大宽度为容器宽度 */
+    border-collapse: collapse;
+    /* 合并边框 */
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    /* 边框 */
+    padding: 10px;
+    /* 内边距 */
+    text-align: left;
+    /* 左对齐 */
+    max-width: 150px;
+    /* 列最大宽度限制 */
+    overflow: hidden;
+    /* 超出部分隐藏 */
+    text-overflow: ellipsis;
+    /* 超出部分显示省略号 */
+    white-space: nowrap;
+    /* 不换行 */
+}
+
+tr {
+    height: 50px;
+    /* 行高度固定 */
+}
+
+th {
     background-color: #4CAF50;
+    /* 表头背景色 */
     color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 20px;
+    /* 表头文字颜色 */
 }

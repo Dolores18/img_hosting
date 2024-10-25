@@ -2,8 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
+	"img_hosting/config"
 	"img_hosting/dao"
 	"img_hosting/middleware"
 	"img_hosting/models"
@@ -11,11 +10,15 @@ import (
 	"img_hosting/services"
 	"io"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func Uploads(c *gin.Context) {
 	db := models.GetDB()
 	log := logger.GetLogger() //必须实例化
+	config.LoadConfig()
 
 	//获取用户信息
 	claims, err := middleware.ParseAndValidateToken(c)
@@ -71,22 +74,23 @@ func Uploads(c *gin.Context) {
 			return
 		}
 		hash_img := services.HashFileName(fileBytes)
+		hashedFilename := hash_img + img_extension
 
-		if c.SaveUploadedFile(file, "./statics/uploads/"+file.Filename) != nil {
+		if c.SaveUploadedFile(file, "./statics/uploads/"+hashedFilename) != nil {
 			c.JSON(400, gin.H{"error": "文件保存失败"})
 			return
 		}
 
-		imageUrl := "/statics/uploads/" + hash_img + img_extension
+		imageUrl := config.AppConfigInstance.Url.Imgurl + hash_img + img_extension
 		fmt.Println(imageUrl)
 		//对文件进行哈希处理，文件名改成哈希文件名
 
 		//保存文件到数据库
 		dao.CreateImg(db, userid, imageUrl, image_name, img_extension, hash_img, imgsize, img_extension)
+		c.JSON(200, gin.H{"msg": "图片成功上传", "data": imageUrl})
 
 	}
 
-	c.JSON(200, gin.H{"msg": "图片成功上传"})
 	log.WithFields(logrus.Fields{"Name": userid}).Info("用户上传图片成功")
 
 }

@@ -2,10 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"github.com/glebarez/sqlite"
-	"gorm.io/gorm"
 	"img_hosting/config"
 	"img_hosting/dao"
 	"img_hosting/models"
@@ -14,6 +10,11 @@ import (
 	"img_hosting/services"
 	"log"
 	"time"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/glebarez/sqlite"
+	"gorm.io/gorm"
 )
 
 func testUserHasPermissions() {
@@ -59,7 +60,8 @@ func main() {
 
 	// CORS middleware configuration
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:63342", "http://*.3049589.xyz", "https://*.3049589.xyz", "http://*.3049589.xyz:*", "https://*.3049589.xyz:*", "http://107.174.218.153:8080", "http://localhost:*", "http://127.0.0.1:*"}, // 允许的域名
+		AllowOrigins: []string{"*"},
+		// 允许的域名
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},

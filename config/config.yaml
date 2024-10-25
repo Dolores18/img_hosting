@@ -6,3 +6,7 @@ database:
   port: 5432
   username: "your_username"
   password: "your_password"
+
+
+url:
+  imgurl: "https://imghost.3049589.xyz/uploads/"

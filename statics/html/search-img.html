@@ -1,165 +1,147 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>图片搜索</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        #searchForm {
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            width: 70%;
-            padding: 10px;
-            margin-right: 10px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #resultArea {
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .button-group {
-            margin-bottom: 20px;
-        }
-        .button-group button {
-            margin-right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/searchimg.css">
 </head>
+
 <body>
-<div class="container">
-    <h1>图片搜索</h1>
-    <form id="searchForm">
-        <input type="text" id="imageName" placeholder="输入图片名称">
-        <div class="button-group">
-            <button type="submit" id="searchButton">搜索</button>
-            <button type="button" id="allImagesButton">获取所有图片</button>
-        </div>
-    </form>
-    <div id="resultArea"></div>
-</div>
+    <div class="container">
+        <h1>图片搜索</h1>
+        <form id="searchForm">
+            <input type="text" id="imageName" placeholder="输入图片名称">
+            <div class="button-group">
+                <button type="submit" id="searchButton">搜索</button>
+                <button type="button" id="allImagesButton">获取所有图片</button>
+            </div>
+        </form>
+        <div id="resultArea"></div>
+    </div>
 
-<script>
-    function displayResults(responseData) {
-        const resultArea = document.getElementById('resultArea');
-        if (responseData.data && Array.isArray(responseData.data) && responseData.data.length > 0) {
-            const tableHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>图片ID</th>
-                            <th>用户ID</th>
-                            <th>图片URL</th>
-                            <th>图片名称</th>
-                            <th>扩展名</th>
-                            <th>哈希</th>
-                            <th>大小</th>
-                            <th>类型</th>
-                            <th>上传时间</th>
-                            <th>描述</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${responseData.data.map(image => `
+    <script>
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+
+        function displayResults(responseData) {
+            const resultArea = document.getElementById('resultArea');
+            if (responseData.data && Array.isArray(responseData.data) && responseData.data.length > 0) {
+                if (isMobile()) {
+                    // 移动端表格
+                    const tableHTML = `
+                    <table>
+                        <thead>
                             <tr>
-                                <td>${image.ImageID || ''}</td>
-                                <td>${image.UserID || ''}</td>
-                                <td>${image.ImageURL || ''}</td>
-                                <td>${image.ImageName || ''}</td>
-                                <td>${image.Imageextenion || ''}</td>
-                                <td>${image.HashImage || ''}</td>
-                                <td>${image.ImageSize || ''}</td>
-                                <td>${image.ImageType || ''}</td>
-                                <td>${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
-                                <td>${image.Description || ''}</td>
+                                <th>图片名称</th>
+                                <th>上传时间</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-            resultArea.innerHTML = tableHTML;
-        } else {
-            resultArea.textContent = '没有找到匹配的图片。';
-        }
-    }
-
-    async function fetchImages(isAllImages) {
-        const token = localStorage.getItem('token');
-        const url = isAllImages ? 'http://127.0.0.1:8080/searchAllimg' : 'http://127.0.0.1:8080/searchimg';
-        const payload = isAllImages ? { allimg: true } : { name: document.getElementById('imageName').value };
-
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                        </thead>
+                        <tbody>
+                            ${responseData.data.map(image => `
+                                <tr>
+                                    <td title="${image.ImageName || ''}"><a href="${image.ImageURL || ''}" target="_blank">${image.ImageName || ''}</a></td>
+                                    <td title="${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}">${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    `;
+                    resultArea.innerHTML = tableHTML;
+                } else {
+                    // 桌面端表格
+                    const tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>图片ID</th>
+                                <th>用户ID</th>
+                                <th>图片URL</th>
+                                <th>图片名称</th>
+                                <th>扩展名</th>
+                                <th>哈希</th>
+                                <th>大小</th>
+                                <th>类型</th>
+                                <th>上传时间</th>
+                                <th>描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${responseData.data.map(image => `
+                                <tr>
+                                    <td title="${image.ImageID || ''}">${image.ImageID || ''}</td>
+                                    <td title="${image.UserID || ''}">${image.UserID || ''}</td>
+                                    <td title="${image.ImageURL || ''}"><a href="${image.ImageURL || ''}" target="_blank">${image.ImageURL || ''}</a></td>
+                                    <td title="${image.ImageName || ''}">${image.ImageName || ''}</td>
+                                    <td title="${image.Imageextenion || ''}">${image.Imageextenion || ''}</td>
+                                    <td title="${image.HashImage || ''}">${image.HashImage || ''}</td>
+                                    <td title="${image.ImageSize || ''}">${image.ImageSize || ''}</td>
+                                    <td title="${image.ImageType || ''}">${image.ImageType || ''}</td>
+                                    <td title="${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}">${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
+                                    <td title="${image.Description || ''}">${image.Description || ''}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    `;
+                    resultArea.innerHTML = tableHTML;
+                }
+            } else {
+                resultArea.textContent = '没有找到匹配的图片。';
             }
-
-            const responseData = await response.json();
-            displayResults(responseData);
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('resultArea').textContent = '搜索过程中发生错误，请稍后再试。';
         }
-    }
 
-    document.getElementById('searchForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        fetchImages(false);
-    });
+        async function fetchImages(isAllImages) {
+            const token = localStorage.getItem('token');
+            const url = isAllImages ? 'https://imgapi.3049589.xyz/searchAllimg' : 'https://imgapi.3049589.xyz/searchimg';
+            const payload = isAllImages ? { allimg: true } : { name: document.getElementById('imageName').value };
 
-    document.getElementById('allImagesButton').addEventListener('click', function() {
-        fetchImages(true);
-    });
-</script>
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const responseData = await response.json();
+                displayResults(responseData);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultArea').textContent = '搜索过程中发生错误，请稍后再试。';
+            }
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            fetchImages(false);
+        });
+
+        document.getElementById('allImagesButton').addEventListener('click', function () {
+            fetchImages(true);
+        });
+
+        // 监听窗口大小变化，重新渲染结果
+        window.addEventListener('resize', function () {
+            const resultArea = document.getElementById('resultArea');
+            if (resultArea.innerHTML !== '') {
+                // 如果当前有显示结果，重新获取数据并渲染
+                if (document.getElementById('imageName').value) {
+                    fetchImages(false);
+                } else {
+                    fetchImages(true);
+                }
+            }
+        });
+    </script>
 </body>
+
 </html>

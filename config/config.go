@@ -16,6 +16,10 @@ type AppConfig struct {
 		Username string
 		Password string
 	}
+
+	Url struct {
+		Imgurl string
+	}
 }
 
 var AppConfigInstance AppConfig

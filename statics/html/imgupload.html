@@ -1,88 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>上传图片</title>
     <link rel="stylesheet" href="../css/upload.css">
-    <script>
-        function previewImages() {
-            const preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
-            const files = document.getElementById('file-input').files;
-            if (files) {
-                [...files].forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.classList.add('thumb');
-                        preview.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
+    <script src="../js/upload.js" defer></script>
 
-        async function uploadFiles() {
-            const files = document.getElementById('file-input').files;
-            const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
-
-            if (files.length > 0 && token) {
-                const formData = new FormData();
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('upload[]', files[i]); // 使用表单名 'upload[]' 添加文件
-                }
-
-                try {
-                    const response = await fetch('http://127.0.0.1:8080/imgupload', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}` // 将 token 添加到请求头
-                        },
-                        body: formData
-                    });
-
-                    if (response.ok) {
-                        const json = await response.json();
-                        console.log('Files uploaded successfully');
-                        alert(json.msg);
-                        clearFiles();
-                    } else {
-                        const json = await response.json();
-                        console.error('Failed to upload files');
-                        alert(json.error);
-                    }
-                } catch (error) {
-                    const json = await response.json();
-                    console.error('Error:', error);
-                    alert(json.error);
-                }
-            } else {
-                console.error('No files selected or token missing');
-                alert('未选择文件或缺少token');
-            }
-        }
-
-        function clearFiles() {
-            document.getElementById('file-input').value = '';
-            document.getElementById('image-preview').innerHTML = '';
-        }
-    </script>
 </head>
+
 <body>
-<div class="container">
-    <header>上传图片</header>
-    <form onsubmit="event.preventDefault(); uploadFiles();">
-        <div id="image-preview" class="image-preview"></div>
-        <input type="file" id="file-input" multiple onchange="previewImages()" style="display: none;">
-        <button type="button" onclick="document.getElementById('file-input').click()">选择文件</button>
-        <div class="button-container">
-            <button type="button" onclick="clearFiles()">重选</button>
-            <button type="submit">上传</button>
-        </div>
-    </form>
-    <a href="search-img.html" class="nav-button">搜索图片</a>
-</div>
+    <div class="container">
+        <header>上传图片</header>
+        <p class="tip">支持选择文件或直接粘贴图片(Ctrl+V)</p>
+        <form onsubmit="event.preventDefault(); uploadFiles();">
+            <div id="image-preview" class="image-preview"></div>
+            <input type="file" id="file-input" multiple onchange="previewImages()" style="display: none;">
+            <button type="button" onclick="document.getElementById('file-input').click()">选择文件</button>
+            <div class="button-container">
+                <button type="button" onclick="clearFiles()">重选</button>
+                <button type="submit">上传</button>
+            </div>
+        </form>
+        <a href="search-img.html" class="nav-button">搜索图片</a>
+    </div>
 </body>
+
 </html>
