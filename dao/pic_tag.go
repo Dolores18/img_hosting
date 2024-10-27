@@ -43,17 +43,18 @@ func ImageHasTags(db *gorm.DB, userID uint, imageID uint, tagNames []string) (ma
 
 func GetImagesByTags(db *gorm.DB, userID uint, tagNames []string, enablePaging bool, page, pageSize int) (*models.ImageResult, error) {
 	var result models.ImageResult
-	query := db.Table("images").
-		Select("DISTINCT images.*").
+
+	// 使用 Model 而不是 Table
+	query := db.Model(&models.Image{}).
+		Distinct().
 		Joins("JOIN image_tags ON images.image_id = image_tags.image_id").
 		Joins("JOIN tags ON image_tags.tag_id = tags.tag_id").
-		Where("images.user_id = ?", userID)
+		Where("images.user_id = ?", userID).
+		Preload("Tags") // 现在可以使用 Preload 了
 
 	if len(tagNames) == 1 {
-		// 单标签查询优化
 		query = query.Where("tags.tag_name = ?", tagNames[0])
 	} else {
-		// 多标签交集查询
 		for _, tagName := range tagNames {
 			subQuery := db.Table("image_tags").
 				Select("image_id").
@@ -70,19 +71,20 @@ func GetImagesByTags(db *gorm.DB, userID uint, tagNames []string, enablePaging b
 	}
 	result.Total = int(total)
 
-	// 添加排序
+	// 排序
 	query = query.Order("images.upload_time DESC")
 
-	// 根据enablePaging决定是否使用分页
+	// 分页
 	if enablePaging {
 		query = query.Offset((page - 1) * pageSize).Limit(pageSize)
 	}
 
 	// 执行查询
-	err := query.Find(&result.Images).Error
-	if err != nil {
+	var images []models.Image
+	if err := query.Find(&images).Error; err != nil {
 		return nil, err
 	}
+	result.Images = images
 
 	return &result, nil
 }
@@ -90,7 +92,7 @@ func GetImagesByTags(db *gorm.DB, userID uint, tagNames []string, enablePaging b
 // 创建标签
 func CreateTag(db *gorm.DB, userID uint, tagName string) (uint, error) {
 	tag := models.Tag{
-		UserID: userID,  // 添加用户ID
+		UserID:  userID, // 添加用户ID
 		TagName: tagName,
 	}
 	err := db.Create(&tag).Error

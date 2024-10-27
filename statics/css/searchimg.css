@@ -138,17 +138,24 @@ td:nth-child(8) {
 /* 标签样式 */
 .tag {
     display: inline-block;
-    padding: 2px 8px;
+    padding: 4px 8px;
     margin: 2px;
     background-color: #e0e0e0;
     border-radius: 12px;
     font-size: 12px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .tag:hover {
     background-color: #4CAF50;
     color: white;
+    transform: scale(1.05);
+}
+
+/* 添加激活状态样式 */
+.tag:active {
+    transform: scale(0.95);
 }
 
 /* 修改表格基础样式 */
