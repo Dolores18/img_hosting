@@ -49,6 +49,8 @@ func testUserHasPermissions() {
 
 func main() {
 	testUserHasPermissions()
+	config.LoadConfig() //加载配置
+	addr := fmt.Sprintf(":%d", config.AppConfigInstance.App.Port)
 
 	// 初始化数据库
 	models.GetDB()
@@ -74,12 +76,10 @@ func main() {
 	services.InitValidator()
 	//router.Use(middleware.RequestID())
 
-	config.LoadConfig() //加载配置
-	addr := fmt.Sprintf(":%d", config.AppConfigInstance.App.Port)
-
 	routes.RegisterRoutes(router)
 	log.Info("Starting server on ", addr)
 	if router.Run(addr) != nil {
 		log.Fatal("Failed to start server")
 	}
+
 }

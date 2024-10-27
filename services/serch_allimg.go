@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"img_hosting/dao"
 	"img_hosting/models"
 	"strings"
 	"time"
@@ -18,12 +19,9 @@ type ImageFilter struct {
 }
 
 // ImageResult 用于返回图片查询结果
-type ImageResult struct {
-	Images []models.Image `json:"images"`
-	Total  int            `json:"total"`
-}
+type ImageResult = models.ImageResult // 使用类型别名
 
-func GetImages(userID uint, filter ImageFilter) (*ImageResult, error) {
+func GetImgs(userID uint, filter ImageFilter) (*ImageResult, error) {
 	db := models.GetDB()
 	query := db.Where("user_id = ?", userID)
 
@@ -86,4 +84,30 @@ func GetImages(userID uint, filter ImageFilter) (*ImageResult, error) {
 		Images: images,
 		Total:  int(total),
 	}, nil
+}
+
+// GetImagesByTags 根据标签搜索图片
+func GetImagesByTags(userID uint, tagNames []string) (*ImageResult, error) {
+	db := models.GetDB()
+	return dao.GetImagesByTags(db, userID, tagNames, false, 0, 0)
+}
+func GetAllTag(userID uint) ([]models.Tag, error) {
+	db := models.GetDB()
+	tags, err := dao.GetAllTag(db, userID)
+	if err != nil {
+		return nil, fmt.Errorf("查询标签失败: %w", err)
+	}
+	return tags, nil
+}
+func CreateTag(userID uint, tagName string) (uint, error) {
+	db := models.GetDB()
+	tagID, err := dao.CreateTag(db, userID, tagName)
+	if err != nil {
+		return 0, fmt.Errorf("创建标签失败: %w", err)
+	}
+	return tagID, nil
+}
+func GetTagIDByName(userID uint, tagName string) (uint, error) {
+	db := models.GetDB()
+	return dao.GetTagIDByName(db, userID, tagName)
 }

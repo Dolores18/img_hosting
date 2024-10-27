@@ -17,6 +17,10 @@
         <form onsubmit="event.preventDefault(); uploadFiles();">
             <div id="image-preview" class="image-preview"></div>
             <input type="file" id="file-input" multiple onchange="previewImages()" style="display: none;">
+            <!-- 添加标签输入框 -->
+            <div class="tag-input-container">
+                <input type="text" id="tag-input" placeholder="输入标签，用逗号分隔">
+            </div>
             <button type="button" onclick="document.getElementById('file-input').click()">选择文件</button>
             <div class="button-container">
                 <button type="button" onclick="clearFiles()">重选</button>

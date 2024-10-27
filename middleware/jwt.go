@@ -6,9 +6,10 @@ import (
 	"strings"
 	"time"
 
+	"img_hosting/pkg/logger"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"img_hosting/pkg/logger"
 )
 
 // Define a secret key for signing the JWT tokens
@@ -95,6 +96,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		//提取user_id
 		// 从 token 中提取用户 ID
 		userIDFloat, ok := claims["user_id"].(float64)
+		//println("从token中提取的用户id是", userIDFloat)
 
 		if !ok {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found in token or invalid type"})
@@ -104,7 +106,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// 将 float64 转换为 uint
 		userID := uint(userIDFloat)
-		fmt.Printf("用户id为:%d\n", userID)
+		//fmt.Printf("用户id为:%d\n", userID)
 
 		// 将用户 ID 存储在 Gin 上下文中
 		c.Set("user_id", userID)

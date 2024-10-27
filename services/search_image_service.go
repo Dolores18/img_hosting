@@ -2,37 +2,41 @@ package services
 
 import (
 	"fmt"
-	"img_hosting/dao"
 	"img_hosting/models"
 )
 
-func Getimage(user_id uint, img_name string) ([]map[string]interface{}, error) {
-	conditions := map[string]interface{}{
-		"user_id":    user_id,
-		"image_name": img_name,
-	}
+func Getimage(user_id uint, img_name string) ([]models.Image, error) {
+	var images []models.Image
 	db := models.GetDB()
-	imageDetails, err := dao.FindByFields(db, models.Image{}, conditions, false)
-	if err != nil {
-		return nil, fmt.Errorf("查询图像失败: %w", err)
-	}
-	if len(imageDetails) == 0 {
-		return nil, fmt.Errorf("未找到匹配的图像")
-	}
-	return imageDetails, nil
-}
-func GetAllimage(user_id uint) ([]map[string]interface{}, error) {
 
-	conditions := map[string]interface{}{
-		"user_id": user_id,
-	}
-	db := models.GetDB()
-	imageDetails, err := dao.FindByFields(db, models.Image{}, conditions, false)
-	if err != nil {
+	// 使用 Preload 加载标签，并添加查询条件
+	if err := db.Preload("Tags").
+		Where("user_id = ? AND image_name = ?", user_id, img_name).
+		Find(&images).Error; err != nil {
 		return nil, fmt.Errorf("查询图像失败: %w", err)
 	}
-	if len(imageDetails) == 0 {
+
+	if len(images) == 0 {
 		return nil, fmt.Errorf("未找到匹配的图像")
 	}
-	return imageDetails, nil
+
+	return images, nil
+}
+
+func GetAllimage(user_id uint) ([]models.Image, error) {
+	var images []models.Image
+	db := models.GetDB()
+
+	// 使用 Preload 加载标签，并添加用户ID条件
+	if err := db.Preload("Tags").
+		Where("user_id = ?", user_id).
+		Find(&images).Error; err != nil {
+		return nil, fmt.Errorf("查询图像失败: %w", err)
+	}
+
+	if len(images) == 0 {
+		return nil, fmt.Errorf("未找到匹配的图像")
+	}
+
+	return images, nil
 }

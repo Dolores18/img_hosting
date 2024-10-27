@@ -27,7 +27,10 @@ var AppConfigInstance AppConfig
 func LoadConfig() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("./config/")
+	// 添加多个可能的配置文件路径
+	viper.AddConfigPath("./config/")     // 当前目录下的 config
+	viper.AddConfigPath("../config/")    // 上级目录的 config
+	viper.AddConfigPath("../../config/") // 上上级目录的 config
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("Error reading config file, %s", err)

@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"img_hosting/controllers"
 	"img_hosting/middleware"
+
+	"github.com/gin-gonic/gin"
 )
 
 // RegisterRoutes 注册所有路由
@@ -12,16 +13,18 @@ func RegisterRoutes(router *gin.Engine) {
 	// 公开路由
 	router.POST("/register", controllers.RegisterUser)
 	router.POST("/signin", controllers.Sinngin)
-	router.POST("/searchimg", controllers.SearchImage) // 注意：这里我假设 "sigin" 是有意为之的拼写
-	router.POST("/searchAllimg", controllers.GetAllimage)
 
-	// 需要认证的路由组
-	authorized := router.Group("/")
+	// 修改路由组配置 - 去掉斜杠前缀
+	authorized := router.Group("") // 改为空字符串
 	authorized.Use(middleware.AuthMiddleware())
 	authorized.Use(middleware.PermissionMiddleware())
-
 	{
+		authorized.POST("/searchimg", controllers.SearchImage)
+		authorized.POST("/searchAllimg", controllers.GetAllimage)
 		authorized.POST("/imgupload", controllers.Uploads)
-		// 在这里添加其他需要认证的路由
+		authorized.POST("/searchbytag", controllers.SearchImageByTags)
+		authorized.POST("/createtag", controllers.CreateTag)
+		authorized.POST("/getalltag", controllers.GetAllTag)
+		authorized.POST("/addimagetag", controllers.AddImageTag)
 	}
 }

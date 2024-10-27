@@ -64,7 +64,7 @@ td {
     /*  text-overflow: ellipsis;*/
     /* 使用省略号表示溢出内容 */
     white-space: nowrap;
-    /* 防止文本换行 */
+    /* 防文本换行 */
 }
 
 th {
@@ -85,74 +85,83 @@ tr:nth-child(even) {
 }
 
 /* 设置每列的宽度 */
+/* 图片ID */
 th:nth-child(1),
 td:nth-child(1) {
     width: 5%;
-    /* 缩小图片ID列的宽度 */
-}
-
-/* 图片ID */
-th:nth-child(2),
-td:nth-child(2) {
-    width: 5%;
-}
-
-/* 用户ID */
-th:nth-child(3),
-td:nth-child(3) {
-    width: 35%;
-}
-
-/* 图片URL */
-th:nth-child(4),
-td:nth-child(4) {
-    width: 25%;
-    /* 扩大图片URL列的宽度 */
 }
 
 /* 图片名称 */
-th:nth-child(5),
-td:nth-child(5) {
-    width: 5%;
-}
-
-/* 扩展名 */
-th:nth-child(6),
-td:nth-child(6) {
-    width: 10%;
+th:nth-child(2),
+td:nth-child(2) {
+    width: 15%;
 }
 
 /* 哈希 */
-th:nth-child(7),
-td:nth-child(7) {
+th:nth-child(3),
+td:nth-child(3) {
     width: 15%;
-    /* 扩大哈希列的宽度 */
 }
 
 /* 大小 */
-th:nth-child(8),
-td:nth-child(8) {
+th:nth-child(4),
+td:nth-child(4) {
     width: 10%;
 }
 
 /* 类型 */
-th:nth-child(9),
-td:nth-child(9) {
+th:nth-child(5),
+td:nth-child(5) {
     width: 10%;
 }
 
 /* 上传时间 */
-th:nth-child(10),
-td:nth-child(10) {
-    width: 10%;
-}
-
-td {
-    user-select: auto;
-    /* 允许用户选择文本 */
+th:nth-child(6),
+td:nth-child(6) {
+    width: 15%;
 }
 
 /* 描述 */
+th:nth-child(7),
+td:nth-child(7) {
+    width: 10%;
+}
+
+/* 标签 */
+th:nth-child(8),
+td:nth-child(8) {
+    width: 20%;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* 标签样式 */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px;
+    background-color: #e0e0e0;
+    border-radius: 12px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* 修改表格基础样式 */
+td {
+    user-select: auto;
+    padding: 8px;
+    text-align: left;
+    overflow: visible;
+    /* 改为 visible，让标签可以显示 */
+    white-space: normal;
+    /* 允许文本换行 */
+}
+
 /* 移动端样式 */
 @media (max-width: 900px) {
     .desktop-only {

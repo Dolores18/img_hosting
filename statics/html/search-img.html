@@ -28,61 +28,67 @@
 
         function displayResults(responseData) {
             const resultArea = document.getElementById('resultArea');
+            console.log('Response data:', responseData); // 调试日志
+
             if (responseData.data && Array.isArray(responseData.data) && responseData.data.length > 0) {
                 if (isMobile()) {
-                    // 移动端表格
                     const tableHTML = `
                     <table>
                         <thead>
                             <tr>
                                 <th>图片名称</th>
                                 <th>上传时间</th>
+                                <th>标签</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${responseData.data.map(image => `
+                            ${responseData.data.map(image => {
+                        console.log('处理的图片数据:', image); // 调试日志
+                        return `
                                 <tr>
-                                    <td title="${image.ImageName || ''}"><a href="${image.ImageURL || ''}" target="_blank">${image.ImageName || ''}</a></td>
-                                    <td title="${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}">${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
+                                    <td><a href="${image.image_url || ''}" target="_blank">${image.image_name || ''}</a></td>
+                                    <td>${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
+                                    <td>${Array.isArray(image.Tags) && image.Tags.length > 0 ?
+                                image.Tags.map(tag => `<span class="tag">${tag.TagName}</span>`).join(' ')
+                                : '无标签'}</td>
                                 </tr>
-                            `).join('')}
+                            `}).join('')}
                         </tbody>
                     </table>
                     `;
                     resultArea.innerHTML = tableHTML;
                 } else {
-                    // 桌面端表格
                     const tableHTML = `
                     <table>
                         <thead>
                             <tr>
                                 <th>图片ID</th>
-                                <th>用户ID</th>
-                                <th>图片URL</th>
                                 <th>图片名称</th>
-                                <th>扩展名</th>
                                 <th>哈希</th>
                                 <th>大小</th>
                                 <th>类型</th>
                                 <th>上传时间</th>
                                 <th>描述</th>
+                                <th>标签</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${responseData.data.map(image => `
+                            ${responseData.data.map(image => {
+                        console.log('处理的图片数据:', image); // 调试日志
+                        return `
                                 <tr>
-                                    <td title="${image.ImageID || ''}">${image.ImageID || ''}</td>
-                                    <td title="${image.UserID || ''}">${image.UserID || ''}</td>
-                                    <td title="${image.ImageURL || ''}"><a href="${image.ImageURL || ''}" target="_blank">${image.ImageURL || ''}</a></td>
-                                    <td title="${image.ImageName || ''}">${image.ImageName || ''}</td>
-                                    <td title="${image.Imageextenion || ''}">${image.Imageextenion || ''}</td>
-                                    <td title="${image.HashImage || ''}">${image.HashImage || ''}</td>
-                                    <td title="${image.ImageSize || ''}">${image.ImageSize || ''}</td>
-                                    <td title="${image.ImageType || ''}">${image.ImageType || ''}</td>
-                                    <td title="${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}">${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
-                                    <td title="${image.Description || ''}">${image.Description || ''}</td>
+                                    <td>${image.id || ''}</td>
+                                    <td><a href="${image.image_url || ''}" target="_blank">${image.image_name || ''}</a></td>
+                                    <td>${image.hash_image || ''}</td>
+                                    <td>${image.image_size || ''}</td>
+                                    <td>${image.image_type || ''}</td>
+                                    <td>${image.UploadTime ? new Date(image.UploadTime).toLocaleString() : ''}</td>
+                                    <td>${image.description || ''}</td>
+                                    <td>${Array.isArray(image.Tags) && image.Tags.length > 0 ?
+                                image.Tags.map(tag => `<span class="tag">${tag.TagName}</span>`).join(' ')
+                                : '无标签'}</td>
                                 </tr>
-                            `).join('')}
+                            `}).join('')}
                         </tbody>
                     </table>
                     `;
@@ -95,7 +101,7 @@
 
         async function fetchImages(isAllImages) {
             const token = localStorage.getItem('token');
-            const url = isAllImages ? 'https://imgapi.3049589.xyz/searchAllimg' : 'https://imgapi.3049589.xyz/searchimg';
+            const url = isAllImages ? 'http://127.0.0.1:8080/searchAllimg' : 'http://127.0.0.1:8080/searchimg';
             const payload = isAllImages ? { allimg: true } : { name: document.getElementById('imageName').value };
 
             try {

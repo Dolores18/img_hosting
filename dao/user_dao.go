@@ -3,11 +3,12 @@ package dao
 import (
 	"errors"
 	"fmt"
-	"gorm.io/gorm"
 	"img_hosting/models"
 	"log"
 	"strings"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 func CreateUser(db *gorm.DB, name string, age int, email string, password string) {

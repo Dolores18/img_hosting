@@ -101,3 +101,37 @@ th {
     color: white;
     /* 表头文字颜色 */
 }
+
+.tag-input-container {
+    margin: 15px 0;
+}
+
+#tag-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.tag {
+    background-color: #e0e0e0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tag-remove {
+    margin-left: 6px;
+    cursor: pointer;
+    color: #666;
+}

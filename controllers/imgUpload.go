@@ -86,8 +86,8 @@ func Uploads(c *gin.Context) {
 		//对文件进行哈希处理，文件名改成哈希文件名
 
 		//保存文件到数据库
-		dao.CreateImg(db, userid, imageUrl, image_name, img_extension, hash_img, imgsize, img_extension)
-		c.JSON(200, gin.H{"msg": "图片成功上传", "data": imageUrl})
+		imageid := dao.CreateImg(db, userid, imageUrl, image_name, img_extension, hash_img, imgsize, img_extension)
+		c.JSON(200, gin.H{"msg": "图片成功上传", "data": gin.H{"imageUrl": imageUrl, "imageid": imageid}})
 
 	}
 

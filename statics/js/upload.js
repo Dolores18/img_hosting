@@ -48,6 +48,10 @@ function previewImages() {
 
 async function uploadFiles() {
     const token = localStorage.getItem('token');
+    const tags = document.getElementById('tag-input').value
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag.length > 0);
 
     if (filesArray.length > 0 && token) {
         const formData = new FormData();
@@ -56,7 +60,7 @@ async function uploadFiles() {
         });
 
         try {
-            const response = await fetch('https://imgapi.3049589.xyz/imgupload', {
+            const response = await fetch('http://localhost:8080/imgupload', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -67,7 +71,13 @@ async function uploadFiles() {
             if (response.ok) {
                 const json = await response.json();
                 console.log('Files uploaded successfully');
-                alert(json.msg, json.data);
+
+                // 如果有标签，为图片添加标签
+                if (tags.length > 0) {
+                    await addTagsToImage(json.data.imageid, tags);
+                }
+
+                alert(json.msg);
                 clearFiles();
             } else {
                 const json = await response.json();
@@ -84,8 +94,35 @@ async function uploadFiles() {
     }
 }
 
+async function addTagsToImage(imageId, tags) {
+    const token = localStorage.getItem('token');
+
+    for (const tagname of tags) {
+        try {
+            const response = await fetch('http://localhost:8080/addimagetag', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    imageid: imageId,
+                    tagname: tagname
+                })
+            });
+
+            if (!response.ok) {
+                console.error(`Failed to add tag: ${tagname}`);
+            }
+        } catch (error) {
+            console.error(`Error adding tag ${tagname}:`, error);
+        }
+    }
+}
+
 function clearFiles() {
     document.getElementById('file-input').value = '';
     document.getElementById('image-preview').innerHTML = '';
-    filesArray = []; // 清空文件数组
+    document.getElementById('tag-input').value = ''; // 清空标签输入
+    filesArray = [];
 }
