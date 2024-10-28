@@ -23,20 +23,45 @@ func Getimage(user_id uint, img_name string) ([]models.Image, error) {
 	return images, nil
 }
 
-func GetAllimage(user_id uint) ([]models.Image, error) {
-	var images []models.Image
+func GetAllimage(user_id uint, enablePaging bool, page, pageSize int) (*models.ImageResult, error) {
 	db := models.GetDB()
+	var result models.ImageResult
 
-	// 使用 Preload 加载标签，并添加用户ID条件
-	if err := db.Preload("Tags").
+	// 基础查询
+	query := db.Model(&models.Image{}).
 		Where("user_id = ?", user_id).
-		Find(&images).Error; err != nil {
+		Preload("Tags")
+
+	// 获取总数
+	var total int64
+	if err := query.Count(&total).Error; err != nil {
+		return nil, fmt.Errorf("查询总数失败: %w", err)
+	}
+	result.Total = int(total)
+
+	// 添加排序
+	query = query.Order("upload_time DESC")
+
+	// 如果启用分页，添加分页条件
+	if enablePaging {
+		query = query.Offset((page - 1) * pageSize).Limit(pageSize)
+	}
+
+	// 执行查询
+	var images []models.Image
+	if err := query.Find(&images).Error; err != nil {
 		return nil, fmt.Errorf("查询图像失败: %w", err)
 	}
 
-	if len(images) == 0 {
-		return nil, fmt.Errorf("未找到匹配的图像")
+	// 如果不需要分页，保持原有的返回格式
+	if !enablePaging {
+		return &models.ImageResult{
+			Images: images,
+			Total:  len(images),
+		}, nil
 	}
 
-	return images, nil
+	// 返回带分页的结果
+	result.Images = images
+	return &result, nil
 }

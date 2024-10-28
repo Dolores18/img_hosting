@@ -48,10 +48,19 @@ function previewImages() {
 
 async function uploadFiles() {
     const token = localStorage.getItem('token');
-    const tags = document.getElementById('tag-input').value
-        .split(',')
+    // 获取原始输入并打印
+    const rawInput = document.getElementById('tag-input').value;
+    console.log('原始标签输入:', rawInput);  // 添加日志
+
+    // 处理中英文空格，并分割标签
+    const tags = rawInput
+        .replace(/\u3000/g, ' ')  // 将中文空格替换为英文空格
+        .split(/\s+/)             // 用一个或多个空格分割
         .map(tag => tag.trim())
         .filter(tag => tag.length > 0);
+
+    console.log('处理后的标签数组:', tags);  // 添加日志
+    alert('将添加以下标签：\n' + tags.join('\n')); // 弹窗显示要添加的标签
 
     if (filesArray.length > 0 && token) {
         const formData = new FormData();
@@ -77,7 +86,7 @@ async function uploadFiles() {
                     await addTagsToImage(json.data.imageid, tags);
                 }
 
-                alert(json.msg);
+                alert('上传成功！\n添加的标签：' + tags.join(' ')); // 成功后显示添加的标签
                 clearFiles();
             } else {
                 const json = await response.json();
@@ -94,29 +103,39 @@ async function uploadFiles() {
     }
 }
 
+// 修改标签添加函数
 async function addTagsToImage(imageId, tags) {
     const token = localStorage.getItem('token');
 
-    for (const tagname of tags) {
-        try {
-            const response = await fetch('http://localhost:8080/addimagetag', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    imageid: imageId,
-                    tagname: tagname
-                })
-            });
+    try {
+        const response = await fetch('http://localhost:8080/addimagetag', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                imageid: imageId,
+                tagnames: tags
+            })
+        });
 
-            if (!response.ok) {
-                console.error(`Failed to add tag: ${tagname}`);
-            }
-        } catch (error) {
-            console.error(`Error adding tag ${tagname}:`, error);
+        // 修改这部分错误处理逻辑
+        const data = await response.json();
+
+        if (!response.ok) {
+            // 只有在真正的错误时才提示
+            console.error('Failed to add tags:', data.error);
+            alert('添加标签失败: ' + data.error);
+            return false;
         }
+
+        return true;  // 成功添加标签
+
+    } catch (error) {
+        console.error('Error adding tags:', error);
+        alert('添加标签失败: ' + error.message);
+        return false;
     }
 }
 

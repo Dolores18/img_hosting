@@ -2,19 +2,42 @@ function isMobile() {
     return window.innerWidth <= 768;
 }
 
+// 添加分页状态管理
+const pageState = {
+    currentPage: 1,
+    pageSize: 10,
+    total: 0
+};
+
+// 添加分页控件渲染函数
+function renderPagination() {
+    const totalPages = Math.max(1, Math.ceil(pageState.total / pageState.pageSize));
+    const paginationHTML = `
+        <div class="pagination">
+            <button ${pageState.currentPage === 1 ? 'disabled' : ''} 
+                    onclick="changePage(${pageState.currentPage - 1})">上一页</button>
+            <span>第 ${pageState.currentPage} 页，共 ${totalPages} 页 (共${pageState.total}条记录)</span>
+            <button ${pageState.currentPage === totalPages || totalPages === 0 ? 'disabled' : ''} 
+                    onclick="changePage(${pageState.currentPage + 1})">下一页</button>
+        </div>
+    `;
+    const paginationContainer = document.createElement('div');
+    paginationContainer.innerHTML = paginationHTML;
+
+    // 确保分页控件始终显示
+    const resultArea = document.getElementById('resultArea');
+    resultArea.appendChild(paginationContainer);
+}
+
+// 修改 displayResults 函数
 function displayResults(responseData) {
     const resultArea = document.getElementById('resultArea');
-    console.log('Response data:', responseData); // 调试日志
+    resultArea.innerHTML = ''; // 清空现有内容
 
-    // 处理不同的数据结构
-    let data;
-    if (responseData.data.images) {
-        // 处理带有 total 的格式
-        data = responseData.data.images;
-    } else {
-        // 处理直接返回数组的格式
-        data = responseData.data;
-    }
+    // 更新分页状态
+    pageState.total = responseData.data.total || 0;  // 如果没有 total，默认为 0
+
+    let data = responseData.data.images || responseData.data;
 
     if (data && Array.isArray(data) && data.length > 0) {
         if (isMobile()) {
@@ -87,12 +110,28 @@ function displayResults(responseData) {
     } else {
         resultArea.textContent = '没有找到匹配的图片。';
     }
+
+    // 始终显示分页控件
+    renderPagination();
 }
 
+// 修改 fetchImages 函数
 async function fetchImages(isAllImages) {
+    const searchInput = document.getElementById('imageName').value;
+
+    // 添加搜索长度检查
+    if (!isAllImages && searchInput.length === 0) {
+        alert('搜索内容不能为空！');
+        return;
+    }
+
     const token = localStorage.getItem('token');
     const url = isAllImages ? 'http://localhost:8080/searchAllimg' : 'http://localhost:8080/searchimg';
-    const payload = isAllImages ? { allimg: true } : { name: document.getElementById('imageName').value };
+    const payload = {
+        ...(isAllImages ? { allimg: true } : { name: searchInput }),
+        page: pageState.currentPage,
+        pageSize: pageState.pageSize
+    };
 
     try {
         const response = await fetch(url, {
@@ -116,48 +155,64 @@ async function fetchImages(isAllImages) {
     }
 }
 
-document.getElementById('searchForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    fetchImages(false);
-});
+// 添加页码切换函数
+function changePage(newPage) {
+    pageState.currentPage = newPage;
+    // 重新获取当前查询类型的数据
+    const isAllImages = document.getElementById('imageName').value === '';
+    fetchImages(isAllImages);
+}
 
-document.getElementById('allImagesButton').addEventListener('click', function () {
-    fetchImages(true);
-});
+// 修改事件监听部分
+document.addEventListener('DOMContentLoaded', function () {
+    // 搜索按钮点击事件
+    document.getElementById('searchButton').addEventListener('click', function () {
+        pageState.currentPage = 1;  // 重置分页
+        fetchImages(false);
+    });
 
-// 修改标签点击事件处理
-document.addEventListener('click', async function (e) {
-    if (e.target.classList.contains('tag')) {
-        const tagName = e.target.textContent;
-        const token = localStorage.getItem('token');
+    // 获取所有图片按钮点击事件
+    document.getElementById('allImagesButton').addEventListener('click', function () {
+        pageState.currentPage = 1;  // 重置分页
+        fetchImages(true);
+    });
 
-        try {
-            // 修改为正确的 API 端点
-            const response = await fetch('http://localhost:8080/searchbytag', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ tags: [tagName] })
-            });
+    // 标签点击事件
+    document.addEventListener('click', async function (e) {
+        if (e.target.classList.contains('tag')) {
+            const tagName = e.target.textContent;
+            const token = localStorage.getItem('token');
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            // 重置分页状态
+            pageState.currentPage = 1;
+
+            try {
+                const response = await fetch('http://localhost:8080/searchbytag', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        tags: [tagName],
+                        page: pageState.currentPage,
+                        pageSize: pageState.pageSize
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const responseData = await response.json();
+                console.log('Tag search response:', responseData); // 调试日志
+
+                // 直接使用原始响应数据
+                displayResults(responseData);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultArea').textContent = '搜索过程中发生错误，请稍后再试。';
             }
-
-            const responseData = await response.json();
-            console.log('Tag search response:', responseData); // 调试日志
-
-            // 处理嵌套的数据结构
-            const modifiedData = {
-                data: responseData.data.images || []
-            };
-
-            displayResults(modifiedData);
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('resultArea').textContent = '搜索过程中发生错误，请稍后再试。';
         }
-    }
+    });
 });

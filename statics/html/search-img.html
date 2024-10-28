@@ -11,16 +11,17 @@
 <body>
     <div class="container">
         <h1>图片搜索</h1>
-        <form id="searchForm">
-            <input type="text" id="imageName" placeholder="输入图片名称">
-            <div class="button-group">
-                <button type="submit" id="searchButton">搜索</button>
-                <button type="button" id="allImagesButton">获取所有图片</button>
+        <div class="search-area">
+            <div class="search-container">
+                <input type="text" id="imageName" placeholder="请输入图片名称进行搜索...">
+                <div class="button-group">
+                    <button type="button" id="searchButton" class="search-button">搜索</button>
+                    <button type="button" id="allImagesButton" class="fetch-all-button">获取全部图片</button>
+                </div>
             </div>
-        </form>
+        </div>
         <div id="resultArea"></div>
     </div>
-
     <script src="../js/search_img.js"></script>
 </body>
 

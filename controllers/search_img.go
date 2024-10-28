@@ -67,9 +67,7 @@ func SearchImage(c *gin.Context) {
 
 // 获取上传图片的全部信息
 func GetAllimage(c *gin.Context) {
-	//log := logger.GetLogger()
 	user_id, exists := c.Get("user_id")
-	println("handler获得用户id:", uint64(user_id.(uint))) // 正确格式化输出
 	if !exists {
 		c.JSON(400, gin.H{"error": "没有找到user_id"})
 		return
@@ -84,22 +82,43 @@ func GetAllimage(c *gin.Context) {
 	allimg, exists := jsonData["allimg"]
 	if !exists {
 		c.JSON(400, gin.H{"error": "json中缺少allimg字段"})
-		return // 添加 return
+		return
 	}
-
-	allimgbool, ok := allimg.(bool)
+	_, ok := allimg.(bool)
 	if !ok {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "allimg字段不是bool类型"})
 		return
 	}
 
-	// 只有当 allimg 为 true 时才获取图片
-	if !allimgbool {
-		c.JSON(400, gin.H{"error": "allimg必须为true"})
-		return
+	// 检查是否需要分页
+	var page, pageSize int
+	enablePaging := false
+
+	if pageVal, exists := jsonData["page"]; exists {
+		if pageNum, ok := pageVal.(float64); ok {
+			page = int(pageNum)
+			enablePaging = true
+		}
 	}
 
-	imgdetails, err := services.GetAllimage(user_id.(uint))
+	if pageSizeVal, exists := jsonData["pageSize"]; exists {
+		if pageSizeNum, ok := pageSizeVal.(float64); ok {
+			pageSize = int(pageSizeNum)
+			enablePaging = true
+		}
+	}
+
+	// 如果启用分页但参数无效，使用默认值
+	if enablePaging {
+		if page <= 0 {
+			page = 1
+		}
+		if pageSize <= 0 {
+			pageSize = 10 // 默认每页10条
+		}
+	}
+
+	imgdetails, err := services.GetAllimage(user_id.(uint), enablePaging, page, pageSize)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "没有找到图片"})
 		return
@@ -130,6 +149,7 @@ func SearchImageByTags(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "JSON 中缺少 tags 字段或格式错误"})
 		return
 	}
+	log.Infof("收到的原始 tags 数据: %+v", tags)
 
 	// 转换 tags 为 []string
 	tagsList := make([]string, len(tags))
@@ -138,13 +158,49 @@ func SearchImageByTags(c *gin.Context) {
 			tagsList[i] = tagStr
 		}
 	}
+	// 打印最终的标签列表
+	log.Infof("最终处理的标签列表: %v", tagsList)
 
-	// 使用中间件已验证的 userID
-	imgdetails, err := services.GetImagesByTags(userID.(uint), tagsList)
+	// 检查是否需要分页
+	var page, pageSize int
+	enablePaging := false
+
+	if pageVal, exists := jsonData["page"]; exists {
+		if pageNum, ok := pageVal.(float64); ok {
+			page = int(pageNum)
+			enablePaging = true
+		}
+	}
+
+	if pageSizeVal, exists := jsonData["pageSize"]; exists {
+		if pageSizeNum, ok := pageSizeVal.(float64); ok {
+			pageSize = int(pageSizeNum)
+			enablePaging = true
+		}
+	}
+
+	// 如果启用分页但参数无效，使用默认值
+	if enablePaging {
+		if page <= 0 {
+			page = 1
+		}
+		if pageSize <= 0 {
+			pageSize = 10 // 默认每页10条
+		}
+	}
+
+	// 修改函数调用，添加分页参数
+	imgResult, err := services.GetImagesByTags(userID.(uint), tagsList, enablePaging, page, pageSize)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "搜索图片失败"})
 		return
 	}
 
-	c.JSON(200, gin.H{"data": imgdetails})
+	// 返回结构包含总数和图片列表
+	c.JSON(200, gin.H{
+		"data": gin.H{
+			"total":  imgResult.Total,
+			"images": imgResult.Images,
+		},
+	})
 }

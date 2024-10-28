@@ -9,4 +9,5 @@ database:
 
 
 url:
-  imgurl: "https://imghost.3049589.xyz/uploads/"
+  #imgurl: "https://imghost.3049589.xyz/uploads/"
+  imgurl: "http://localhost:8080/uploads/"

@@ -2,39 +2,60 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     background-color: #f4f4f4;
 }
 
 .container {
-    max-width: 120%;
-    /* 容器宽度为屏幕宽度的 80% */
-    margin: auto;
+    max-width: 98%;
+    margin: 5px auto;
+    padding: 15px;
     background: white;
-    padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
+    text-align: center;
+    margin: 10px 0 15px 0;
     color: #333;
+    font-size: 1.5em;
 }
 
-#searchForm {
-    margin-bottom: 20px;
+.search-area {
+    margin-bottom: 15px;
 }
 
-input[type="text"] {
-    width: 70%;
-    padding: 10px;
-    margin-right: 10px;
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.search-container label {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.search-container input[type="text"] {
+    width: 300px;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 6px 12px;
     background-color: #4CAF50;
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -42,15 +63,18 @@ button:hover {
     background-color: #45a049;
 }
 
-#resultArea {
-    margin-top: 20px;
+#searchForm {
+    margin-bottom: 15px;
 }
 
+#resultArea {
+    margin-top: 15px;
+}
+
+/* 表格样式 */
 table {
     width: 100%;
-    /* 表格宽度为容器的 100% */
     table-layout: fixed;
-    /* 固定表格布局 */
     border-collapse: collapse;
 }
 
@@ -60,11 +84,7 @@ td {
     padding: 8px;
     text-align: left;
     overflow: hidden;
-    /* 隐藏溢出内容 */
-    /*  text-overflow: ellipsis;*/
-    /* 使用省略号表示溢出内容 */
     white-space: nowrap;
-    /* 防文本换行 */
 }
 
 th {
@@ -76,60 +96,52 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-.button-group {
-    margin-bottom: 20px;
-}
-
-.button-group button {
-    margin-right: 10px;
-}
-
-/* 设置每列的宽度 */
-/* 图片ID */
+/* 表格列宽设置 */
 th:nth-child(1),
 td:nth-child(1) {
     width: 5%;
 }
 
-/* 图片名称 */
+/* 图片ID */
 th:nth-child(2),
 td:nth-child(2) {
     width: 15%;
 }
 
-/* 哈希 */
+/* 图片名称 */
 th:nth-child(3),
 td:nth-child(3) {
     width: 15%;
 }
 
-/* 大小 */
+/* 哈希 */
 th:nth-child(4),
 td:nth-child(4) {
     width: 10%;
 }
 
-/* 类型 */
+/* 大小 */
 th:nth-child(5),
 td:nth-child(5) {
     width: 10%;
 }
 
-/* 上传时间 */
+/* 类型 */
 th:nth-child(6),
 td:nth-child(6) {
     width: 15%;
 }
 
-/* 描述 */
+/* 上传时间 */
 th:nth-child(7),
 td:nth-child(7) {
     width: 10%;
 }
 
-/* 标签 */
+/* 描述 */
 th:nth-child(8),
 td:nth-child(8) {
+    /* 标签 */
     width: 20%;
     white-space: normal;
     word-break: break-word;
@@ -153,23 +165,47 @@ td:nth-child(8) {
     transform: scale(1.05);
 }
 
-/* 添加激活状态样式 */
 .tag:active {
     transform: scale(0.95);
 }
 
-/* 修改表格基础样式 */
+/* 表格单元格基础样式 */
 td {
     user-select: auto;
     padding: 8px;
     text-align: left;
     overflow: visible;
-    /* 改为 visible，让标签可以显示 */
     white-space: normal;
-    /* 允许文本换行 */
 }
 
-/* 移动端样式 */
+/* 分页样式 */
+.pagination {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+
+.pagination button {
+    padding: 6px 12px;
+}
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    margin: 0 10px;
+}
+
+/* 响应式布局 */
 @media (max-width: 900px) {
     .desktop-only {
         display: none;
@@ -182,6 +218,41 @@ td {
 
     td {
         word-break: break-all;
+    }
+}
+
+/* 移动端样式 */
+@media (max-width: 768px) {
+    .mobile-only {
+        display: none;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 10px;
+        margin: 5px;
+    }
+
+    .search-container {
+        flex-wrap: wrap;
+    }
+
+    .search-container input[type="text"] {
+        width: 200px;
+    }
+
+    .button-group {
+        flex-wrap: nowrap;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
     }
 }
 
