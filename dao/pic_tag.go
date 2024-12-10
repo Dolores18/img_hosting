@@ -41,16 +41,15 @@ func ImageHasTags(db *gorm.DB, userID uint, imageID uint, tagNames []string) (ma
 	return result, nil
 }
 
-func GetImagesByTags(db *gorm.DB, userID uint, tagNames []string, enablePaging bool, page, pageSize int) (*models.ImageResult, error) {
+func GetImagesByTags(db *gorm.DB, userID uint, tagNames []string, enablePaging bool, page, pageSize int, order string) (*models.ImageResult, error) {
 	var result models.ImageResult
 
-	// 使用 Model 而不是 Table
 	query := db.Model(&models.Image{}).
 		Distinct().
 		Joins("JOIN image_tags ON images.image_id = image_tags.image_id").
 		Joins("JOIN tags ON image_tags.tag_id = tags.tag_id").
 		Where("images.user_id = ?", userID).
-		Preload("Tags") // 现在可以使用 Preload 了
+		Preload("Tags")
 
 	if len(tagNames) == 1 {
 		query = query.Where("tags.tag_name = ?", tagNames[0])
@@ -71,8 +70,13 @@ func GetImagesByTags(db *gorm.DB, userID uint, tagNames []string, enablePaging b
 	}
 	result.Total = int(total)
 
-	// 排序
-	query = query.Order("images.upload_time DESC")
+	// 添加排序
+	if order == "asc" {
+		println("是升序")
+		query = query.Order("images.upload_time ASC")
+	} else {
+		query = query.Order("images.upload_time DESC")
+	}
 
 	// 分页
 	if enablePaging {

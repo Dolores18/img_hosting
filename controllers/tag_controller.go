@@ -41,5 +41,6 @@ func GetAllTag(c *gin.Context) {
 		c.JSON(500, gin.H{"error": ErrGetTags})
 		return
 	}
+	println("tags: %v", tags)
 	c.JSON(200, gin.H{"data": tags})
 }

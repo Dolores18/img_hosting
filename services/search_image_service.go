@@ -23,7 +23,7 @@ func Getimage(user_id uint, img_name string) ([]models.Image, error) {
 	return images, nil
 }
 
-func GetAllimage(user_id uint, enablePaging bool, page, pageSize int) (*models.ImageResult, error) {
+func GetAllimage(user_id uint, enablePaging bool, page, pageSize int, order string) (*models.ImageResult, error) {
 	db := models.GetDB()
 	var result models.ImageResult
 
@@ -40,7 +40,11 @@ func GetAllimage(user_id uint, enablePaging bool, page, pageSize int) (*models.I
 	result.Total = int(total)
 
 	// 添加排序
-	query = query.Order("upload_time DESC")
+	if order == "asc" {
+		query = query.Order("upload_time asc")
+	} else {
+		query = query.Order("upload_time desc")
+	}
 
 	// 如果启用分页，添加分页条件
 	if enablePaging {

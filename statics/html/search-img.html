@@ -11,12 +11,25 @@
 <body>
     <div class="container">
         <h1>图片搜索</h1>
+        <div class="tags-area">
+            <div class="tags-header">
+                <h2>标签列表</h2>
+                <button type="button" id="tagSearchButton" class="tag-search-button">刷新标签</button>
+            </div>
+            <div id="tagsContainer" class="tags-container">
+                <!-- 标签将在这里动态显示 -->
+            </div>
+        </div>
+
         <div class="search-area">
             <div class="search-container">
                 <input type="text" id="imageName" placeholder="请输入图片名称进行搜索...">
                 <div class="button-group">
                     <button type="button" id="searchButton" class="search-button">搜索</button>
                     <button type="button" id="allImagesButton" class="fetch-all-button">获取全部图片</button>
+                    <button type="button" id="sortButton" class="sort-button" onclick="toggleTimeSort()">
+                        切换排序
+                    </button>
                 </div>
             </div>
         </div>

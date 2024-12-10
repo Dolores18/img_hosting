@@ -87,9 +87,9 @@ func GetImgs(userID uint, filter ImageFilter) (*ImageResult, error) {
 }
 
 // GetImagesByTags 根据标签搜索图片
-func GetImagesByTags(userID uint, tagNames []string, enablePaging bool, page, pageSize int) (*ImageResult, error) {
+func GetImagesByTags(userID uint, tagNames []string, enablePaging bool, page, pageSize int, order string) (*ImageResult, error) {
 	db := models.GetDB()
-	return dao.GetImagesByTags(db, userID, tagNames, enablePaging, page, pageSize)
+	return dao.GetImagesByTags(db, userID, tagNames, enablePaging, page, pageSize, order)
 }
 func GetAllTag(userID uint) ([]models.Tag, error) {
 	db := models.GetDB()
