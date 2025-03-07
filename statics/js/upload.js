@@ -69,7 +69,7 @@ async function uploadFiles() {
         });
 
         try {
-            const response = await fetch('http://localhost:8080/imgupload', {
+            const response = await fetch('https://picapi.3049589.xyz/imgupload', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -108,7 +108,7 @@ async function addTagsToImage(imageId, tags) {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:8080/addimagetag', {
+        const response = await fetch('https://picapi.3049589.xyz/addimagetag', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,

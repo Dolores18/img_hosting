@@ -10,4 +10,45 @@ database:
 
 url:
   #imgurl: "https://imghost.3049589.xyz/uploads/"
-  imgurl: "http://localhost:8080/uploads/"
+  imgurl: "https://pic.3049589.xyz/uploads/"
+
+permissions:
+  routes:
+    # 公开路由 - 不需要权限
+    "/register": []
+    "/login": []
+    "/api/verify-token": []
+    "/": []
+    "/statics/*filepath": []
+    
+    # 需要权限的路由
+    "/imgupload": ["upload_img"]
+    "/searchbytag": ["search_img"]
+    "/createtag": ["createtag"]
+    "/getalltag": ["search_img"]
+    "/searchimg": ["search_img"]
+    "/searchAllimg": ["search_img"]
+    "/private-files": ["manage_private_files"]
+    "/private-files/:id": ["manage_private_files"]
+    "/private-files/search": ["manage_private_files"]
+    "/private-files/:id/download": ["manage_private_files"]
+    "/users": ["view_users"]
+    "/users/:id": ["manage_users"]
+    "/users/:id/status": ["manage_user_status"]
+    "/users/:id/roles": ["manage_user_roles"]
+    "/users/profile": []
+
+  # 初始化角色和权限
+  roles:
+    admin:
+      - "upload_img"
+      - "search_img"
+      - "createtag"
+      - "manage_private_files"
+      - "view_users"
+      - "manage_users"
+      - "manage_user_status"
+      - "manage_user_roles"
+    user:
+      - "upload_img"
+      - "search_img"

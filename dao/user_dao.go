@@ -4,131 +4,154 @@ import (
 	"errors"
 	"fmt"
 	"img_hosting/models"
-	"log"
-	"strings"
 	"time"
 
 	"gorm.io/gorm"
 )
 
-func CreateUser(db *gorm.DB, name string, age int, email string, password string) {
-	user := models.UserInfo{Name: name, Age: age, Email: email, Psd: password, CreatedAt: time.Now(), UpdatedAt: time.Now()}
-	err := db.Create(&user).Error
+// CreateUser 创建新用户
+func CreateUser(db *gorm.DB, user *models.UserInfo) error {
+	return db.Create(user).Error
+}
+
+// GetUserByID 通过ID获取用户
+func GetUserByID(db *gorm.DB, userID uint) (*models.UserInfo, error) {
+	var user models.UserInfo
+	err := db.Preload("Roles").First(&user, userID).Error
 	if err != nil {
-		log.Fatalf("failed to create user: %v", err)
-	}
-	log.Printf("User created with ID: %d", user.UserID)
-}
-
-func FindUserByFields(db *gorm.DB, fields map[string]interface{}) (*models.UserInfo, error) {
-	var user models.UserInfo
-	query := db.Model(&models.UserInfo{})
-
-	// 创建一个切片来存储所有的条件
-	var conditions []string
-	var values []interface{}
-
-	// 构建查询条件
-	for field, value := range fields {
-		conditions = append(conditions, field+" = ?")
-		values = append(values, value)
-	}
-
-	// 如果有条件，则应用它们
-	if len(conditions) > 0 {
-		query = query.Where(strings.Join(conditions, " AND "), values...)
-	}
-
-	result := query.First(&user)
-
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return nil, nil // 用户不存在
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("用户不存在")
 		}
-		return nil, result.Error // 其他错误
-	}
-
-	return &user, nil // 返回找到的用户信息
-}
-
-func FindUserByFieldsOr(db *gorm.DB, fields map[string]interface{}, options ...bool) (*models.UserInfo, error) {
-	var user models.UserInfo
-	query := db.Model(&models.UserInfo{})
-
-	// 默认使用"或"查询
-	isOrQuery := true
-	if len(options) > 0 {
-		isOrQuery = options[0]
-	}
-
-	// 使用 scope 函数来构建查询
-	query = query.Scopes(func(db *gorm.DB) *gorm.DB {
-		var conditions []string
-		var values []interface{}
-
-		for field, value := range fields {
-			conditions = append(conditions, field+" = ?")
-			values = append(values, value)
-		}
-
-		if len(conditions) > 0 {
-			if isOrQuery {
-				return db.Where(strings.Join(conditions, " OR "), values...)
-			} else {
-				return db.Where(strings.Join(conditions, " AND "), values...)
-			}
-		}
-		return db
-	})
-
-	result := query.First(&user)
-
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return nil, nil // 用户不存在
-		}
-		return nil, fmt.Errorf("查询数据库时发生错误: %w", result.Error) // 包装错误以提供更多上下文
-	}
-
-	return &user, nil
-}
-
-func FindUserByEmail(db *gorm.DB, email string) (*models.UserInfo, error) {
-	var user models.UserInfo
-	result := db.Where("email = ?", email).First(&user)
-	if result.Error != nil {
-		if result.Error == gorm.ErrRecordNotFound {
-			log.Printf("User with name %s not found", email)
-			return nil, nil
-		}
-		log.Printf("Failed to find user: %v", result.Error)
-		return nil, result.Error
+		return nil, err
 	}
 	return &user, nil
 }
 
-// 更新用户数据
-func UpdateUser(db *gorm.DB, name string, updates map[string]interface{}) error {
-	//执行更新
-	if err := db.Model(&models.UserInfo{}).Where("name = ?", name).Updates(updates).Error; err != nil {
-		return err
+// GetUserByEmail 通过邮箱获取用户
+func GetUserByEmail(db *gorm.DB, email string) (*models.UserInfo, error) {
+	var user models.UserInfo
+	err := db.Where("email = ?", email).First(&user).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("用户不存在")
+		}
+		return nil, err
 	}
+	return &user, nil
+}
+
+// GetUserByName 通过用户名获取用户
+func GetUserByName(db *gorm.DB, name string) (*models.UserInfo, error) {
+	var user models.UserInfo
+	err := db.Where("name = ?", name).First(&user).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("用户不存在")
+		}
+		return nil, err
+	}
+	return &user, nil
+}
+
+// UpdateUser 更新用户信息
+func UpdateUser(db *gorm.DB, user *models.UserInfo) error {
+	return db.Model(user).Updates(map[string]interface{}{
+		"name":          user.Name,
+		"email":         user.Email,
+		"phone":         user.Phone,
+		"status":        user.Status,
+		"last_login_at": user.LastLoginAt,
+		"last_login_ip": user.LastLoginIP,
+	}).Error
+}
+
+// UpdateUserStatus 更新用户状态
+func UpdateUserStatus(db *gorm.DB, userID uint, status string) error {
+	return db.Model(&models.UserInfo{}).
+		Where("user_id = ?", userID).
+		Update("status", status).Error
+}
+
+// DeleteUser 删除用户（软删除）
+func DeleteUser(db *gorm.DB, userID uint) error {
+	return db.Delete(&models.UserInfo{}, userID).Error
+}
+
+// ListUsers 获取用户列表（支持分页和搜索）
+func ListUsers(db *gorm.DB, page, pageSize int, search string) ([]models.UserInfo, int64, error) {
+	var users []models.UserInfo
+	var total int64
+
+	query := db.Model(&models.UserInfo{})
+
+	if search != "" {
+		fmt.Printf("搜索条件: %s\n", search)
+		query = query.Where("name LIKE ? OR email LIKE ?",
+			"%"+search+"%", "%"+search+"%")
+	}
+
+	// 获取总数
+	err := query.Count(&total).Error
+	if err != nil {
+		fmt.Printf("获取总数失败: %v\n", err)
+		return nil, 0, err
+	}
+	fmt.Printf("总记录数: %d\n", total)
+
+	// 简化 Preload，让 GORM 使用默认的关联
+	err = query.Preload("Roles").
+		Offset((page - 1) * pageSize).
+		Limit(pageSize).
+		Find(&users).Error
+
+	if err != nil {
+		fmt.Printf("查询数据失败: %v\n", err)
+		return nil, 0, err
+	}
+
+	fmt.Printf("查询到 %d 条记录\n", len(users))
+	return users, total, err
+}
+
+// AssignRoleToUser 为用户分配角色
+func AssignRoleToUser(db *gorm.DB, userID uint, roleID uint) error {
+	return db.Exec("INSERT INTO user_roles (user_id, role_id) VALUES (?, ?)",
+		userID, roleID).Error
+}
+
+// RemoveRoleFromUser 移除用户的角色
+func RemoveRoleFromUser(db *gorm.DB, userID uint, roleID uint) error {
+	return db.Exec("DELETE FROM user_roles WHERE user_id = ? AND role_id = ?",
+		userID, roleID).Error
+}
+
+// GetUserRoles 获取用户的所有角色
+func GetUserRoles(db *gorm.DB, userID uint) ([]models.Roles, error) {
+	var user models.UserInfo
+	err := db.Preload("Roles").First(&user, userID).Error
+	if err != nil {
+		return nil, err
+	}
+	return user.Roles, nil
+}
+
+// UpdateLoginInfo 更新用户的登录信息
+func UpdateLoginInfo(db *gorm.DB, userID uint, ip string) error {
+	fmt.Printf("更新用户登录信息: userID=%d, ip=%s\n", userID, ip)
+
+	// 使用 time.Now() 替代 NOW()
+	result := db.Model(&models.UserInfo{}).
+		Where("user_id = ?", userID).
+		Updates(map[string]interface{}{
+			"last_login_at": time.Now(), // 使用 time.Now() 而不是 NOW()
+			"last_login_ip": ip,
+		})
+
+	if result.Error != nil {
+		fmt.Printf("更新登录信息失败: %v\n", result.Error)
+		return result.Error
+	}
+
+	fmt.Printf("更新登录信息成功: 影响行数=%d\n", result.RowsAffected)
 	return nil
 }
-
-/*
-updates = map[string]interface{}{
-"name": ”jane"
-"email“ ：”123“
-
-更简单的方法
-    // 解析 JSON 字符串
-    err = json.Unmarshal([]byte(jsonString), &updates)
-    if err != nil {
-        fmt.Println("Error parsing JSON:", err)
-        return
-    }
-
-    // 打印解析后的数据
-    fmt.Println("Parsed JSON:", updates)
-*/

@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"fmt"
+	"img_hosting/config"
+	"img_hosting/pkg/logger"
 	"net/http"
 	"strings"
 	"time"
-
-	"img_hosting/pkg/logger"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -17,28 +17,34 @@ var jwtKey = []byte("my_secret_key")
 
 // Claims defines the structure for JWT claims
 type Claims struct {
-	Username string `json:"username"`
-	UserID   uint   `json:"user_id"`
+	UserID uint `json:"user_id"`
 	jwt.StandardClaims
 }
 
 // GenerateJWT generates a JWT token for a given username
-func GenerateJWT(userid uint) (string, error) {
+func GenerateJWT(userID uint) (string, error) {
+	fmt.Printf("开始生成JWT令牌: userID=%d\n", userID)
+
 	// Set expiration time for the token
-	expirationTime := time.Now().Add(24 * time.Hour)
+	expirationTime := time.Now().Add(30 * 24 * time.Hour)
 	claims := &Claims{
-		UserID: userid,
+		UserID: userID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
 	}
+
 	// Create the token with the specified claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
 	// Sign the token with the secret key
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
+		fmt.Printf("生成JWT令牌失败: %v\n", err)
 		return "", err
 	}
+
+	fmt.Printf("JWT令牌生成成功: token=%s\n", tokenString)
 	return tokenString, nil
 }
 
@@ -46,14 +52,13 @@ func GenerateJWT(userid uint) (string, error) {
 var ExcludedPaths = map[string]bool{
 	"/":                          true,
 	"/statics/html/":             true,
-	"/sigin":                     true,
+	"/signin":                    true,
 	"/login":                     true,
 	"/register":                  true,
 	"/statics/css/":              true,
 	"/statics/":                  true,
 	"/statics/css/style.css":     true,
 	"/statics/imgs/example.jpg ": true,
-	"/imgupload":                 true,
 	"/statics/html/index.html":   true,
 	"/favicon.ico":               true,
 }
@@ -62,66 +67,53 @@ var ExcludedPaths = map[string]bool{
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		log := logger.GetLogger()
-		/*
-				// 获取请求的 IP 地址
-				clientIP := c.ClientIP()
+		path := c.FullPath()
+		fmt.Printf("当前访问路径: %s\n", path)
 
-				// 检查请求路径是否在排除的路径中，或者请求来自本地 IP
-			if _, ok := ExcludedPaths[c.Request.URL.Path]; ok || clientIP == "127.0.0.1" || clientIP == "::1" {
-					c.Next()
-					return
-				}
-		*/
+		// 验证 Authorization header
 		authHeader := c.GetHeader("Authorization")
+		fmt.Printf("Authorization头: %s\n", authHeader)
+
 		if authHeader == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
+			fmt.Println("缺少认证信息")
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "缺少认证信息"})
 			c.Abort()
 			return
 		}
 
-		tokenString := strings.Split(authHeader, " ")[1]
-		token, err := validateToken(tokenString)
+		// 解析 token
+		parts := strings.Split(authHeader, " ")
+		if len(parts) != 2 || parts[0] != "Bearer" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "无效的认证格式"})
+			c.Abort()
+			return
+		}
+
+		claims, err := ParseAndValidateToken(c)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-			c.Abort()
-			return
-		}
-		claims, ok := token.Claims.(jwt.MapClaims)
-		if !ok || !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
-
-			c.Abort()
-			return
-		}
-		//提取user_id
-		// 从 token 中提取用户 ID
-		userIDFloat, ok := claims["user_id"].(float64)
-		//println("从token中提取的用户id是", userIDFloat)
-
-		if !ok {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found in token or invalid type"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "无效的 token"})
 			c.Abort()
 			return
 		}
 
-		// 将 float64 转换为 uint
-		userID := uint(userIDFloat)
-		//fmt.Printf("用户id为:%d\n", userID)
+		// 设置用户信息到上下文
+		c.Set("user_id", claims.UserID)
+		log.WithField("user_id", claims.UserID).Info("用户认证成功")
 
-		// 将用户 ID 存储在 Gin 上下文中
-		c.Set("user_id", userID)
+		// 检查是否是公开路由
+		if permissions, exists := config.AppConfigInstance.Permissions.Routes[path]; exists {
+			fmt.Printf("路由权限检查: path=%s, permissions=%v, exists=%v\n", path, permissions, exists)
+			if len(permissions) == 0 {
+				fmt.Println("公开路由，直接放行")
+			}
+		}
 
-		log.WithField("username", claims["username"]).WithField("user_id", userID).Info("User authenticated with JWT")
 		c.Next()
 	}
 }
 
 func validateToken(tokenString string) (*jwt.Token, error) {
 	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Validate the signing method
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
 		return jwtKey, nil
 	})
 }
@@ -129,25 +121,33 @@ func validateToken(tokenString string) (*jwt.Token, error) {
 // ParseAndValidateToken parses and validates the JWT token from the request header
 func ParseAndValidateToken(c *gin.Context) (*Claims, error) {
 	authHeader := c.GetHeader("Authorization")
+	fmt.Printf("验证令牌 - Authorization头: %s\n", authHeader)
+
 	if authHeader == "" {
 		return nil, fmt.Errorf("authorization header is missing")
 	}
 
 	tokenString := strings.Split(authHeader, " ")[1]
+	fmt.Printf("验证令牌 - 令牌字符串: %s\n", tokenString)
+
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return jwtKey, nil
 	})
+
 	if err != nil {
+		fmt.Printf("令牌解析失败: %v\n", err)
 		return nil, fmt.Errorf("invalid token")
 	}
 
 	claims, ok := token.Claims.(*Claims)
 	if !ok || !token.Valid {
+		fmt.Printf("令牌声明无效: ok=%v, valid=%v\n", ok, token.Valid)
 		return nil, fmt.Errorf("invalid token claims")
 	}
 
+	fmt.Printf("令牌验证成功: userID=%d\n", claims.UserID)
 	return claims, nil
 }

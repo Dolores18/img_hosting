@@ -20,6 +20,11 @@ type AppConfig struct {
 	Url struct {
 		Imgurl string
 	}
+
+	Permissions struct {
+		Routes map[string][]string `mapstructure:"routes"`
+		Roles  map[string][]string `mapstructure:"roles"`
+	} `mapstructure:"permissions"`
 }
 
 var AppConfigInstance AppConfig

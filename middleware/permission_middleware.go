@@ -5,72 +5,95 @@ import (
 	"net/http"
 	"strings"
 
+	"img_hosting/config"
+
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
 // 定义路由到权限的映射
-var routePermissions = map[string][]string{
-	"/imgupload":    {"upload_img"},
-	"/user_manage":  {"usermanage"},
-	"/admin_panel":  {"admin", "view_panel"},
-	"/searchbytag":  {"search_img"}, // 添加搜索图片的权限要求
-	"/createtag":    {"createtag"},  // 添加创建标签的权限要求
-	"/getalltag":    {"search_img"}, // 添加获取所有标签的权限要求
-	"/searchimg":    {"search_img"}, // 添加搜索图片的权限要求
-	"/searchAllimg": {"search_img"}, // 改为使用 search_img 权限
-}
+var routePermissions = config.AppConfigInstance.Permissions.Routes
 
 // PermissionMiddleware 创建一个检查用户权限的中间件
 func PermissionMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 添加路径调试信息
 		fullPath := c.FullPath()
-		println("请求路径:", fullPath)
+		fmt.Printf("权限中间件 - 当前路径: %s\n", fullPath)
 
-		// 1. 从上下文中获取用户ID
+		// 检查是否是公开路由
+		if permissions, exists := config.AppConfigInstance.Permissions.Routes[fullPath]; exists {
+			fmt.Printf("权限检查: path=%s, permissions=%v, exists=%v\n", fullPath, permissions, exists)
+			if len(permissions) == 0 {
+				fmt.Println("公开路由，无需权限检查")
+				c.Next()
+				return
+			}
+		}
+
+		// 获取用户ID
 		userID, exists := c.Get("user_id")
+		fmt.Printf("用户ID检查: userID=%v, exists=%v\n", userID, exists)
 		if !exists {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "未认证的用户"})
 			c.Abort()
 			return
 		}
-		// 修改用户ID的输出格式
-		println("中间件获取的用户id是:", uint64(userID.(uint)))
 
-		// 2. 获取当前路由所需的权限
+		// 获取所需权限
 		requiredPermissions := getRequiredPermissions(fullPath)
-		// 修改权限数组的输出格式
-		println("需要的权限:", strings.Join(requiredPermissions, ", "))
+		fmt.Printf("所需权限: %v\n", requiredPermissions)
+		if len(requiredPermissions) == 0 {
+			c.Next()
+			return
+		}
 
-		// 3. 检查用户权限
+		// 检查用户权限
 		permissions, err := dao.UserHasPermissions(userID.(uint), requiredPermissions)
+		fmt.Printf("用户权限检查结果: permissions=%v, err=%v\n", permissions, err)
 		if err != nil {
-			println("权限检查错误:", err.Error())
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check permissions"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "权限检查失败"})
 			c.Abort()
 			return
 		}
-		// 添加权限检查结果的详细输出
-		println("用户权限检查结果:")
-		for perm, has := range permissions {
-			println(perm, ":", has)
-		}
 
-		// 4. 验证是否拥有所有必需的权限
+		// 验证权限
 		for _, perm := range requiredPermissions {
 			if !permissions[perm] {
-				c.JSON(http.StatusForbidden, gin.H{"error": "Permission denied"})
+				c.JSON(http.StatusForbidden, gin.H{
+					"error":               "权限不足",
+					"required_permission": perm,
+				})
 				c.Abort()
 				return
 			}
 		}
-		println("中间件检查权限完毕")
+
 		c.Next()
-		println("中间件执行完毕")
 	}
 }
 
 // getRequiredPermissions 根据路由路径获取所需权限
 func getRequiredPermissions(path string) []string {
+	// 处理带参数的路径
+	if strings.Contains(path, "/users/") {
+		if strings.HasSuffix(path, "/status") {
+			return routePermissions["/users/:id/status"]
+		}
+		if strings.HasSuffix(path, "/roles") {
+			return routePermissions["/users/:id/roles"]
+		}
+		if strings.Count(path, "/") == 2 {
+			return routePermissions["/users/:id"]
+		}
+	}
+
+	if strings.Contains(path, "/private-files/") {
+		if strings.HasSuffix(path, "/download") {
+			return routePermissions["/private-files/:id/download"]
+		}
+		return routePermissions["/private-files/:id"]
+	}
+
 	return routePermissions[path]
 }

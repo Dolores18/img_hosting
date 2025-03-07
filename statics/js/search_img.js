@@ -60,7 +60,7 @@ async function searchByTag(tagName) {
     }
 
     try {
-        const response = await fetch('http://localhost:8080/searchbytag', {
+        const response = await fetch('https://picapi.3049589.xyz/searchbytag', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ async function fetchImages(isAllImages) {
     }
 
     const token = localStorage.getItem('token');
-    const url = isAllImages ? 'http://localhost:8080/searchAllimg' : 'http://localhost:8080/searchimg';
+    const url = isAllImages ? 'https://picapi.3049589.xyz/searchAllimg' : 'https://picapi.3049589.xyz/searchimg';
     const payload = {
         ...(isAllImages ? { allimg: true } : { name: searchInput }),
         page: pageState.currentPage,
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pageState.currentPage = 1;
 
             try {
-                const response = await fetch('http://localhost:8080/searchbytag', {
+                const response = await fetch('https://picapi.3049589.xyz/searchbytag', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
 async function getAllTags() {
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch('http://localhost:8080/getalltag', {
+        const response = await fetch('https://picapi.3049589.xyz/getalltag', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
