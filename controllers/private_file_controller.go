@@ -210,3 +210,44 @@ func (pfc *PrivateFileController) UpdateFile(c *gin.Context) {
 		"file":    updatedFile,
 	})
 }
+
+// BatchUpload 批量上传私人文件
+func (pfc *PrivateFileController) BatchUpload(c *gin.Context) {
+	userID := c.GetUint("user_id")
+	form, _ := c.MultipartForm()
+	files := form.File["files[]"]
+
+	isEncrypted := c.PostForm("is_encrypted") == "true"
+	password := c.PostForm("password")
+
+	if isEncrypted && password == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "加密文件必须提供密码"})
+		return
+	}
+
+	results := make([]map[string]interface{}, 0)
+
+	for _, file := range files {
+		result := map[string]interface{}{
+			"file_name": file.Filename,
+			"success":   false,
+		}
+
+		privateFile, err := services.UploadPrivateFile(file, userID, isEncrypted, password)
+		if err != nil {
+			result["error"] = err.Error()
+		} else {
+			result["success"] = true
+			result["file"] = privateFile
+		}
+
+		results = append(results, result)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":       "批量上传完成",
+		"results":       results,
+		"total":         len(files),
+		"success_count": len(files) - len(results),
+	})
+}

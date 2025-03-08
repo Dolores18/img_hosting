@@ -120,3 +120,54 @@ func (ic *ImageController) DeleteImage(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "图片已删除"})
 }
+
+// BatchUploadImages 批量上传图片
+func (ic *ImageController) BatchUploadImages(c *gin.Context) {
+	userID := c.GetUint("user_id")
+
+	// 获取表单中的多个文件
+	form, err := c.MultipartForm()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "无法解析表单数据"})
+		return
+	}
+
+	files := form.File["files[]"]
+	if len(files) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "请选择要上传的图片"})
+		return
+	}
+
+	// 获取描述信息
+	description := c.PostForm("description")
+
+	results := make([]map[string]interface{}, 0)
+	successCount := 0
+
+	for _, file := range files {
+		result := map[string]interface{}{
+			"file_name": file.Filename,
+			"success":   false,
+		}
+
+		// 处理上传
+		imageID, imageURL, err := services.UploadImage(userID, file, description)
+		if err != nil {
+			result["error"] = err.Error()
+		} else {
+			result["success"] = true
+			result["image_id"] = imageID
+			result["image_url"] = imageURL
+			successCount++
+		}
+
+		results = append(results, result)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":       "批量上传完成",
+		"results":       results,
+		"total":         len(files),
+		"success_count": successCount,
+	})
+}

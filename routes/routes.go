@@ -21,6 +21,7 @@ func SetupRouter() *gin.Engine {
 	privateFileController := &controllers.PrivateFileController{}
 	tokenController := &controllers.TokenController{} // 取消注释，启用令牌控制器
 	tokenVerifyController := controllers.NewTokenVerifyController()
+	permController := controllers.NewPermissionController()
 
 	fmt.Println("控制器初始化完成")
 
@@ -50,10 +51,14 @@ func SetupRouter() *gin.Engine {
 	{
 		fmt.Println("注册图片上传路由: /images/upload")
 		imageGroup.POST("/upload", imageController.UploadImage)
+		imageGroup.POST("/batch-upload", imageController.BatchUploadImages)
 		imageGroup.GET("", imageController.ListImages)
 		imageGroup.GET("/search", imageController.SearchImages)
 		imageGroup.GET("/:id", imageController.GetImage)
 		imageGroup.DELETE("/:id", imageController.DeleteImage)
+
+		// 添加调试日志
+		fmt.Println("注册图片批量上传路由: POST /images/batch-upload")
 	}
 
 	// 标签相关路由
@@ -68,7 +73,7 @@ func SetupRouter() *gin.Engine {
 
 	// 用户相关路由组
 	userGroup := r.Group("/users")
-	userGroup.Use(middleware.AuthMiddleware())
+	userGroup.Use(middleware.AuthMiddleware(), middleware.PermissionMiddleware())
 	{
 		userGroup.GET("/profile", userController.GetProfile)
 		userGroup.PUT("/profile", userController.UpdateProfile)
@@ -84,6 +89,7 @@ func SetupRouter() *gin.Engine {
 	privateFileGroup.Use(middleware.AuthMiddleware())
 	{
 		privateFileGroup.POST("/upload", privateFileController.UploadFile)
+		privateFileGroup.POST("/batch-upload", privateFileController.BatchUpload)
 		privateFileGroup.GET("", privateFileController.ListFiles)
 		privateFileGroup.GET("/:id", privateFileController.GetFile)
 		privateFileGroup.DELETE("/:id", privateFileController.DeleteFile)
@@ -91,6 +97,23 @@ func SetupRouter() *gin.Engine {
 
 		// 添加调试日志
 		fmt.Println("注册私有文件更新路由: PUT /private-files/:id")
+		fmt.Println("注册私有文件批量上传路由: POST /private-files/batch-upload")
+	}
+
+	// 权限管理路由
+	permGroup := r.Group("/permissions")
+	permGroup.Use(middleware.AuthMiddleware())
+	permGroup.Use(middleware.PermissionMiddleware())
+	{
+		permGroup.GET("/all", permController.GetAllPermissions)
+		permGroup.GET("/roles", permController.GetAllRoles)
+		permGroup.GET("/roles/:role", permController.GetRolePermissions)
+		permGroup.PUT("/roles/:role", permController.UpdateRolePermissions)
+		permGroup.POST("/create", permController.CreatePermission)
+		permGroup.POST("/roles/create", permController.CreateRole)
+		permGroup.POST("/sync", permController.SyncConfigPermissions)
+		permGroup.GET("/users/:id/permissions", permController.GetUserPermissions)
+		permGroup.GET("/users/current/permissions", permController.GetCurrentUserPermissions)
 	}
 
 	fmt.Println("路由注册完成")

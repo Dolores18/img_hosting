@@ -37,6 +37,16 @@ permissions:
     "/users/:id/status": ["manage_user_status"]
     "/users/:id/roles": ["manage_user_roles"]
     "/users/profile": []
+    
+    # 权限管理路由
+    "/permissions/all": ["manage_permissions"]
+    "/permissions/roles": ["manage_permissions"]
+    "/permissions/roles/:role": ["manage_permissions"]
+    "/permissions/create": ["manage_permissions"]
+    "/permissions/roles/create": ["manage_permissions"]
+    "/permissions/sync": ["manage_permissions"]
+    "/permissions/users/:id/permissions": ["manage_permissions"]
+    "/permissions/users/current/permissions": []  # 当前用户可以查看自己的权限，不需要特殊权限
 
   # 初始化角色和权限
   roles:
@@ -49,6 +59,9 @@ permissions:
       - "manage_users"
       - "manage_user_status"
       - "manage_user_roles"
+      - "manage_permissions"
     user:
       - "upload_img"
       - "search_img"
+      - "view_users"
+      - "manage_user_roles"

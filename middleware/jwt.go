@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"fmt"
-	"img_hosting/config"
 	"img_hosting/pkg/logger"
 	"net/http"
 	"strings"
@@ -99,14 +98,6 @@ func AuthMiddleware() gin.HandlerFunc {
 		// 设置用户信息到上下文
 		c.Set("user_id", claims.UserID)
 		log.WithField("user_id", claims.UserID).Info("用户认证成功")
-
-		// 检查是否是公开路由
-		if permissions, exists := config.AppConfigInstance.Permissions.Routes[path]; exists {
-			fmt.Printf("路由权限检查: path=%s, permissions=%v, exists=%v\n", path, permissions, exists)
-			if len(permissions) == 0 {
-				fmt.Println("公开路由，直接放行")
-			}
-		}
 
 		c.Next()
 	}

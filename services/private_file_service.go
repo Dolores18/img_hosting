@@ -233,6 +233,7 @@ func UpdatePrivateFileInfo(fileID, userID uint, fileName string, isEncrypted boo
 			}
 		}
 	}
+	
 
 	fmt.Println("【更新文件】文件存在:", file.StoragePath)
 
