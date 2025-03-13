@@ -34,16 +34,20 @@ var (
 	cacheExpiration = 10 * time.Minute
 )
 
-// VerifyToken 验证token并返回用户权限
-// @Summary 验证token
-// @Description 用于Nginx回源验证token的有效性和权限
-// @Accept  json
+// VerifyToken godoc
+// @Summary 验证Token
+// @Description 验证token并返回用户权限信息
+// @Tags 认证
+// @Accept json
 // @Produce json
-// @Param   token    query     string  true  "访问Token"
-// @Param   path     query     string  true  "请求的文件路径"
-// @Success 200 {object} gin.H
-// @Failure 401 {object} gin.H
-// @Router  /api/verify-token [get]
+// @Param token query string false "访问Token"
+// @Param Authorization header string false "Bearer Token"
+// @Param X-Token header string false "Token"
+// @Param path query string true "请求的文件路径"
+// @Success 200 {object} models.TokenVerifyResponse
+// @Failure 401 {object} models.Response
+// @Failure 403 {object} models.Response
+// @Router /api/verify-token [get]
 func (tc *TokenVerifyController) VerifyToken(c *gin.Context) {
 	// 从查询参数获取token
 	token := c.Query("token")

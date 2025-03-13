@@ -10,6 +10,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// LoginRequest 登录请求结构
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Psd      string `json:"psd"`
+}
+
+// AuthController 认证控制器
 type AuthController struct {
 	authService *services.AuthService
 }
@@ -20,14 +28,20 @@ func NewAuthController() *AuthController {
 	}
 }
 
-// Login 处理登录请求
+// Login godoc
+// @Summary 用户登录
+// @Description 处理用户登录请求，返回JWT令牌
+// @Tags 认证
+// @Accept json
+// @Produce json
+// @Param request body LoginRequest true "登录请求"
+// @Success 200 {object} models.Response{data=models.LoginResponse}
+// @Failure 400 {object} models.Response "无效的请求数据"
+// @Failure 401 {object} models.Response "认证失败"
+// @Router /auth/login [post]
 func (ac *AuthController) Login(c *gin.Context) {
 	fmt.Println("开始处理登录请求")
-	var loginReq struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-		Psd      string `json:"psd"`
-	}
+	var loginReq LoginRequest
 
 	if err := c.ShouldBindJSON(&loginReq); err != nil {
 		fmt.Printf("请求数据绑定失败: %v\n", err)
@@ -73,7 +87,16 @@ func (ac *AuthController) Login(c *gin.Context) {
 	})
 }
 
-// Register 处理注册请求
+// Register godoc
+// @Summary 用户注册
+// @Description 处理新用户注册请求
+// @Tags 认证
+// @Accept json
+// @Produce json
+// @Param request body models.UserInput true "注册信息"
+// @Success 201 {object} models.Response{data=models.RegisterResponse}
+// @Failure 400 {object} models.Response "注册失败"
+// @Router /auth/register [post]
 func (ac *AuthController) Register(c *gin.Context) {
 	fmt.Println("开始处理注册请求")
 	var input models.UserInput

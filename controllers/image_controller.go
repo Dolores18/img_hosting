@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"img_hosting/models"
 	"img_hosting/services"
 	"net/http"
 	"strconv"
@@ -16,7 +17,19 @@ func NewImageController() *ImageController {
 	return &ImageController{}
 }
 
-// UploadImage 处理图片上传
+// UploadImage godoc
+// @Summary 上传单个图片
+// @Description 上传单个图片文件
+// @Tags 图片管理
+// @Accept multipart/form-data
+// @Produce json
+// @Param file formData file true "图片文件"
+// @Param description formData string false "图片描述"
+// @Security BearerAuth
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 401 {object} models.Response
+// @Router /images/upload [post]
 func (ic *ImageController) UploadImage(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -37,16 +50,22 @@ func (ic *ImageController) UploadImage(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "图片上传成功",
-		"data": gin.H{
-			"image_id":  imageID,
-			"image_url": imageURL,
-		},
+	c.JSON(http.StatusOK, models.ImageUploadResponse{
+		ImageID:  imageID,
+		ImageURL: imageURL,
 	})
 }
 
-// GetImage 获取图片详情
+// GetImage godoc
+// @Summary 获取图片详情
+// @Description 获取指定图片的详细信息
+// @Tags 图片管理
+// @Produce json
+// @Param id path int true "图片ID"
+// @Security BearerAuth
+// @Success 200 {object} models.Response{data=models.Image}
+// @Failure 404 {object} models.Response
+// @Router /images/{id} [get]
 func (ic *ImageController) GetImage(c *gin.Context) {
 	imageID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -63,7 +82,16 @@ func (ic *ImageController) GetImage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"image": image})
 }
 
-// ListImages 获取用户图片列表
+// ListImages godoc
+// @Summary 获取图片列表
+// @Description 获取用户的图片列表，支持分页
+// @Tags 图片管理
+// @Produce json
+// @Param page query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(10)
+// @Security BearerAuth
+// @Success 200 {object} models.Response{data=models.ImageListResponse}
+// @Router /images [get]
 func (ic *ImageController) ListImages(c *gin.Context) {
 	userID := c.GetUint("user_id")
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -83,7 +111,17 @@ func (ic *ImageController) ListImages(c *gin.Context) {
 	})
 }
 
-// SearchImages 搜索图片
+// SearchImages godoc
+// @Summary 搜索图片
+// @Description 根据关键词搜索图片
+// @Tags 图片管理
+// @Produce json
+// @Param keyword query string true "搜索关键词"
+// @Param page query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(10)
+// @Security BearerAuth
+// @Success 200 {object} models.Response{data=models.ImageListResponse}
+// @Router /images/search [get]
 func (ic *ImageController) SearchImages(c *gin.Context) {
 	userID := c.GetUint("user_id")
 	keyword := c.Query("keyword")
@@ -104,7 +142,16 @@ func (ic *ImageController) SearchImages(c *gin.Context) {
 	})
 }
 
-// DeleteImage 删除图片
+// DeleteImage godoc
+// @Summary 删除图片
+// @Description 删除指定的图片
+// @Tags 图片管理
+// @Produce json
+// @Param id path int true "图片ID"
+// @Security BearerAuth
+// @Success 200 {object} models.Response
+// @Failure 400,404 {object} models.Response
+// @Router /images/{id} [delete]
 func (ic *ImageController) DeleteImage(c *gin.Context) {
 	userID := c.GetUint("user_id")
 	imageID, err := strconv.ParseUint(c.Param("id"), 10, 32)
@@ -121,7 +168,18 @@ func (ic *ImageController) DeleteImage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "图片已删除"})
 }
 
-// BatchUploadImages 批量上传图片
+// BatchUploadImages godoc
+// @Summary 批量上传图片
+// @Description 同时上传多个图片文件
+// @Tags 图片管理
+// @Accept multipart/form-data
+// @Produce json
+// @Param files[] formData file true "图片文件数组"
+// @Param description formData string false "图片描述"
+// @Security BearerAuth
+// @Success 200 {object} models.BatchUploadResponse
+// @Failure 400 {object} models.Response
+// @Router /images/batch-upload [post]
 func (ic *ImageController) BatchUploadImages(c *gin.Context) {
 	userID := c.GetUint("user_id")
 
@@ -141,33 +199,33 @@ func (ic *ImageController) BatchUploadImages(c *gin.Context) {
 	// 获取描述信息
 	description := c.PostForm("description")
 
-	results := make([]map[string]interface{}, 0)
+	results := make([]models.ImageUploadResponse, 0)
 	successCount := 0
 
 	for _, file := range files {
-		result := map[string]interface{}{
-			"file_name": file.Filename,
-			"success":   false,
+		result := models.ImageUploadResponse{
+			ImageID:  0,
+			ImageURL: "",
 		}
 
 		// 处理上传
 		imageID, imageURL, err := services.UploadImage(userID, file, description)
 		if err != nil {
-			result["error"] = err.Error()
+			result.ImageID = 0
+			result.ImageURL = err.Error()
 		} else {
-			result["success"] = true
-			result["image_id"] = imageID
-			result["image_url"] = imageURL
+			result.ImageID = imageID
+			result.ImageURL = imageURL
 			successCount++
 		}
 
 		results = append(results, result)
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message":       "批量上传完成",
-		"results":       results,
-		"total":         len(files),
-		"success_count": successCount,
+	c.JSON(http.StatusOK, models.BatchUploadResponse{
+		Message:      "批量上传完成",
+		Results:      results,
+		Total:        len(files),
+		SuccessCount: successCount,
 	})
 }

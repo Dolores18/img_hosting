@@ -9,14 +9,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// AddImageTagRequest 添加标签请求
+type AddImageTagRequest struct {
+	ImageID  uint     `json:"imageid"`
+	TagNames []string `json:"tagnames"`
+}
+
+// AddImageTag godoc
+// @Summary 为图片添加多个标签
+// @Description 为指定图片添加多个标签
+// @Tags 标签管理
+// @Accept json
+// @Produce json
+// @Param request body AddImageTagRequest true "添加标签请求"
+// @Security BearerAuth
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response "请求数据无效"
+// @Failure 500 {object} models.Response "服务器内部错误"
+// @Router /images/tags [post]
 func AddImageTag(c *gin.Context) {
 	log := logger.GetLogger()
 	log.Info("开始处理添加标签请求")
 
-	var req struct {
-		ImageID  uint     `json:"imageid"`
-		TagNames []string `json:"tagnames"`
-	}
+	var req AddImageTagRequest
 
 	// 直接使用 ShouldBindJSON
 	if err := c.ShouldBindJSON(&req); err != nil {

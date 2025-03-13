@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"img_hosting/models"
 	"img_hosting/services"
 	"net/http"
 	"strconv"
@@ -9,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UserController 用户控制器
 type UserController struct {
 	userService *services.UserService
 }
@@ -19,7 +21,15 @@ func NewUserController() *UserController {
 	}
 }
 
-// GetProfile 获取用户信息
+// GetProfile godoc
+// @Summary 获取用户个人信息
+// @Description 获取当前登录用户的详细信息
+// @Tags 用户管理
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} models.Response{data=models.UserInfo}
+// @Failure 401 {object} models.Response
+// @Router /users/profile [get]
 func (uc *UserController) GetProfile(c *gin.Context) {
 	// 从 JWT 中获取用户 ID
 	userID, exists := c.Get("user_id")
@@ -49,7 +59,25 @@ func (uc *UserController) GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
-// UpdateProfile 更新用户信息
+// UpdateProfileRequest 更新用户信息请求
+type UpdateProfileRequest struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password,omitempty"`
+	Age      int    `json:"age"`
+}
+
+// UpdateProfile godoc
+// @Summary 更新用户信息
+// @Description 更新当前登录用户的个人信息
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param request body UpdateProfileRequest true "用户信息更新请求"
+// @Security BearerAuth
+// @Success 200 {object} models.Response
+// @Failure 400,401 {object} models.Response
+// @Router /users/profile [put]
 func (uc *UserController) UpdateProfile(c *gin.Context) {
 	userID := c.GetUint("user_id")
 	var updates map[string]interface{}
@@ -67,7 +95,26 @@ func (uc *UserController) UpdateProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "用户信息更新成功"})
 }
 
-// ListUsers 获取用户列表
+// ListUsersResponse 用户列表响应
+type ListUsersResponse struct {
+	Total    int64             `json:"total"`
+	Page     int               `json:"page"`
+	PageSize int               `json:"page_size"`
+	Users    []models.UserInfo `json:"users"`
+}
+
+// ListUsers godoc
+// @Summary 获取用户列表
+// @Description 获取系统中的用户列表，支持分页和搜索
+// @Tags 用户管理
+// @Produce json
+// @Param page query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(10)
+// @Param search query string false "搜索关键词"
+// @Security BearerAuth
+// @Success 200 {object} ListUsersResponse
+// @Failure 401,403 {object} models.Response
+// @Router /users [get]
 func (uc *UserController) ListUsers(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
@@ -87,7 +134,16 @@ func (uc *UserController) ListUsers(c *gin.Context) {
 	})
 }
 
-// DeleteUser 删除用户
+// DeleteUser godoc
+// @Summary 删除用户
+// @Description 删除指定的用户
+// @Tags 用户管理
+// @Produce json
+// @Param id path int true "用户ID"
+// @Security BearerAuth
+// @Success 200 {object} models.Response
+// @Failure 400,401,403 {object} models.Response
+// @Router /users/{id} [delete]
 func (uc *UserController) DeleteUser(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -103,7 +159,18 @@ func (uc *UserController) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "用户已删除"})
 }
 
-// UpdateStatus 更新用户状态
+// UpdateStatus godoc
+// @Summary 更新用户状态
+// @Description 更新指定用户的状态（激活/禁用）
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param id path int true "用户ID"
+// @Param request body models.StatusUpdateRequest true "状态更新请求"
+// @Security BearerAuth
+// @Success 200 {object} models.Response
+// @Failure 400,401,403 {object} models.Response
+// @Router /users/{id}/status [put]
 func (uc *UserController) UpdateStatus(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -128,7 +195,18 @@ func (uc *UserController) UpdateStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "用户状态已更新"})
 }
 
-// ManageRoles 管理用户角色
+// ManageRoles godoc
+// @Summary 管理用户角色
+// @Description 为指定用户分配角色
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param id path int true "用户ID"
+// @Param request body models.RoleAssignRequest true "角色分配请求"
+// @Security BearerAuth
+// @Success 200 {object} models.Response
+// @Failure 400,401,403 {object} models.Response
+// @Router /users/{id}/roles [post]
 func (uc *UserController) ManageRoles(c *gin.Context) {
 	fmt.Println("开始处理管理角色请求")
 
@@ -168,7 +246,16 @@ func (uc *UserController) ManageRoles(c *gin.Context) {
 	})
 }
 
-// GetRoles 获取用户角色
+// GetRoles godoc
+// @Summary 获取用户角色
+// @Description 获取指定用户的所有角色
+// @Tags 用户管理
+// @Produce json
+// @Param id path int true "用户ID"
+// @Security BearerAuth
+// @Success 200 {object} models.Response{data=[]string}
+// @Failure 400,401,403 {object} models.Response
+// @Router /users/{id}/roles [get]
 func (uc *UserController) GetRoles(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {

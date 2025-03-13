@@ -3,13 +3,33 @@ package routes
 import (
 	"fmt"
 	"img_hosting/controllers"
+	"img_hosting/docs"
 	"img_hosting/middleware"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title 图片托管系统 API
+// @version 1.0
+// @description 这是一个图片托管系统的API文档
+// @host localhost:8080
+// @BasePath /
+// @schemes http https
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+
+	// 初始化Swagger文档
+	docs.SwaggerInfo.Title = "图片托管系统 API"
+	docs.SwaggerInfo.Description = "这是一个图片托管系统的API文档"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
+	// 添加Swagger UI路由
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	fmt.Println("开始注册路由...")
 

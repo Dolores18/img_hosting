@@ -1,0 +1,1702 @@
+definitions:
+  controllers.AddImageTagRequest:
+    properties:
+      imageid:
+        type: integer
+      tagnames:
+        items:
+          type: string
+        type: array
+    type: object
+  controllers.AddTagRequest:
+    properties:
+      tag_id:
+        type: integer
+    required:
+    - tag_id
+    type: object
+  controllers.BatchUploadResponse:
+    properties:
+      message:
+        type: string
+      results:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+      success_count:
+        type: integer
+      total:
+        type: integer
+    type: object
+  controllers.CreatePermissionRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  controllers.CreateRoleRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  controllers.CreateTagRequest:
+    properties:
+      tag_name:
+        type: string
+    required:
+    - tag_name
+    type: object
+  controllers.ListUsersResponse:
+    properties:
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/models.UserInfo'
+        type: array
+    type: object
+  controllers.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      psd:
+        type: string
+    type: object
+  controllers.TokenCreateRequest:
+    properties:
+      device_id:
+        type: string
+      ip_address:
+        type: string
+    type: object
+  controllers.UpdateFileRequest:
+    properties:
+      file_name:
+        type: string
+      is_encrypted:
+        type: boolean
+      password:
+        type: string
+    type: object
+  controllers.UpdateProfileRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  controllers.UpdateRolePermissionsRequest:
+    properties:
+      permissions:
+        items:
+          type: string
+        type: array
+    required:
+    - permissions
+    type: object
+  models.BatchUploadResponse:
+    properties:
+      message:
+        example: 批量上传完成
+        type: string
+      results:
+        items:
+          $ref: '#/definitions/models.ImageUploadResponse'
+        type: array
+      success_count:
+        example: 3
+        type: integer
+      total:
+        example: 5
+        type: integer
+    type: object
+  models.FileListResponse:
+    properties:
+      files:
+        items:
+          $ref: '#/definitions/models.PrivateFile'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 100
+        type: integer
+    type: object
+  models.Image:
+    properties:
+      description:
+        description: 图片描述（可选）
+        type: string
+      hash_image:
+        description: 图片哈希名
+        type: string
+      id:
+        type: integer
+      image_extenion:
+        description: 图片扩展名
+        type: string
+      image_name:
+        description: 图片名称
+        type: string
+      image_size:
+        description: 图片大小（字节）
+        type: integer
+      image_type:
+        description: 图片格式
+        type: string
+      image_url:
+        description: 图片存储路径或URL
+        type: string
+      tags:
+        items:
+          $ref: '#/definitions/models.Tag'
+        type: array
+      uploadTime:
+        description: 上传时间
+        type: string
+      user_id:
+        description: 用户名
+        type: integer
+    type: object
+  models.ImageListResponse:
+    properties:
+      images:
+        items:
+          $ref: '#/definitions/models.Image'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 100
+        type: integer
+    type: object
+  models.ImageUploadResponse:
+    properties:
+      image_id:
+        example: 1
+        type: integer
+      image_url:
+        example: http://example.com/images/1.jpg
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+      user_id:
+        example: 1
+        type: integer
+      user_name:
+        example: 张三
+        type: string
+    type: object
+  models.Permissions:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      permission_name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.PrivateFile:
+    properties:
+      created_at:
+        type: string
+      file_hash:
+        description: 文件哈希值
+        type: string
+      file_name:
+        description: 文件名
+        type: string
+      file_size:
+        description: 文件大小(字节)
+        type: integer
+      file_type:
+        description: 文件类型(MIME类型)
+        type: string
+      id:
+        type: integer
+      is_encrypted:
+        description: 是否加密
+        type: boolean
+      status:
+        description: 文件状态(active/deleted)
+        type: string
+      storage_path:
+        description: 存储路径
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        description: 所属用户
+        type: integer
+      view_count:
+        description: 查看次数
+        type: integer
+    type: object
+  models.RegisterResponse:
+    properties:
+      status:
+        example: success
+        type: string
+      user_id:
+        example: 1
+        type: integer
+    type: object
+  models.Response:
+    properties:
+      data: {}
+      message:
+        example: 操作成功
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  models.RoleAssignRequest:
+    properties:
+      roles:
+        example:
+        - admin
+        - editor
+        items:
+          type: string
+        type: array
+    type: object
+  models.Roles:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      role_name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.StatusUpdateRequest:
+    properties:
+      status:
+        enum:
+        - active
+        - inactive
+        - banned
+        example: active
+        type: string
+    type: object
+  models.Tag:
+    properties:
+      tagID:
+        type: integer
+      tagName:
+        description: 添加unique约束
+        type: string
+      userID:
+        type: integer
+    type: object
+  models.Token:
+    properties:
+      created_at:
+        type: string
+      device_id:
+        type: string
+      expires_at:
+        type: string
+      ip_address:
+        type: string
+      last_used_at:
+        type: string
+      status:
+        description: active, inactive, expired, revoked
+        type: string
+      token:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.TokenVerifyResponse:
+    properties:
+      cached:
+        example: false
+        type: boolean
+      status:
+        example: valid
+        type: string
+      user_id:
+        example: 1
+        type: integer
+    type: object
+  models.UserInfo:
+    properties:
+      age:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      last_login_at:
+        type: string
+      last_login_ip:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/models.Roles'
+        type: array
+      status:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.UserInput:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      psd:
+        type: string
+    required:
+    - email
+    - name
+    - psd
+    type: object
+info:
+  contact: {}
+paths:
+  /api/tokens:
+    get:
+      description: 获取当前用户的所有访问令牌列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Token'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取用户的所有令牌
+      tags:
+      - 令牌管理
+    post:
+      consumes:
+      - application/json
+      description: 为当前用户创建一个新的访问令牌
+      parameters:
+      - description: 令牌创建请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.TokenCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Token'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建新的访问令牌
+      tags:
+      - 令牌管理
+  /api/tokens/{token}:
+    delete:
+      description: 撤销指定的访问令牌
+      parameters:
+      - description: 要撤销的令牌
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 撤销指定令牌
+      tags:
+      - 令牌管理
+  /api/verify-token:
+    get:
+      consumes:
+      - application/json
+      description: 验证token并返回用户权限信息
+      parameters:
+      - description: 访问Token
+        in: query
+        name: token
+        type: string
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        type: string
+      - description: Token
+        in: header
+        name: X-Token
+        type: string
+      - description: 请求的文件路径
+        in: query
+        name: path
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TokenVerifyResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: 验证Token
+      tags:
+      - 认证
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 处理用户登录请求，返回JWT令牌
+      parameters:
+      - description: 登录请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.LoginResponse'
+              type: object
+        "400":
+          description: 无效的请求数据
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: 认证失败
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: 用户登录
+      tags:
+      - 认证
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: 处理新用户注册请求
+      parameters:
+      - description: 注册信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.RegisterResponse'
+              type: object
+        "400":
+          description: 注册失败
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: 用户注册
+      tags:
+      - 认证
+  /images:
+    get:
+      description: 获取用户的图片列表，支持分页
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ImageListResponse'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: 获取图片列表
+      tags:
+      - 图片管理
+  /images/{id}:
+    delete:
+      description: 删除指定的图片
+      parameters:
+      - description: 图片ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除图片
+      tags:
+      - 图片管理
+    get:
+      description: 获取指定图片的详细信息
+      parameters:
+      - description: 图片ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Image'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取图片详情
+      tags:
+      - 图片管理
+  /images/batch-upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 同时上传多个图片文件
+      parameters:
+      - description: 图片文件数组
+        in: formData
+        name: files[]
+        required: true
+        type: file
+      - description: 图片描述
+        in: formData
+        name: description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BatchUploadResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 批量上传图片
+      tags:
+      - 图片管理
+  /images/search:
+    get:
+      description: 根据关键词搜索图片
+      parameters:
+      - description: 搜索关键词
+        in: query
+        name: keyword
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ImageListResponse'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: 搜索图片
+      tags:
+      - 图片管理
+  /images/tags:
+    post:
+      consumes:
+      - application/json
+      description: 为指定图片添加多个标签
+      parameters:
+      - description: 添加标签请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.AddImageTagRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: 请求数据无效
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 为图片添加多个标签
+      tags:
+      - 标签管理
+  /images/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传单个图片文件
+      parameters:
+      - description: 图片文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 图片描述
+        in: formData
+        name: description
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 上传单个图片
+      tags:
+      - 图片管理
+  /permissions/all:
+    get:
+      description: 获取系统中所有可用的权限列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Permissions'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取所有权限
+      tags:
+      - 权限管理
+  /permissions/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建新的权限项
+      parameters:
+      - description: 权限信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreatePermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建权限
+      tags:
+      - 权限管理
+  /permissions/roles:
+    get:
+      description: 获取系统中所有可用的角色列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取所有角色
+      tags:
+      - 权限管理
+  /permissions/roles/{role}:
+    get:
+      description: 获取指定角色的所有权限
+      parameters:
+      - description: 角色名称
+        in: path
+        name: role
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取角色权限
+      tags:
+      - 权限管理
+    put:
+      consumes:
+      - application/json
+      description: 更新指定角色的权限列表
+      parameters:
+      - description: 角色名称
+        in: path
+        name: role
+        required: true
+        type: string
+      - description: 权限列表
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateRolePermissionsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新角色权限
+      tags:
+      - 权限管理
+  /permissions/roles/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建新的角色
+      parameters:
+      - description: 角色信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建角色
+      tags:
+      - 权限管理
+  /permissions/sync:
+    post:
+      description: 从配置文件同步权限到数据库
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 同步权限配置
+      tags:
+      - 权限管理
+  /permissions/users/{id}/permissions:
+    get:
+      description: 获取指定用户的所有权限
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取用户权限
+      tags:
+      - 权限管理
+  /permissions/users/current/permissions:
+    get:
+      description: 获取当前登录用户的所有权限
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取当前用户权限
+      tags:
+      - 权限管理
+  /private-files:
+    get:
+      description: 获取用户的私人文件列表
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.FileListResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取文件列表
+      tags:
+      - 私人文件
+  /private-files/{id}:
+    delete:
+      description: 删除指定的私人文件
+      parameters:
+      - description: 文件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除文件
+      tags:
+      - 私人文件
+    get:
+      description: 获取私人文件的详细信息
+      parameters:
+      - description: 文件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 解密密码
+        in: query
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.PrivateFile'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取文件信息
+      tags:
+      - 私人文件
+    put:
+      consumes:
+      - application/json
+      description: 更新私人文件的信息，包括文件名和加密状态
+      parameters:
+      - description: 文件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateFileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.PrivateFile'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新文件信息
+      tags:
+      - 私人文件
+  /private-files/batch-upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 同时上传多个私人文件
+      parameters:
+      - description: 文件数组
+        in: formData
+        name: files[]
+        required: true
+        type: file
+      - default: false
+        description: 是否加密
+        in: formData
+        name: is_encrypted
+        type: boolean
+      - description: 加密密码
+        in: formData
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.BatchUploadResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 批量上传文件
+      tags:
+      - 私人文件
+  /private-files/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传单个私人文件，支持加密选项
+      parameters:
+      - description: 文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - default: false
+        description: 是否加密
+        in: formData
+        name: is_encrypted
+        type: boolean
+      - description: 加密密码
+        in: formData
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.PrivateFile'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 上传私人文件
+      tags:
+      - 私人文件
+  /tags:
+    get:
+      description: 获取用户的所有标签列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Tag'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取所有标签
+      tags:
+      - 标签管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的标签
+      parameters:
+      - description: 标签名称
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateTagRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 创建标签
+      tags:
+      - 标签管理
+  /tags/{id}/images:
+    get:
+      description: 获取指定标签下的所有图片
+      parameters:
+      - description: 标签ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ImageListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取标签下的图片
+      tags:
+      - 标签管理
+  /tags/image/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 为指定图片添加标签
+      parameters:
+      - description: 图片ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 标签ID
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.AddTagRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 为图片添加标签
+      tags:
+      - 标签管理
+  /users:
+    get:
+      description: 获取系统中的用户列表，支持分页和搜索
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      - description: 搜索关键词
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ListUsersResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取用户列表
+      tags:
+      - 用户管理
+  /users/{id}:
+    delete:
+      description: 删除指定的用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 删除用户
+      tags:
+      - 用户管理
+  /users/{id}/roles:
+    get:
+      description: 获取指定用户的所有角色
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取用户角色
+      tags:
+      - 用户管理
+    post:
+      consumes:
+      - application/json
+      description: 为指定用户分配角色
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 角色分配请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RoleAssignRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 管理用户角色
+      tags:
+      - 用户管理
+  /users/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: 更新指定用户的状态（激活/禁用）
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 状态更新请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.StatusUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新用户状态
+      tags:
+      - 用户管理
+  /users/profile:
+    get:
+      description: 获取当前登录用户的详细信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.UserInfo'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取用户个人信息
+      tags:
+      - 用户管理
+    put:
+      consumes:
+      - application/json
+      description: 更新当前登录用户的个人信息
+      parameters:
+      - description: 用户信息更新请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 更新用户信息
+      tags:
+      - 用户管理
+swagger: "2.0"
