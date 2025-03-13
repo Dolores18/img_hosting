@@ -82,13 +82,16 @@ func UploadPrivateFile(file *multipart.FileHeader, userID uint, isEncrypted bool
 		return nil, err
 	}
 
-	// 如果需要加密，则加密文件
+	// 重要：在加密前确保文件已完全关闭
+	dst.Close() // 显式关闭文件
+	src.Close() // 显式关闭文件
+
+	// 如果需要加密
 	if isEncrypted {
 		log := logger.GetLogger()
 		log.WithField("file", storagePath).Info("开始加密文件")
 		if err := encryption.EncryptFileInPlace(storagePath, password); err != nil {
-			// 如果加密失败，删除文件
-			os.Remove(storagePath)
+			os.Remove(storagePath) // 清理文件
 			return nil, fmt.Errorf("文件加密失败: %w", err)
 		}
 	}
