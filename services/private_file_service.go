@@ -15,27 +15,22 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/sirupsen/logrus"
-)
+	"img_hosting/config"
 
-const (
-	MaxFileSize  = 100 * 1024 * 1024                                      // 100MB
-	UploadPath   = "./uploads/private"                                    // 私人文件上传路径
-	AllowedTypes = ".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx,.txt" // 允许的文件类型
+	"github.com/sirupsen/logrus"
 )
 
 // UploadPrivateFile 上传私人文件
 func UploadPrivateFile(file *multipart.FileHeader, userID uint, isEncrypted bool, password string) (*models.PrivateFile, error) {
-	log := logger.GetLogger()
+	cfg := config.GetConfig()
 
-	// 检查文件大小
-	if file.Size > MaxFileSize {
+	// 使用配置的限制
+	if file.Size > cfg.PrivateFiles.MaxSize {
 		return nil, errors.New("文件大小超过限制")
 	}
 
-	// 检查文件类型
 	ext := strings.ToLower(filepath.Ext(file.Filename))
-	if !strings.Contains(AllowedTypes, ext) {
+	if !strings.Contains(cfg.PrivateFiles.AllowedTypes, ext) {
 		return nil, errors.New("不支持的文件类型")
 	}
 
@@ -63,8 +58,8 @@ func UploadPrivateFile(file *multipart.FileHeader, userID uint, isEncrypted bool
 		return nil, errors.New("文件已存在")
 	}
 
-	// 创建上传目录
-	uploadDir := filepath.Join(UploadPath, fmt.Sprintf("user_%d", userID))
+	// 使用配置的路径
+	uploadDir := filepath.Join(cfg.PrivateFiles.Path, fmt.Sprintf("user_%d", userID))
 	if err := os.MkdirAll(uploadDir, 0755); err != nil {
 		return nil, err
 	}
@@ -89,6 +84,7 @@ func UploadPrivateFile(file *multipart.FileHeader, userID uint, isEncrypted bool
 
 	// 如果需要加密，则加密文件
 	if isEncrypted {
+		log := logger.GetLogger()
 		log.WithField("file", storagePath).Info("开始加密文件")
 		if err := encryption.EncryptFileInPlace(storagePath, password); err != nil {
 			// 如果加密失败，删除文件
@@ -146,20 +142,64 @@ func ListPrivateFiles(userID uint, page, pageSize int) ([]models.PrivateFile, in
 // DeletePrivateFile 删除私人文件
 func DeletePrivateFile(fileID, userID uint) error {
 	db := models.GetDB()
+	logger := logger.GetLogger()
 
 	// 获取文件信息
 	file, err := dao.GetPrivateFileByID(db, fileID, userID)
 	if err != nil {
-		return err
+		return fmt.Errorf("获取文件信息失败: %w", err)
 	}
 
+	logger.WithFields(logrus.Fields{
+		"file_id": file.ID,
+		"user_id": userID,
+		"path":    file.StoragePath,
+	}).Info("开始删除文件")
+
 	// 删除物理文件
-	if err := os.Remove(file.StoragePath); err != nil {
-		return err
+	if err := deleteFile(file.StoragePath); err != nil {
+		logger.WithError(err).WithFields(logrus.Fields{
+			"file_id": fileID,
+			"path":    file.StoragePath,
+		}).Error("删除文件失败")
+		return fmt.Errorf("删除文件失败: %w", err)
+	}
+
+	// 如果是加密文件，检查并删除可能存在的原始文件（没有.zip后缀的文件）
+	if file.IsEncrypted && strings.HasSuffix(file.StoragePath, ".zip") {
+		originalPath := strings.TrimSuffix(file.StoragePath, ".zip")
+		if err := deleteFile(originalPath); err != nil {
+			logger.WithError(err).WithField("path", originalPath).Warn("删除原始文件失败")
+			// 继续执行，不返回错误
+		}
 	}
 
 	// 删除数据库记录
-	return dao.DeletePrivateFile(db, fileID, userID)
+	if err := dao.DeletePrivateFile(db, fileID, userID); err != nil {
+		return fmt.Errorf("删除文件记录失败: %w", err)
+	}
+
+	logger.WithFields(logrus.Fields{
+		"file_id": fileID,
+		"user_id": userID,
+	}).Info("文件删除成功")
+
+	return nil
+}
+
+// deleteFile 安全删除文件
+func deleteFile(path string) error {
+	// 检查文件是否存在
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil // 文件不存在视为成功
+	}
+
+	// 删除文件
+	if err := os.Remove(path); err != nil {
+		return fmt.Errorf("删除文件失败 %s: %w", path, err)
+	}
+
+	return nil
 }
 
 // SearchPrivateFiles 搜索私人文件
@@ -233,7 +273,6 @@ func UpdatePrivateFileInfo(fileID, userID uint, fileName string, isEncrypted boo
 			}
 		}
 	}
-	
 
 	fmt.Println("【更新文件】文件存在:", file.StoragePath)
 

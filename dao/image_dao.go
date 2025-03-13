@@ -97,31 +97,63 @@ func SearchImages(db *gorm.DB, userID uint, keyword string, page, pageSize int) 
 
 // DeleteImage 删除图片
 func DeleteImage(db *gorm.DB, imageID, userID uint) error {
-	// 先检查图片是否属于该用户
-	var count int64
-	if err := db.Model(&models.Image{}).Where("image_id = ? AND user_id = ?", imageID, userID).Count(&count).Error; err != nil {
-		return err
-	}
+	// 使用单个事务处理整个删除过程
+	return db.Transaction(func(tx *gorm.DB) error {
+		// 1. 先查询图片是否存在
+		var image models.Image
+		if err := tx.Where("image_id = ? AND user_id = ?", imageID, userID).First(&image).Error; err != nil {
+			if err == gorm.ErrRecordNotFound {
+				return fmt.Errorf("图片不存在或无权限删除")
+			}
+			return err
+		}
 
-	if count == 0 {
-		return fmt.Errorf("图片不存在或无权限删除")
-	}
+		// 2. 删除图片标签关联
+		if err := tx.Where("image_id = ?", imageID).Delete(&models.ImageTag{}).Error; err != nil {
+			return err
+		}
 
-	// 删除图片标签关联
-	if err := db.Where("image_id = ?", imageID).Delete(&models.ImageTag{}).Error; err != nil {
-		return err
-	}
+		// 3. 删除图片记录
+		if err := tx.Delete(&image).Error; err != nil {
+			return err
+		}
 
-	// 删除图片
-	return db.Delete(&models.Image{}, imageID).Error
+		return nil
+	})
 }
 
-// CheckImageExists 检查图片是否存在
+// CheckImageExists 检查图片是否已存在
 func CheckImageExists(db *gorm.DB, hashImage string) (bool, error) {
 	var count int64
-	err := db.Model(&models.Image{}).Where("hash_image = ?", hashImage).Count(&count).Error
+	err := db.Model(&models.Image{}).
+		Where("hash_image = ?", hashImage).
+		Count(&count).Error
+
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("检查图片哈希失败: %w", err)
 	}
+
 	return count > 0, nil
+}
+
+// ListAllImages 获取所有图片（管理员用）
+func ListAllImages(db *gorm.DB, page, pageSize int) ([]models.Image, int64, error) {
+	var images []models.Image
+	var total int64
+
+	if err := db.Model(&models.Image{}).Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	offset := (page - 1) * pageSize
+	result := db.Preload("Tags").
+		Offset(offset).
+		Limit(pageSize).
+		Find(&images)
+
+	if result.Error != nil {
+		return nil, 0, result.Error
+	}
+
+	return images, total, nil
 }

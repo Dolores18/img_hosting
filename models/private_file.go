@@ -23,7 +23,7 @@ type PrivateFile struct {
 	UpdatedAt   time.Time      `json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"-"` // 软删除
 
-	User UserInfo `gorm:"foreignKey:UserID" json:"-"` // 关联用户
+	User UserInfo `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE" json:"-"` // 关联用户
 }
 
 // FileStatus 定义文件状态常量

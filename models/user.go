@@ -32,7 +32,7 @@ type UserInfo struct {
 	CreatedAt   time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt   time.Time      `gorm:"column:updated_at" json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"-"`
-	Roles       []Roles        `gorm:"many2many:user_roles;foreignKey:UserID;joinForeignKey:UserID;References:RoleID;joinReferences:RoleID" json:"roles"`
+	Roles       []Roles        `gorm:"many2many:user_roles;foreignKey:UserID;joinForeignKey:UserID;References:RoleID;joinReferences:RoleID;constraint:OnDelete:CASCADE" json:"roles"`
 }
 
 // UserStatus 用户状态常量

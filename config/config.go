@@ -6,10 +6,33 @@ import (
 	"github.com/spf13/viper"
 )
 
+type LogConfig struct {
+	Path       string `mapstructure:"path"`
+	Filename   string `mapstructure:"filename"`
+	Level      string `mapstructure:"level"`
+	MaxSize    int    `mapstructure:"max_size"`
+	MaxAge     int    `mapstructure:"max_age"`
+	MaxBackups int    `mapstructure:"max_backups"`
+	Compress   bool   `mapstructure:"compress"`
+}
+
 type AppConfig struct {
 	App struct {
 		Port int
 	}
+
+	Upload struct {
+		Path           string `mapstructure:"path"`
+		ThumbnailsPath string `mapstructure:"thumbnails_path"`
+		MaxSize        int64  `mapstructure:"max_size"`
+	}
+
+	PrivateFiles struct {
+		Path         string `mapstructure:"path"`
+		MaxSize      int64  `mapstructure:"max_size"`
+		AllowedTypes string `mapstructure:"allowed_types"`
+	} `mapstructure:"private_files"`
+
 	Database struct {
 		Host     string
 		Port     int
@@ -25,6 +48,8 @@ type AppConfig struct {
 		Routes map[string][]string `mapstructure:"routes"`
 		Roles  map[string][]string `mapstructure:"roles"`
 	} `mapstructure:"permissions"`
+
+	Log LogConfig `mapstructure:"log"`
 }
 
 var AppConfigInstance AppConfig
@@ -44,4 +69,9 @@ func LoadConfig() {
 	if err := viper.Unmarshal(&AppConfigInstance); err != nil {
 		log.Fatalf("Unable to decode into struct, %v", err)
 	}
+}
+
+// GetConfig 获取配置实例
+func GetConfig() *AppConfig {
+	return &AppConfigInstance
 }

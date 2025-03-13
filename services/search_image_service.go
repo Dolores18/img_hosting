@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"img_hosting/dao"
 	"img_hosting/models"
 )
 
@@ -70,3 +71,8 @@ func GetAllimage(user_id uint, enablePaging bool, page, pageSize int, order stri
 	return &result, nil
 }
 
+// ListAllImages 获取所有图片
+func ListAllImages(page, pageSize int) ([]models.Image, int64, error) {
+	db := models.GetDB()
+	return dao.ListAllImages(db, page, pageSize)
+}

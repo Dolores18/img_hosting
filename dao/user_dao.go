@@ -72,9 +72,36 @@ func UpdateUserStatus(db *gorm.DB, userID uint, status string) error {
 		Update("status", status).Error
 }
 
-// DeleteUser 删除用户（软删除）
+// DeleteUser 删除用户及其关联数据
 func DeleteUser(db *gorm.DB, userID uint) error {
-	return db.Delete(&models.UserInfo{}, userID).Error
+	return db.Transaction(func(tx *gorm.DB) error {
+		// 1. 删除用户的角色关联
+		if err := tx.Delete(&models.UserRole{}, "user_id = ?", userID).Error; err != nil {
+			return err
+		}
+
+		// 2. 删除用户的图片标签关联
+		if err := tx.Exec("DELETE FROM image_tags WHERE image_id IN (SELECT image_id FROM images WHERE user_id = ?)", userID).Error; err != nil {
+			return err
+		}
+
+		// 3. 删除用户的图片
+		if err := tx.Delete(&models.Image{}, "user_id = ?", userID).Error; err != nil {
+			return err
+		}
+
+		// 4. 删除用户的私有文件
+		if err := tx.Delete(&models.PrivateFile{}, "user_id = ?", userID).Error; err != nil {
+			return err
+		}
+
+		// 5. 最后删除用户本身（软删除，因为 UserInfo 定义了 DeletedAt）
+		if err := tx.Delete(&models.UserInfo{}, userID).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 }
 
 // ListUsers 获取用户列表（支持分页和搜索）

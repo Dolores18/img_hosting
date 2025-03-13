@@ -67,7 +67,7 @@ func SetupRouter() *gin.Engine {
 
 	// 图片相关路由
 	imageGroup := r.Group("/images")
-	imageGroup.Use(middleware.AuthMiddleware())
+	imageGroup.Use(middleware.AuthMiddleware(), middleware.PermissionMiddleware())
 	{
 		fmt.Println("注册图片上传路由: /images/upload")
 		imageGroup.POST("/upload", imageController.UploadImage)
@@ -76,6 +76,7 @@ func SetupRouter() *gin.Engine {
 		imageGroup.GET("/search", imageController.SearchImages)
 		imageGroup.GET("/:id", imageController.GetImage)
 		imageGroup.DELETE("/:id", imageController.DeleteImage)
+		imageGroup.GET("/me/images", imageController.GetUserImages)
 
 		// 添加调试日志
 		fmt.Println("注册图片批量上传路由: POST /images/batch-upload")
@@ -102,6 +103,7 @@ func SetupRouter() *gin.Engine {
 		userGroup.PUT("/:id/status", userController.UpdateStatus)
 		userGroup.POST("/:id/roles", userController.ManageRoles)
 		userGroup.GET("/:id/roles", userController.GetRoles)
+		userGroup.GET("/me/images", imageController.GetUserImages)
 	}
 
 	// 私有文件相关路由

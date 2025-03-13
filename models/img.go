@@ -16,7 +16,7 @@ type Image struct {
 	ImageType     string    `json:"image_type"`              // 图片格式
 	UploadTime    time.Time `gorm:"autoCreateTime"`          // 上传时间
 	Description   string    `json:"description"`             // 图片描述（可选）
-	Tags          []Tag     `gorm:"many2many:image_tags;foreignKey:ImageID;joinForeignKey:ImageID;references:TagID;joinReferences:TagID"`
+	Tags          []Tag     `gorm:"many2many:image_tags;foreignKey:ImageID;joinForeignKey:ImageID;references:TagID;joinReferences:TagID;constraint:OnDelete:CASCADE"`
 }
 
 type ImageResult struct {

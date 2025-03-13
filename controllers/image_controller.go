@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"img_hosting/models"
+	"img_hosting/pkg/logger"
 	"img_hosting/services"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 // ImageController 图片控制器
@@ -32,13 +34,26 @@ func NewImageController() *ImageController {
 // @Router /images/upload [post]
 func (ic *ImageController) UploadImage(c *gin.Context) {
 	userID := c.GetUint("user_id")
+	logger := logger.GetLogger()
+
+	logger.WithFields(logrus.Fields{
+		"user_id": userID,
+		"method":  "UploadImage",
+	}).Info("开始处理图片上传请求")
 
 	// 获取上传的文件
 	file, err := c.FormFile("file")
 	if err != nil {
+		logger.WithError(err).Error("获取上传文件失败")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "请选择要上传的图片"})
 		return
 	}
+
+	logger.WithFields(logrus.Fields{
+		"filename":     file.Filename,
+		"size":         file.Size,
+		"content_type": file.Header.Get("Content-Type"),
+	}).Info("接收到上传文件")
 
 	// 获取描述信息
 	description := c.PostForm("description")
@@ -46,9 +61,19 @@ func (ic *ImageController) UploadImage(c *gin.Context) {
 	// 处理上传
 	imageID, imageURL, err := services.UploadImage(userID, file, description)
 	if err != nil {
+		logger.WithError(err).WithFields(logrus.Fields{
+			"filename": file.Filename,
+			"size":     file.Size,
+		}).Error("图片上传处理失败")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	logger.WithFields(logrus.Fields{
+		"image_id":  imageID,
+		"image_url": imageURL,
+		"user_id":   userID,
+	}).Info("图片上传成功")
 
 	c.JSON(http.StatusOK, models.ImageUploadResponse{
 		ImageID:  imageID,
@@ -82,17 +107,18 @@ func (ic *ImageController) GetImage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"image": image})
 }
 
-// ListImages godoc
-// @Summary 获取图片列表
-// @Description 获取用户的图片列表，支持分页
+// GetUserImages godoc
+// @Summary 获取当前用户的图片
+// @Description 获取当前登录用户的所有图片，支持分页
 // @Tags 图片管理
 // @Produce json
 // @Param page query int false "页码" default(1)
 // @Param page_size query int false "每页数量" default(10)
 // @Security BearerAuth
 // @Success 200 {object} models.Response{data=models.ImageListResponse}
-// @Router /images [get]
-func (ic *ImageController) ListImages(c *gin.Context) {
+// @Failure 401,500 {object} models.Response
+// @Router /users/me/images [get]
+func (ic *ImageController) GetUserImages(c *gin.Context) {
 	userID := c.GetUint("user_id")
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
@@ -227,5 +253,34 @@ func (ic *ImageController) BatchUploadImages(c *gin.Context) {
 		Results:      results,
 		Total:        len(files),
 		SuccessCount: successCount,
+	})
+}
+
+// ListImages godoc
+// @Summary 获取所有图片
+// @Description 获取系统中的所有图片（需要管理员权限）
+// @Tags 图片管理
+// @Produce json
+// @Param page query int false "页码" default(1)
+// @Param page_size query int false "每页数量" default(10)
+// @Security BearerAuth
+// @Success 200 {object} models.Response{data=models.ImageListResponse}
+// @Failure 401,403 {object} models.Response
+// @Router /images [get]
+func (ic *ImageController) ListImages(c *gin.Context) {
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
+
+	images, total, err := services.ListAllImages(page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取图片列表失败"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"images":    images,
+		"total":     total,
+		"page":      page,
+		"page_size": pageSize,
 	})
 }

@@ -6,6 +6,9 @@ import (
 	"img_hosting/dao"
 	"img_hosting/models"
 
+	"img_hosting/pkg/logger"
+
+	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
@@ -62,57 +65,84 @@ func (s *UserService) ListUsers(page, pageSize int, search string) ([]models.Use
 	return dao.ListUsers(db, page, pageSize, search)
 }
 
-// DeleteUser 删除用户及其所有关联数据
+// DeleteUser 删除用户及其所有关联数据和文件
 func (s *UserService) DeleteUser(userID uint) error {
 	db := models.GetDB()
+	logger := logger.GetLogger()
 
-	// 开启事务
-	return db.Transaction(func(tx *gorm.DB) error {
-		// 1. 删除用户角色关联
-		if err := tx.Where("user_id = ?", userID).Delete(&models.UserRole{}).Error; err != nil {
-			return err
-		}
+	// 1. 先获取所有需要删除的文件信息
+	var userImages []models.Image
+	var privateFiles []models.PrivateFile
 
-		// 2. 删除用户的Token
-		if err := tx.Where("user_id = ?", userID).Delete(&models.Token{}).Error; err != nil {
-			return err
-		}
-
-		// 3. 删除用户的私人文件
-		if err := tx.Where("user_id = ?", userID).Delete(&models.PrivateFile{}).Error; err != nil {
-			return err
-		}
-
-		// 4. 删除用户的图片标签关联
-		var userImages []models.Image
+	err := db.Transaction(func(tx *gorm.DB) error {
+		// 获取用户的所有图片和文件
 		if err := tx.Where("user_id = ?", userID).Find(&userImages).Error; err != nil {
-			return err
+			return fmt.Errorf("获取用户图片失败: %w", err)
+		}
+		if err := tx.Where("user_id = ?", userID).Find(&privateFiles).Error; err != nil {
+			return fmt.Errorf("获取用户私有文件失败: %w", err)
 		}
 
-		var imageIDs []uint
-		for _, img := range userImages {
-			imageIDs = append(imageIDs, img.ImageID)
-		}
-
-		if len(imageIDs) > 0 {
-			if err := tx.Where("image_id IN ?", imageIDs).Delete(&models.ImageTag{}).Error; err != nil {
-				return err
+		// 2. 删除所有私有文件
+		for _, file := range privateFiles {
+			if err := DeletePrivateFile(file.ID, userID); err != nil {
+				logger.WithError(err).WithFields(logrus.Fields{
+					"file_id": file.ID,
+					"path":    file.StoragePath,
+				}).Error("删除用户私有文件失败")
+				return fmt.Errorf("删除用户私有文件失败: %w", err)
 			}
 		}
 
-		// 5. 删除用户的图片
-		if err := tx.Where("user_id = ?", userID).Delete(&models.Image{}).Error; err != nil {
+		// 3. 删除所有图片文件
+		for _, img := range userImages {
+			if err := DeleteImage(img.ImageID, userID); err != nil {
+				logger.WithError(err).WithFields(logrus.Fields{
+					"image_id": img.ImageID,
+					"path":     img.ImageName,
+				}).Error("删除用户图片失败")
+				return fmt.Errorf("删除用户图片失败: %w", err)
+			}
+		}
+
+		// 4. 删除用户相关的数据库记录
+		if err := deleteUserRecords(tx, userID); err != nil {
 			return err
 		}
 
-		// 6. 删除用户创建的标签
-		if err := tx.Where("user_id = ?", userID).Delete(&models.Tag{}).Error; err != nil {
-			return err
-		}
-
-		// 7. 最后删除用户
-		return tx.Delete(&models.UserInfo{}, userID).Error
+		return nil
 	})
+
+	if err != nil {
+		logger.WithError(err).WithFields(logrus.Fields{
+			"user_id":      userID,
+			"images_count": len(userImages),
+			"files_count":  len(privateFiles),
+		}).Error("删除用户失败")
+		return fmt.Errorf("删除用户失败: %w", err)
+	}
+
+	return nil
+}
+
+// deleteUserRecords 删除用户相关的数据库记录
+func deleteUserRecords(tx *gorm.DB, userID uint) error {
+	// 1. 删除用户角色关联
+	if err := tx.Where("user_id = ?", userID).Delete(&models.UserRole{}).Error; err != nil {
+		return fmt.Errorf("删除用户角色关联失败: %w", err)
+	}
+
+	// 2. 删除用户的Token
+	if err := tx.Where("user_id = ?", userID).Delete(&models.Token{}).Error; err != nil {
+		return fmt.Errorf("删除用户Token失败: %w", err)
+	}
+
+	// 3. 最后删除用户本身
+	if err := tx.Delete(&models.UserInfo{}, userID).Error; err != nil {
+		return fmt.Errorf("删除用户记录失败: %w", err)
+	}
+
+	return nil
 }
 
 // UpdateUserStatus 更新用户状态

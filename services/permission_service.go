@@ -4,11 +4,15 @@ import (
 	"fmt"
 	"img_hosting/config"
 	"img_hosting/models"
+	"img_hosting/pkg/cache"
 
 	"gorm.io/gorm"
 )
 
-type PermissionService struct{}
+// PermissionService 权限服务
+type PermissionService struct {
+	cache *cache.Service
+}
 
 // GetAllPermissions 获取所有权限
 func (s *PermissionService) GetAllPermissions() ([]models.Permissions, error) {
@@ -49,63 +53,83 @@ func (s *PermissionService) GetRolePermissions(roleName string) ([]models.Permis
 	return permissions, nil
 }
 
-// UpdateRolePermissions 更新角色的权限
-func (s *PermissionService) UpdateRolePermissions(roleName string, permissionNames []string) error {
+// UpdateRolePermissions 更新角色权限并同步
+func (ps *PermissionService) UpdateRolePermissions(roleName string, permissions []string) error {
 	db := models.GetDB()
 
-	// 开启事务
-	return db.Transaction(func(tx *gorm.DB) error {
-		// 1. 获取角色ID
-		var role models.Roles
-		if err := tx.Where("role_name = ?", roleName).First(&role).Error; err != nil {
-			return fmt.Errorf("角色不存在: %s", roleName)
+	// 开始事务
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
 		}
+	}()
 
-		// 2. 删除角色现有的所有权限
-		if err := tx.Where("role_id = ?", role.RoleID).Delete(&models.RolePermission{}).Error; err != nil {
-			return err
-		}
-
-		// 3. 添加新的权限
-		for _, permName := range permissionNames {
-			var perm models.Permissions
-			if err := tx.Where("permission_name = ?", permName).First(&perm).Error; err != nil {
-				return fmt.Errorf("权限不存在: %s", permName)
-			}
-
-			// 创建角色-权限关联
-			rolePermission := models.RolePermission{
-				RoleID:       role.RoleID,
-				PermissionID: perm.PermissionID,
-			}
-
-			if err := tx.Create(&rolePermission).Error; err != nil {
-				return err
-			}
-		}
-
-		return nil
-	})
-}
-
-// CreatePermission 创建新权限
-func (s *PermissionService) CreatePermission(name, description string) error {
-	db := models.GetDB()
-
-	// 检查权限是否已存在
-	var count int64
-	db.Model(&models.Permissions{}).Where("permission_name = ?", name).Count(&count)
-	if count > 0 {
-		return fmt.Errorf("权限已存在: %s", name)
+	// 1. 获取角色
+	var role models.Roles
+	if err := tx.Where("role_name = ?", roleName).First(&role).Error; err != nil {
+		tx.Rollback()
+		return fmt.Errorf("角色不存在: %s", roleName)
 	}
 
-	// 创建新权限
-	permission := models.Permissions{
+	// 2. 删除现有的角色权限关联
+	if err := tx.Where("role_id = ?", role.RoleID).Delete(&models.RolePermission{}).Error; err != nil {
+		tx.Rollback()
+		return fmt.Errorf("删除现有权限失败: %w", err)
+	}
+
+	// 3. 添加新的权限关联
+	for _, permName := range permissions {
+		var perm models.Permissions
+		if err := tx.Where("permission_name = ?", permName).First(&perm).Error; err != nil {
+			tx.Rollback()
+			return fmt.Errorf("权限不存在: %s", permName)
+		}
+
+		rolePermission := models.RolePermission{
+			RoleID:       role.RoleID,
+			PermissionID: perm.PermissionID,
+		}
+
+		if err := tx.Create(&rolePermission).Error; err != nil {
+			tx.Rollback()
+			return fmt.Errorf("创建权限关联失败: %w", err)
+		}
+	}
+
+	// 4. 提交事务
+	if err := tx.Commit().Error; err != nil {
+		return fmt.Errorf("提交事务失败: %w", err)
+	}
+
+	// 5. 清除权限缓存
+	cache.ClearUserPermissionCache(role.RoleID)
+
+	return nil
+}
+
+// CreatePermission 创建新权限并同步
+func (ps *PermissionService) CreatePermission(name, description string) error {
+	db := models.GetDB()
+	tx := db.Begin()
+
+	// 1. 创建权限
+	perm := models.Permissions{
 		Name:        name,
 		Description: description,
 	}
+	if err := tx.Create(&perm).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
 
-	return db.Create(&permission).Error
+	// 2. 同步配置到路由
+	if err := ps.SyncConfigPermissions(); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 // CreateRole 创建新角色
@@ -129,8 +153,8 @@ func (s *PermissionService) CreateRole(name, description string) error {
 	return db.Create(&role).Error
 }
 
-// SyncConfigPermissions 同步配置文件中的权限到数据库
-func (s *PermissionService) SyncConfigPermissions() error {
+// SyncConfigPermissions 同步权限配置到路由
+func (ps *PermissionService) SyncConfigPermissions() error {
 	db := models.GetDB()
 
 	// 从配置获取角色-权限映射
@@ -230,4 +254,57 @@ func (s *PermissionService) GetUserPermissionMap(userID uint) (map[string]bool, 
 	}
 
 	return permMap, nil
+}
+
+// DeletePermission 删除权限并同步
+func (ps *PermissionService) DeletePermission(name string) error {
+	db := models.GetDB()
+	tx := db.Begin()
+
+	// 1. 删除权限
+	if err := tx.Where("permission_name = ?", name).Delete(&models.Permissions{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 2. 同步配置到路由
+	if err := ps.SyncConfigPermissions(); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
+}
+
+// updateRolePermissionsInTx 在事务中更新角色权限
+func (ps *PermissionService) updateRolePermissionsInTx(tx *gorm.DB, roleName string, permissions []string) error {
+	// 获取角色信息
+	var role models.Roles
+	if err := tx.Where("role_name = ?", roleName).First(&role).Error; err != nil {
+		return fmt.Errorf("角色不存在: %w", err)
+	}
+
+	// 删除现有权限
+	if err := tx.Where("role_id = ?", role.RoleID).Delete(&models.RolePermission{}).Error; err != nil {
+		return fmt.Errorf("删除现有权限失败: %w", err)
+	}
+
+	// 添加新权限
+	for _, permName := range permissions {
+		// 获取权限ID
+		var perm models.Permissions
+		if err := tx.Where("permission_name = ?", permName).First(&perm).Error; err != nil {
+			return fmt.Errorf("权限不存在 %s: %w", permName, err)
+		}
+
+		rp := models.RolePermission{
+			RoleID:       role.RoleID,
+			PermissionID: perm.PermissionID,
+		}
+		if err := tx.Create(&rp).Error; err != nil {
+			return fmt.Errorf("添加新权限失败: %w", err)
+		}
+	}
+
+	return nil
 }

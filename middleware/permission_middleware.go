@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"img_hosting/dao"
+	"img_hosting/services"
 	"net/http"
 	"strings"
 
@@ -9,8 +10,7 @@ import (
 
 	"fmt"
 
-	"img_hosting/services"
-	"sync"
+	"img_hosting/pkg/cache"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,15 +18,12 @@ import (
 // 定义路由到权限的映射
 var routePermissions = config.AppConfigInstance.Permissions.Routes
 
-// 在适当的位置添加
-var permissionCache = make(map[uint]map[string]bool)
-var permissionCacheMutex = &sync.RWMutex{}
-
 // PermissionMiddleware 创建一个检查用户权限的中间件
 func PermissionMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		fullPath := c.FullPath()
-		fmt.Printf("权限中间件 - 当前路径: %s\n", fullPath)
+		method := c.Request.Method
+		fmt.Printf("权限中间件 - 当前路径: %s, 请求方法: %s\n", fullPath, method)
 
 		// 检查是否是公开路由
 		routePermissions := config.AppConfigInstance.Permissions.Routes
@@ -49,7 +46,7 @@ func PermissionMiddleware() gin.HandlerFunc {
 		}
 
 		// 获取所需权限
-		requiredPermissions := getRequiredPermissions(fullPath)
+		requiredPermissions := getRequiredPermissions(fullPath, method)
 		fmt.Printf("所需权限: %v\n", requiredPermissions)
 
 		// 特殊处理用户角色管理路由
@@ -89,13 +86,25 @@ func PermissionMiddleware() gin.HandlerFunc {
 }
 
 // getRequiredPermissions 根据路由路径获取所需权限
-func getRequiredPermissions(path string) []string {
-	fmt.Printf("获取路径权限: path=%s\n", path)
-
-	// 直接从配置实例获取权限，而不是使用全局变量
+func getRequiredPermissions(path string, method string) []string {
+	fmt.Printf("获取路径权限: path=%s, method=%s\n", path, method)
 	routePermissions := config.AppConfigInstance.Permissions.Routes
 
-	// 打印配置中的所有路由权限，用于调试
+	// 1. 尝试匹配大写方法的路由
+	methodPath := fmt.Sprintf("%s %s", method, path)
+	if perms, exists := routePermissions[methodPath]; exists {
+		fmt.Printf("匹配到大写方法路由: %s, 权限: %v\n", methodPath, perms)
+		return perms
+	}
+
+	// 2. 尝试匹配小写方法的路由
+	methodPathLower := fmt.Sprintf("%s %s", strings.ToLower(method), path)
+	if perms, exists := routePermissions[methodPathLower]; exists {
+		fmt.Printf("匹配到小写方法路由: %s, 权限: %v\n", methodPathLower, perms)
+		return perms
+	}
+
+	// 打印配置中的所有路由权限
 	fmt.Println("配置中的路由权限:")
 	for routePath, perms := range routePermissions {
 		fmt.Printf("  %s: %v\n", routePath, perms)
@@ -139,32 +148,16 @@ func getRequiredPermissions(path string) []string {
 
 // 获取用户权限（带缓存）
 func getUserPermissions(userID uint) (map[string]bool, error) {
-	// 先检查缓存
-	permissionCacheMutex.RLock()
-	if perms, ok := permissionCache[userID]; ok {
-		permissionCacheMutex.RUnlock()
+	if perms, exists := cache.GetUserPermissionCache(userID); exists {
 		return perms, nil
 	}
-	permissionCacheMutex.RUnlock()
 
-	// 缓存未命中，查询数据库
 	permService := &services.PermissionService{}
 	perms, err := permService.GetUserPermissionMap(userID)
 	if err != nil {
 		return nil, err
 	}
 
-	// 更新缓存
-	permissionCacheMutex.Lock()
-	permissionCache[userID] = perms
-	permissionCacheMutex.Unlock()
-
+	cache.SetUserPermissionCache(userID, perms)
 	return perms, nil
-}
-
-// 清除用户权限缓存
-func clearUserPermissionCache(userID uint) {
-	permissionCacheMutex.Lock()
-	delete(permissionCache, userID)
-	permissionCacheMutex.Unlock()
 }

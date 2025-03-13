@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   controllers.AddImageTagRequest:
     properties:
@@ -406,8 +407,19 @@ definitions:
     - name
     - psd
     type: object
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: support@example.com
+    name: API 支持
+    url: http://www.example.com/support
+  description: 图片托管系统的 API 文档
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: 图片托管系统 API
+  version: "1.0"
 paths:
   /api/tokens:
     get:
@@ -605,7 +617,7 @@ paths:
       - 认证
   /images:
     get:
-      description: 获取用户的图片列表，支持分页
+      description: 获取系统中的所有图片（需要管理员权限）
       parameters:
       - default: 1
         description: 页码
@@ -629,9 +641,17 @@ paths:
                 data:
                   $ref: '#/definitions/models.ImageListResponse'
               type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
       security:
       - BearerAuth: []
-      summary: 获取图片列表
+      summary: 获取所有图片
       tags:
       - 图片管理
   /images/{id}:
@@ -1644,6 +1664,45 @@ paths:
       summary: 更新用户状态
       tags:
       - 用户管理
+  /users/me/images:
+    get:
+      description: 获取当前登录用户的所有图片，支持分页
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.ImageListResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: 获取当前用户的图片
+      tags:
+      - 图片管理
   /users/profile:
     get:
       description: 获取当前登录用户的详细信息
@@ -1699,4 +1758,12 @@ paths:
       summary: 更新用户信息
       tags:
       - 用户管理
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    description: 请输入 'Bearer {token}' 格式的认证信息
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

@@ -17,6 +17,27 @@ import (
 	"gorm.io/gorm"
 )
 
+// @title 图片托管系统 API
+// @version 1.0
+// @description 图片托管系统的 API 文档
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API 支持
+// @contact.url http://www.example.com/support
+// @contact.email support@example.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /
+// @schemes http
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description 请输入 'Bearer {token}' 格式的认证信息
+
 func testUserHasPermissions() {
 	// 连接到 SQLite 数据库
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
