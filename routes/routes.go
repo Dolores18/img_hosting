@@ -20,11 +20,15 @@ import (
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
+	// 使用自定义CORS中间件
+	r.Use(middleware.CORSMiddleware())
+
 	// 初始化Swagger文档
 	docs.SwaggerInfo.Title = "图片托管系统 API"
 	docs.SwaggerInfo.Description = "这是一个图片托管系统的API文档"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8080"
+	// 使用相对路径，避免跨域问题
+	docs.SwaggerInfo.Host = "" // 留空，让Swagger UI自动使用当前主机
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
